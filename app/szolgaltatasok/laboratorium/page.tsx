@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { Beaker, FileCheck, Microscope, Leaf, Droplets, Package } from 'lucide-react'
+import ScrollReveal from '@/components/ScrollReveal'
 
 export default function LaboratoryPage() {
   const services = [
@@ -82,57 +83,64 @@ export default function LaboratoryPage() {
           <div className="absolute inset-0 bg-cover bg-center" style={{backgroundImage: 'url(https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=1920)'}}></div>
         </div>
         <div className="container-custom relative z-10">
-          <div className="max-w-3xl">
-            <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
-              Laboratóriumi Vizsgálatok
-            </h1>
-            <p className="text-xl text-neutral-offwhite">
-              Akkreditált vizsgálatok talaj, növény, trágya és víz mintákból. Precíz eredmények a fenntartható gazdálkodásért.
-            </p>
-          </div>
+          <ScrollReveal>
+            <div className="max-w-3xl">
+              <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
+                Laboratóriumi Vizsgálatok
+              </h1>
+              <p className="text-xl text-neutral-offwhite">
+                Akkreditált vizsgálatok talaj, növény, trágya és víz mintákból. Precíz eredmények a fenntartható gazdálkodásért.
+              </p>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* Accreditation Banner */}
       <section className="py-12 bg-accent-teal/10">
         <div className="container-custom">
-          <div className="flex flex-col md:flex-row items-center gap-6 bg-white rounded-xl p-8 shadow-lg">
-            <div className="flex-shrink-0">
-              <div className="w-20 h-20 bg-accent-teal rounded-full flex items-center justify-center">
-                <FileCheck className="text-white" size={40} />
+          <ScrollReveal>
+            <div className="flex flex-col md:flex-row items-center gap-6 bg-white rounded-xl p-8 shadow-lg">
+              <div className="flex-shrink-0">
+                <div className="w-20 h-20 bg-accent-teal rounded-full flex items-center justify-center">
+                  <FileCheck className="text-white" size={40} />
+                </div>
+              </div>
+              <div className="flex-1 text-center md:text-left">
+                <h3 className="text-2xl font-heading font-bold mb-2">
+                  NAH Akkreditált Laboratórium
+                </h3>
+                <p className="text-neutral-mediumgray mb-3">
+                  Nemzeti Akkreditáló Hatóság által elismert vizsgálatok. Licensz szám: NAH-1-1234/2023
+                </p>
+                <button className="text-primary hover:text-primary-medium font-semibold flex items-center gap-2 mx-auto md:mx-0">
+                  Akkreditációs dokumentum letöltése (PDF)
+                </button>
               </div>
             </div>
-            <div className="flex-1 text-center md:text-left">
-              <h3 className="text-2xl font-heading font-bold mb-2">
-                NAH Akkreditált Laboratórium
-              </h3>
-              <p className="text-neutral-mediumgray mb-3">
-                Nemzeti Akkreditáló Hatóság által elismert vizsgálatok. Licensz szám: NAH-1-1234/2023
-              </p>
-              <button className="text-primary hover:text-primary-medium font-semibold flex items-center gap-2 mx-auto md:mx-0">
-                Akkreditációs dokumentum letöltése (PDF)
-              </button>
-            </div>
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* Service Categories */}
       <section className="section-padding">
         <div className="container-custom">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-heading font-bold mb-4">
-              Vizsgálati Kategóriák
-            </h2>
-            <p className="text-lg text-neutral-mediumgray max-w-2xl mx-auto">
-              Komplex laboratóriumi szolgáltatások minden mezőgazdasági igényre
-            </p>
-          </div>
+          <ScrollReveal>
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-heading font-bold mb-4">
+                Vizsgálati Kategóriák
+              </h2>
+              <p className="text-lg text-neutral-mediumgray max-w-2xl mx-auto">
+                Komplex laboratóriumi szolgáltatások minden mezőgazdasági igényre
+              </p>
+            </div>
+          </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {services.map((service, index) => (
-              <div key={index} className="card hover:shadow-xl transition-all">
-                <div className="flex items-start gap-4 mb-4">
+              <ScrollReveal key={index} delay={index * 0.1}>
+                <div className="card hover:shadow-xl transition-all">
+                  <div className="flex items-start gap-4 mb-4">
                   <div className="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                     <service.icon className="text-primary" size={28} />
                   </div>
@@ -157,7 +165,8 @@ export default function LaboratoryPage() {
                     {service.title} Kérése
                   </Link>
                 </div>
-              </div>
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -166,19 +175,22 @@ export default function LaboratoryPage() {
       {/* Process Timeline */}
       <section className="section-padding bg-neutral-offwhite">
         <div className="container-custom">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-heading font-bold mb-4">
-              Vizsgálati Folyamat
-            </h2>
-            <p className="text-lg text-neutral-mediumgray">
-              Egyszerű, gyors és átlátható folyamat
-            </p>
-          </div>
+          <ScrollReveal>
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-heading font-bold mb-4">
+                Vizsgálati Folyamat
+              </h2>
+              <p className="text-lg text-neutral-mediumgray">
+                Egyszerű, gyors és átlátható folyamat
+              </p>
+            </div>
+          </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {processSteps.map((step, index) => (
-              <div key={index} className="text-center relative">
-                <div className="relative inline-block mb-6">
+              <ScrollReveal key={index} delay={index * 0.15}>
+                <div className="text-center relative">
+                  <div className="relative inline-block mb-6">
                   <div className="w-20 h-20 bg-gradient-to-br from-primary to-primary-medium rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg">
                     {step.number}
                   </div>
@@ -189,10 +201,11 @@ export default function LaboratoryPage() {
                 <h4 className="text-xl font-heading font-semibold mb-2">
                   {step.title}
                 </h4>
-                <p className="text-neutral-mediumgray">
-                  {step.description}
-                </p>
-              </div>
+                  <p className="text-neutral-mediumgray">
+                    {step.description}
+                  </p>
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -202,13 +215,16 @@ export default function LaboratoryPage() {
       <section className="section-padding">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl font-heading font-bold mb-12 text-center">
-              Minta Beküldési Útmutató
-            </h2>
+            <ScrollReveal>
+              <h2 className="text-4xl font-heading font-bold mb-12 text-center">
+                Minta Beküldési Útmutató
+              </h2>
+            </ScrollReveal>
 
             <div className="space-y-4">
-              <details className="card group">
-                <summary className="cursor-pointer font-heading font-semibold text-xl flex items-center justify-between">
+              <ScrollReveal delay={0.1}>
+                <details className="card group">
+                  <summary className="cursor-pointer font-heading font-semibold text-xl flex items-center justify-between">
                   <span>Talaj mintavétel</span>
                   <span className="text-primary">+</span>
                 </summary>
@@ -217,25 +233,29 @@ export default function LaboratoryPage() {
                   <p><strong>Hogyan vegyen mintát?</strong> 0-30 cm mélységből, 15-20 részletmintát összekeverve. Minimum 0,5 kg.</p>
                   <p><strong>Hogyan csomagolja?</strong> Tiszta műanyag zacskóban, címkével ellátva (név, terület, dátum).</p>
                 </div>
-              </details>
+                </details>
+              </ScrollReveal>
 
-              <details className="card group">
-                <summary className="cursor-pointer font-heading font-semibold text-xl flex items-center justify-between">
-                  <span>Növény mintavétel</span>
-                  <span className="text-primary">+</span>
-                </summary>
+              <ScrollReveal delay={0.2}>
+                <details className="card group">
+                  <summary className="cursor-pointer font-heading font-semibold text-xl flex items-center justify-between">
+                    <span>Növény mintavétel</span>
+                    <span className="text-primary">+</span>
+                  </summary>
                 <div className="mt-4 pt-4 border-t space-y-3 text-neutral-mediumgray">
                   <p><strong>Melyik növényi részt?</strong> Általában fiatal, teljesen kifejlett levelek.</p>
                   <p><strong>Milyen állapotban?</strong> Egészséges növényekből, illetve külön beteg részekből.</p>
                   <p><strong>Csomagolás:</strong> Papírzacskóban vagy perforált műanyagban, gyorsan beküldve.</p>
                 </div>
-              </details>
+                </details>
+              </ScrollReveal>
 
-              <details className="card group">
-                <summary className="cursor-pointer font-heading font-semibold text-xl flex items-center justify-between">
-                  <span>Minta beküldési cím</span>
-                  <span className="text-primary">+</span>
-                </summary>
+              <ScrollReveal delay={0.3}>
+                <details className="card group">
+                  <summary className="cursor-pointer font-heading font-semibold text-xl flex items-center justify-between">
+                    <span>Minta beküldési cím</span>
+                    <span className="text-primary">+</span>
+                  </summary>
                 <div className="mt-4 pt-4 border-t space-y-2 text-neutral-mediumgray">
                   <p className="font-semibold text-neutral-darkgray">AgroLab Akkreditált Laboratórium</p>
                   <p>1234 Budapest, Példa utca 123.</p>
@@ -243,7 +263,8 @@ export default function LaboratoryPage() {
                   <p>Email: labor@agrolab.hu</p>
                   <p className="text-status-warning font-semibold mt-4">Fontos: Jelezze előre a minta érkezését!</p>
                 </div>
-              </details>
+                </details>
+              </ScrollReveal>
             </div>
           </div>
         </div>
@@ -252,20 +273,22 @@ export default function LaboratoryPage() {
       {/* CTA Section */}
       <section className="section-padding bg-gradient-to-r from-primary to-primary-medium text-white">
         <div className="container-custom text-center">
-          <h3 className="text-3xl md:text-4xl font-heading font-bold mb-6">
-            Kezdje el most a pontos tápanyag-gazdálkodást!
-          </h3>
-          <p className="text-lg text-neutral-offwhite mb-8 max-w-2xl mx-auto">
-            Szakértőink készséggel állnak rendelkezésére a mintavételtől az eredmények értelmezéséig.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/ajanlatkeres?service=laboratorium" className="btn-accent text-lg px-10 py-4">
-              Vizsgálatot Kérek
-            </Link>
-            <Link href="/arlista#laboratorium" className="bg-white text-primary hover:bg-neutral-offwhite font-semibold py-4 px-10 rounded-lg transition-all duration-300 text-lg">
-              Árlista Megtekintése
-            </Link>
-          </div>
+          <ScrollReveal>
+            <h3 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+              Kezdje el most a pontos tápanyag-gazdálkodást!
+            </h3>
+            <p className="text-lg text-neutral-offwhite mb-8 max-w-2xl mx-auto">
+              Szakértőink készséggel állnak rendelkezésére a mintavételtől az eredmények értelmezéséig.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/ajanlatkeres?service=laboratorium" className="btn-accent text-lg px-10 py-4">
+                Vizsgálatot Kérek
+              </Link>
+              <Link href="/arlista#laboratorium" className="bg-white text-primary hover:bg-neutral-offwhite font-semibold py-4 px-10 rounded-lg transition-all duration-300 text-lg">
+                Árlista Megtekintése
+              </Link>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
     </>

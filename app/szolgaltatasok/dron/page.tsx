@@ -1,5 +1,8 @@
+'use client'
+
 import Link from 'next/link'
 import { Plane, Camera, Map, BarChart, Clock, Target, TrendingUp, MapPin } from 'lucide-react'
+import ScrollReveal from '@/components/ScrollReveal'
 
 export default function DronePage() {
   const benefits = [
@@ -66,14 +69,16 @@ export default function DronePage() {
           <div className="absolute inset-0 bg-cover bg-center" style={{backgroundImage: 'url(https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=1920)'}}></div>
         </div>
         <div className="container-custom relative z-10">
-          <div className="max-w-3xl">
-            <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
-              Drónos Növény Állapotfelmérés
-            </h1>
-            <p className="text-xl text-neutral-offwhite">
-              Precíziós mezőgazdaság a legmodernebb technológiával. Multispektrális képalkotás és NDVI elemzés.
-            </p>
-          </div>
+          <ScrollReveal>
+            <div className="max-w-3xl">
+              <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
+                Drónos Növény Állapotfelmérés
+              </h1>
+              <p className="text-xl text-neutral-offwhite">
+                Precíziós mezőgazdaság a legmodernebb technológiával. Multispektrális képalkotás és NDVI elemzés.
+              </p>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -82,7 +87,8 @@ export default function DronePage() {
         <div className="container-custom">
           <div className="space-y-24">
             {/* Multispectral Camera */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <ScrollReveal>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="order-2 lg:order-1">
                 <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl">
                   <img 
@@ -122,10 +128,12 @@ export default function DronePage() {
                   ))}
                 </ul>
               </div>
-            </div>
+              </div>
+            </ScrollReveal>
 
             {/* NDVI Analysis */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <ScrollReveal delay={0.1}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 bg-accent-teal/10 rounded-lg flex items-center justify-center">
@@ -167,10 +175,12 @@ export default function DronePage() {
                   </div>
                 </div>
               </div>
-            </div>
+              </div>
+            </ScrollReveal>
 
             {/* Precision Data */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <ScrollReveal delay={0.2}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="order-2 lg:order-1">
                 <div className="bg-neutral-offwhite p-8 rounded-2xl">
                   <div className="grid grid-cols-2 gap-6">
@@ -217,7 +227,8 @@ export default function DronePage() {
                   </ul>
                 </div>
               </div>
-            </div>
+              </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
@@ -225,17 +236,20 @@ export default function DronePage() {
       {/* Benefits */}
       <section className="section-padding bg-neutral-offwhite">
         <div className="container-custom">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-heading font-bold mb-4">
-              Miért Válassza a Drónos Felmérést?
-            </h2>
-            <p className="text-lg text-neutral-mediumgray max-w-2xl mx-auto">
-              A modern precíziós mezőgazdaság alapja
-            </p>
-          </div>
+          <ScrollReveal>
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-heading font-bold mb-4">
+                Miért Válassza a Drónos Felmérést?
+              </h2>
+              <p className="text-lg text-neutral-mediumgray max-w-2xl mx-auto">
+                A modern precíziós mezőgazdaság alapja
+              </p>
+            </div>
+          </ScrollReveal>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {benefits.map((benefit, idx) => (
-              <div key={idx} className="card text-center">
+              <ScrollReveal key={idx} delay={idx * 0.1}>
+                <div className="card text-center">
                 <div className="flex justify-center mb-4">
                   <div className="w-14 h-14 bg-accent-cyan/10 rounded-full flex items-center justify-center">
                     <benefit.icon className="text-accent-cyan" size={28} />
@@ -247,7 +261,8 @@ export default function DronePage() {
                 <p className="text-neutral-mediumgray text-sm">
                   {benefit.desc}
                 </p>
-              </div>
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -256,7 +271,8 @@ export default function DronePage() {
       {/* Sample Report */}
       <section className="section-padding">
         <div className="container-custom max-w-4xl">
-          <div className="card bg-gradient-to-br from-accent-cyan/5 to-accent-teal/5 text-center">
+          <ScrollReveal>
+            <div className="card bg-gradient-to-br from-accent-cyan/5 to-accent-teal/5 text-center">
             <div className="mb-6">
               <div className="w-20 h-20 bg-white rounded-2xl shadow-lg mx-auto flex items-center justify-center mb-4">
                 <svg className="w-12 h-12 text-accent-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -273,21 +289,25 @@ export default function DronePage() {
                 📄 Minta Jelentés Letöltése (PDF)
               </button>
             </div>
-          </div>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* FAQ */}
       <section className="section-padding bg-neutral-offwhite">
         <div className="container-custom max-w-4xl">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-heading font-bold mb-4">
-              Gyakori Kérdések
-            </h2>
-          </div>
+          <ScrollReveal>
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-heading font-bold mb-4">
+                Gyakori Kérdések
+              </h2>
+            </div>
+          </ScrollReveal>
           <div className="space-y-4">
             {faqs.map((faq, idx) => (
-              <details key={idx} className="card group">
+              <ScrollReveal key={idx} delay={idx * 0.1}>
+                <details className="card group">
                 <summary className="cursor-pointer font-heading font-semibold text-lg flex items-center justify-between list-none">
                   <span>{faq.q}</span>
                   <span className="text-2xl text-accent-cyan group-open:rotate-45 transition-transform">+</span>
@@ -295,7 +315,8 @@ export default function DronePage() {
                 <div className="mt-4 pt-4 border-t text-neutral-mediumgray">
                   {faq.a}
                 </div>
-              </details>
+                </details>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -304,20 +325,22 @@ export default function DronePage() {
       {/* CTA Section */}
       <section className="section-padding bg-gradient-to-r from-accent-cyan to-accent-teal text-white">
         <div className="container-custom text-center">
-          <h3 className="text-3xl md:text-4xl font-heading font-bold mb-6">
-            Próbálja Ki a Precíziós Mezőgazdaságot!
-          </h3>
-          <p className="text-lg text-neutral-offwhite mb-8 max-w-2xl mx-auto">
-            Rendelje meg első drónos felmérését és tapasztalja meg a technológia előnyeit!
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <ScrollReveal>
+            <h3 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+              Próbálja Ki a Precíziós Mezőgazdaságot!
+            </h3>
+            <p className="text-lg text-neutral-offwhite mb-8 max-w-2xl mx-auto">
+              Rendelje meg első drónos felmérését és tapasztalja meg a technológia előnyeit!
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/ajanlatkeres?service=dron" className="bg-white text-accent-cyan hover:bg-neutral-offwhite font-semibold py-4 px-10 rounded-lg transition-all duration-300 text-lg inline-block">
               Drónos Felmérést Kérek
             </Link>
             <Link href="/arlista#dron" className="border-2 border-white text-white hover:bg-white hover:text-accent-cyan font-semibold py-4 px-10 rounded-lg transition-all duration-300 text-lg inline-block">
               Árak Megtekintése
             </Link>
-          </div>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
     </>

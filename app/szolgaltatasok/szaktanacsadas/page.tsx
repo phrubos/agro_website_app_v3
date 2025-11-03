@@ -1,5 +1,8 @@
+'use client'
+
 import Link from 'next/link'
 import { TrendingUp, Grape, Apple, Leaf, Sprout, BarChart3 } from 'lucide-react'
+import ScrollReveal from '@/components/ScrollReveal'
 
 export default function ConsultingPage() {
   const areas = [
@@ -78,18 +81,21 @@ export default function ConsultingPage() {
       {/* Consulting Areas */}
       <section className="section-padding">
         <div className="container-custom">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-heading font-bold mb-4">
-              Szaktanácsadási Területeink
-            </h2>
-            <p className="text-lg text-neutral-mediumgray max-w-2xl mx-auto">
-              Specializált tanácsadás a legigényesebb kultúrákban
-            </p>
-          </div>
+          <ScrollReveal>
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-heading font-bold mb-4">
+                Szaktanácsadási Területeink
+              </h2>
+              <p className="text-lg text-neutral-mediumgray max-w-2xl mx-auto">
+                Specializált tanácsadás a legigényesebb kultúrákban
+              </p>
+            </div>
+          </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {areas.map((area, index) => (
-              <div key={index} className="card hover:shadow-xl transition-all group">
+              <ScrollReveal key={index} delay={Math.min(index * 0.1, 0.3)}>
+                <div className="card hover:shadow-xl transition-all group">
                 <div className="flex items-start gap-4 mb-4">
                   <div className="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-primary group-hover:scale-110 transition-all">
                     <area.icon className="text-primary group-hover:text-white transition-colors" size={28} />
@@ -111,7 +117,8 @@ export default function ConsultingPage() {
                     </li>
                   ))}
                 </ul>
-              </div>
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -121,10 +128,11 @@ export default function ConsultingPage() {
       <section className="section-padding bg-neutral-offwhite">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-4xl font-heading font-bold mb-8">
-                Hogyan Dolgozunk?
-              </h2>
+            <ScrollReveal>
+              <div>
+                <h2 className="text-4xl font-heading font-bold mb-8">
+                  Hogyan Dolgozunk?
+                </h2>
               <div className="space-y-6">
                 {[
                   {
@@ -164,15 +172,18 @@ export default function ConsultingPage() {
                   </div>
                 ))}
               </div>
-            </div>
+              </div>
+            </ScrollReveal>
 
-            <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl">
-              <img 
-                src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800"
-                alt="Szaktanácsadás"
-                className="w-full h-full object-cover"
-              />
-            </div>
+            <ScrollReveal delay={0.2} direction="right">
+              <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl">
+                <img 
+                  src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800"
+                  alt="Szaktanácsadás"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
@@ -180,14 +191,16 @@ export default function ConsultingPage() {
       {/* Case Studies */}
       <section className="section-padding">
         <div className="container-custom">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-heading font-bold mb-4">
-              Sikertörténeteink
-            </h2>
-            <p className="text-lg text-neutral-mediumgray max-w-2xl mx-auto">
-              Valós eredmények elégedett ügyfeleink gazdaságaiban
-            </p>
-          </div>
+          <ScrollReveal>
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-heading font-bold mb-4">
+                Sikertörténeteink
+              </h2>
+              <p className="text-lg text-neutral-mediumgray max-w-2xl mx-auto">
+                Valós eredmények elégedett ügyfeleink gazdaságaiban
+              </p>
+            </div>
+          </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
@@ -213,7 +226,8 @@ export default function ConsultingPage() {
                 result: '3 éves program után a talaj humusz tartalma 1,8%-ról 2,6%-ra nőtt.'
               }
             ].map((study, idx) => (
-              <div key={idx} className="card">
+              <ScrollReveal key={idx} delay={Math.min(idx * 0.1, 0.3)}>
+                <div className="card">
                 <div className="aspect-video bg-neutral-lightgray rounded-lg mb-4 overflow-hidden">
                   <img 
                     src={`https://images.unsplash.com/photo-${idx === 0 ? '1506377711776-dbdc2f3c20d9' : idx === 1 ? '1592841200221-a6898f307baa' : '1568702846914-96b305d2aaeb'}?w=600`}
@@ -232,7 +246,8 @@ export default function ConsultingPage() {
                 <p className="text-neutral-mediumgray text-sm border-t pt-4">
                   <strong>Eredmény:</strong> {study.result}
                 </p>
-              </div>
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -256,9 +271,10 @@ export default function ConsultingPage() {
       {/* CTA Section */}
       <section className="section-padding">
         <div className="container-custom max-w-4xl text-center">
-          <h3 className="text-3xl md:text-4xl font-heading font-bold mb-6">
-            Indítson Konzultációt Szakértőinkkel!
-          </h3>
+          <ScrollReveal>
+            <h3 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+              Indítson Konzultációt Szakértőinkkel!
+            </h3>
           <p className="text-lg text-neutral-mediumgray mb-8">
             Kérjen személyre szabott ajánlatot gazdasága szaktanácsadási igényeire.
           </p>
@@ -266,10 +282,11 @@ export default function ConsultingPage() {
             <Link href="/ajanlatkeres?service=tanacsadas" className="btn-primary text-lg px-10 py-4">
               Konzultációt Kérek
             </Link>
-            <Link href="/arlista#tanacsadas" className="btn-secondary text-lg px-10 py-4">
+            <Link href="/arlista#tanacsadas" className="btn-secondary-light text-lg px-10 py-4">
               Árak Megtekintése
             </Link>
           </div>
+          </ScrollReveal>
         </div>
       </section>
     </>

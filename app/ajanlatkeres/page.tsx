@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { CheckCircle2 } from 'lucide-react'
+import LoadingButton from '@/components/LoadingButton'
+import ScrollReveal from '@/components/ScrollReveal'
 
 export default function QuoteRequestPage() {
   const [formData, setFormData] = useState({
@@ -16,9 +18,30 @@ export default function QuoteRequestPage() {
     gdpr: false
   })
   const [submitted, setSubmitted] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [errors, setErrors] = useState<Record<string, string>>({})
+
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {}
+    
+    if (!formData.name.trim()) newErrors.name = 'A név megadása kötelező'
+    if (!formData.email.trim()) newErrors.email = 'Az email megadása kötelező'
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Érvénytelen email cím'
+    if (!formData.phone.trim()) newErrors.phone = 'A telefonszám megadása kötelező'
+    if (!formData.gdpr) newErrors.gdpr = 'Az adatvédelmi tájékoztató elfogadása kötelező'
+    
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!validateForm()) {
+      return
+    }
+    
+    setIsLoading(true)
     
     try {
       const response = await fetch('/api/send-email', {
@@ -39,6 +62,8 @@ export default function QuoteRequestPage() {
     } catch (error) {
       console.error('Form submission error:', error)
       alert('Hiba történt az üzenet küldése közben. Kérjük, próbálja újra később!')
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -55,7 +80,8 @@ export default function QuoteRequestPage() {
     return (
       <section className="min-h-screen flex items-center justify-center py-24 bg-neutral-offwhite">
         <div className="container-custom max-w-2xl">
-          <div className="card text-center">
+          <ScrollReveal>
+            <div className="card text-center">
             <div className="flex justify-center mb-6">
               <div className="w-20 h-20 bg-status-success/10 rounded-full flex items-center justify-center">
                 <CheckCircle2 className="text-status-success" size={48} />
@@ -70,7 +96,8 @@ export default function QuoteRequestPage() {
             <a href="/" className="btn-primary inline-block">
               Vissza a főoldalra
             </a>
-          </div>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
     )
@@ -81,19 +108,22 @@ export default function QuoteRequestPage() {
       {/* Hero Section */}
       <section className="py-24 bg-gradient-to-br from-primary to-primary-medium text-white">
         <div className="container-custom text-center">
-          <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
-            Ajánlatkérés
-          </h1>
-          <p className="text-xl text-neutral-offwhite max-w-2xl mx-auto">
-            Töltse ki az alábbi űrlapot, és kollégáink 24 órán belül felveszik Önnel a kapcsolatot.
-          </p>
+          <ScrollReveal>
+            <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
+              Ajánlatkérés
+            </h1>
+            <p className="text-xl text-neutral-offwhite max-w-2xl mx-auto">
+              Töltse ki az alábbi űrlapot, és kollégáink 24 órán belül felveszik Önnel a kapcsolatot.
+            </p>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* Form Section */}
       <section className="section-padding bg-neutral-offwhite">
         <div className="container-custom max-w-4xl">
-          <form onSubmit={handleSubmit} className="card">
+          <ScrollReveal>
+            <form onSubmit={handleSubmit} className="card">
             <h2 className="text-3xl font-heading font-bold mb-8 pb-6 border-b">
               Ajánlatkérő Űrlap
             </h2>
@@ -109,10 +139,14 @@ export default function QuoteRequestPage() {
                     type="text"
                     required
                     value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="input-field w-full"
+                    onChange={(e) => {
+                      setFormData({...formData, name: e.target.value})
+                      if (errors.name) setErrors({...errors, name: ''})
+                    }}
+                    className={`input-field w-full ${errors.name ? 'border-status-error' : ''}`}
                     placeholder="Kovács János"
                   />
+                  {errors.name && <p className="text-status-error text-sm mt-1">{errors.name}</p>}
                 </div>
 
                 <div>
@@ -123,10 +157,14 @@ export default function QuoteRequestPage() {
                     type="email"
                     required
                     value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
-                    className="input-field w-full"
-                    placeholder="kovacs@example.com"
+                    onChange={(e) => {
+                      setFormData({...formData, email: e.target.value})
+                      if (errors.email) setErrors({...errors, email: ''})
+                    }}
+                    className={`input-field w-full ${errors.email ? 'border-status-error' : ''}`}
+                    placeholder="kovacs.janos@example.com"
                   />
+                  {errors.email && <p className="text-status-error text-sm mt-1">{errors.email}</p>}
                 </div>
 
                 <div>
@@ -137,10 +175,14 @@ export default function QuoteRequestPage() {
                     type="tel"
                     required
                     value={formData.phone}
-                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                    className="input-field w-full"
+                    onChange={(e) => {
+                      setFormData({...formData, phone: e.target.value})
+                      if (errors.phone) setErrors({...errors, phone: ''})
+                    }}
+                    className={`input-field w-full ${errors.phone ? 'border-status-error' : ''}`}
                     placeholder="+36 30 123 4567"
                   />
+                  {errors.phone && <p className="text-status-error text-sm mt-1">{errors.phone}</p>}
                 </div>
 
                 <div>
@@ -241,7 +283,10 @@ export default function QuoteRequestPage() {
                   type="checkbox"
                   required
                   checked={formData.gdpr}
-                  onChange={(e) => setFormData({...formData, gdpr: e.target.checked})}
+                  onChange={(e) => {
+                    setFormData({...formData, gdpr: e.target.checked})
+                    if (errors.gdpr) setErrors({...errors, gdpr: ''})
+                  }}
                   className="w-5 h-5 text-primary rounded focus:ring-primary mt-0.5"
                 />
                 <span className="text-sm text-neutral-mediumgray">
@@ -249,46 +294,60 @@ export default function QuoteRequestPage() {
                   hozzájárulok adataim kezeléséhez. <span className="text-status-error">*</span>
                 </span>
               </label>
+              {errors.gdpr && <p className="text-status-error text-sm mt-1">{errors.gdpr}</p>}
             </div>
 
             {/* Submit Button */}
             <div className="mt-8">
-              <button type="submit" className="btn-primary w-full md:w-auto px-12 py-4 text-lg">
+              <LoadingButton 
+                type="submit" 
+                className="btn-primary w-full md:w-auto px-12 py-4 text-lg"
+                isLoading={isLoading}
+                loadingText="Küldés..."
+              >
                 Ajánlat Kérése
-              </button>
+              </LoadingButton>
             </div>
-          </form>
+            </form>
+          </ScrollReveal>
 
           {/* Contact Info */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-            <div className="card text-center">
+            <ScrollReveal delay={0.1}>
+              <div className="card text-center">
               <div className="text-4xl mb-3">📍</div>
               <h3 className="font-heading font-semibold mb-2">Cím</h3>
               <p className="text-sm text-neutral-mediumgray">
                 1234 Budapest<br />
                 Példa utca 123.
               </p>
-            </div>
-            <div className="card text-center">
+              </div>
+            </ScrollReveal>
+            <ScrollReveal delay={0.2}>
+              <div className="card text-center">
               <div className="text-4xl mb-3">☎️</div>
               <h3 className="font-heading font-semibold mb-2">Telefon</h3>
               <p className="text-sm text-neutral-mediumgray">
                 +36 30 123 4567<br />
                 H-P 8-16h
               </p>
-            </div>
-            <div className="card text-center">
+              </div>
+            </ScrollReveal>
+            <ScrollReveal delay={0.3}>
+              <div className="card text-center">
               <div className="text-4xl mb-3">✉️</div>
               <h3 className="font-heading font-semibold mb-2">Email</h3>
               <p className="text-sm text-neutral-mediumgray">
                 info@agrolab.hu<br />
                 Válaszidő: 24 órán belül
               </p>
-            </div>
+              </div>
+            </ScrollReveal>
           </div>
 
           {/* Business Hours */}
-          <div className="card mt-8">
+          <ScrollReveal delay={0.1}>
+            <div className="card mt-8">
             <h3 className="text-xl font-heading font-semibold mb-4">Munkaidő</h3>
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
@@ -304,7 +363,8 @@ export default function QuoteRequestPage() {
                 <p className="text-neutral-mediumgray">Hétfő - Péntek: 08:00 - 14:00</p>
               </div>
             </div>
-          </div>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
     </>

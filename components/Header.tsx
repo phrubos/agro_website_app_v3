@@ -3,11 +3,18 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { Menu, X, ChevronDown } from 'lucide-react'
+import MobileMenu from './MobileMenu'
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  // Mount detection
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   // Scroll detection
   useEffect(() => {
@@ -37,7 +44,7 @@ export default function Header() {
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-      scrolled 
+      mounted && scrolled 
         ? 'bg-white shadow-lg' 
         : 'bg-transparent'
     }`}>
@@ -51,7 +58,7 @@ export default function Header() {
               </svg>
             </div>
             <span className={`font-heading text-2xl font-bold transition-colors duration-500 ${
-              scrolled ? 'text-primary' : 'text-white'
+              mounted && scrolled ? 'text-primary' : 'text-white'
             }`}>AgroLab</span>
           </Link>
 
@@ -67,7 +74,7 @@ export default function Header() {
                 <Link
                   href={item.href}
                   className={`px-4 py-2 rounded-md transition-all duration-500 flex items-center gap-1 ${
-                    scrolled 
+                    mounted && scrolled 
                       ? 'text-neutral-darkgray hover:bg-neutral-offwhite' 
                       : 'text-white hover:bg-white/10'
                   }`}
@@ -104,7 +111,7 @@ export default function Header() {
           {/* CTA Button & Language Switcher */}
           <div className="hidden lg:flex items-center gap-4">
             <div className={`flex items-center gap-2 text-sm transition-colors duration-500 ${
-              scrolled ? 'text-neutral-darkgray' : 'text-white'
+              mounted && scrolled ? 'text-neutral-darkgray' : 'text-white'
             }`}>
               <button className="font-semibold hover:text-accent-turquoise transition-colors">HU</button>
               <span>|</span>
@@ -118,7 +125,7 @@ export default function Header() {
             <Link 
               href="/ajanlatkeres" 
               className={`font-semibold py-3 px-8 rounded-lg transition-all duration-500 ${
-                scrolled 
+                mounted && scrolled 
                   ? 'bg-accent-teal hover:bg-accent-turquoise text-white shadow-lg' 
                   : 'bg-white text-primary hover:bg-neutral-offwhite'
               }`}
@@ -127,23 +134,14 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className={`lg:hidden p-2 rounded-md transition-all duration-500 ${
-              scrolled 
-                ? 'text-neutral-darkgray hover:bg-neutral-offwhite' 
-                : 'text-white hover:bg-white/10'
-            }`}
-          >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile menu */}
+          <MobileMenu scrolled={mounted ? scrolled : false} />
         </div>
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <div className={`lg:hidden py-4 border-t transition-colors duration-500 ${
-            scrolled 
+            mounted && scrolled 
               ? 'bg-white border-neutral-lightgray' 
               : 'bg-primary/95 backdrop-blur-md border-primary-medium'
           }`}>
@@ -153,7 +151,7 @@ export default function Header() {
                   <Link
                     href={item.href}
                     className={`block px-4 py-2 rounded-md transition-colors ${
-                      scrolled 
+                      mounted && scrolled 
                         ? 'text-neutral-darkgray hover:bg-neutral-offwhite' 
                         : 'text-white hover:bg-white/10'
                     }`}
@@ -168,7 +166,7 @@ export default function Header() {
                           key={subItem.name}
                           href={subItem.href}
                           className={`block px-4 py-2 text-sm transition-colors ${
-                            scrolled 
+                            mounted && scrolled 
                               ? 'text-neutral-mediumgray hover:text-neutral-darkgray' 
                               : 'text-neutral-offwhite hover:text-white'
                           }`}

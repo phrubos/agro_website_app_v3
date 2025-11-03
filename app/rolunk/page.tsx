@@ -1,5 +1,8 @@
+'use client'
+
 import Link from 'next/link'
 import { Award, Users, Target, Lightbulb, Star } from 'lucide-react'
+import ScrollReveal from '@/components/ScrollReveal'
 
 export default function AboutPage() {
   const team = [
@@ -76,23 +79,28 @@ export default function AboutPage() {
           <div className="absolute inset-0 bg-cover bg-center" style={{backgroundImage: 'url(https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=1920)'}}></div>
         </div>
         <div className="container-custom relative z-10 text-center">
-          <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
-            Rólunk
-          </h1>
-          <p className="text-xl text-neutral-offwhite max-w-3xl mx-auto">
-            Több mint 15 éve szolgáljuk a magyar mezőgazdaságot tudományos alapokon és elkötelezett szakértelemmel.
-          </p>
+          <ScrollReveal>
+            <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
+              Rólunk
+            </h1>
+            <p className="text-xl text-neutral-offwhite max-w-3xl mx-auto">
+              Több mint 15 éve szolgáljuk a magyar mezőgazdaságot tudományos alapokon és elkötelezett szakértelemmel.
+            </p>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* Company Story */}
       <section className="section-padding">
         <div className="container-custom max-w-4xl">
-          <h2 className="text-4xl font-heading font-bold mb-8 text-center">
-            Történetünk
-          </h2>
-          <div className="prose prose-lg max-w-none text-neutral-mediumgray">
-            <p className="text-lg leading-relaxed mb-6">
+          <ScrollReveal>
+            <h2 className="text-4xl font-heading font-bold mb-8 text-center">
+              Történetünk
+            </h2>
+          </ScrollReveal>
+          <ScrollReveal delay={0.1}>
+            <div className="prose prose-lg max-w-none text-neutral-mediumgray">
+              <p className="text-lg leading-relaxed mb-6">
               Cégünk 2008-ban alakult azzal a céllal, hogy tudományosan megalapozott, 
               precíziós megoldásokat kínáljunk a magyar mezőgazdaság számára. Kezdetben 
               talajvizsgálatokra specializálódtunk, majd folyamatosan bővítettük szolgáltatási 
@@ -108,32 +116,37 @@ export default function AboutPage() {
               Ma már több mint 5000 hektáron nyújtunk folyamatos szaktanácsadást, és évente 
               több ezer laboratóriumi vizsgálatot végzünk. Csapatunk folyamatosan képzi magát, 
               hogy a legmodernebb tudományos ismeretekkel szolgálhassuk ügyfeleinket.
-            </p>
-          </div>
+              </p>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* Values */}
       <section className="section-padding bg-neutral-offwhite">
         <div className="container-custom">
-          <h2 className="text-4xl font-heading font-bold mb-12 text-center">
-            Értékeink
-          </h2>
+          <ScrollReveal>
+            <h2 className="text-4xl font-heading font-bold mb-12 text-center">
+              Értékeink
+            </h2>
+          </ScrollReveal>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {values.map((value, index) => (
-              <div key={index} className="card text-center">
-                <div className="flex justify-center mb-6">
+              <ScrollReveal key={index} delay={index * 0.1}>
+                <div className="card text-center">
+                  <div className="flex justify-center mb-6">
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
                     <value.icon className="text-primary" size={32} />
                   </div>
+                  </div>
+                  <h3 className="text-2xl font-heading font-semibold mb-3">
+                    {value.title}
+                  </h3>
+                  <p className="text-neutral-mediumgray">
+                    {value.description}
+                  </p>
                 </div>
-                <h3 className="text-2xl font-heading font-semibold mb-3">
-                  {value.title}
-                </h3>
-                <p className="text-neutral-mediumgray">
-                  {value.description}
-                </p>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -142,29 +155,33 @@ export default function AboutPage() {
       {/* Team */}
       <section className="section-padding">
         <div className="container-custom">
-          <h2 className="text-4xl font-heading font-bold mb-12 text-center">
-            Csapatunk
-          </h2>
+          <ScrollReveal>
+            <h2 className="text-4xl font-heading font-bold mb-12 text-center">
+              Csapatunk
+            </h2>
+          </ScrollReveal>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {team.map((member, index) => (
-              <div key={index} className="card text-center group hover:shadow-xl transition-all">
-                <div className="mb-6 overflow-hidden rounded-full w-32 h-32 mx-auto">
+              <ScrollReveal key={index} delay={index * 0.1}>
+                <div className="card text-center group hover:shadow-xl transition-all">
+                  <div className="mb-6 overflow-hidden rounded-full w-32 h-32 mx-auto">
                   <img 
                     src={member.image} 
                     alt={member.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />
+                  </div>
+                  <h3 className="text-xl font-heading font-semibold mb-2">
+                    {member.name}
+                  </h3>
+                  <p className="text-primary font-semibold mb-3 text-sm">
+                    {member.position}
+                  </p>
+                  <p className="text-sm text-neutral-mediumgray">
+                    {member.bio}
+                  </p>
                 </div>
-                <h3 className="text-xl font-heading font-semibold mb-2">
-                  {member.name}
-                </h3>
-                <p className="text-primary font-semibold mb-3 text-sm">
-                  {member.position}
-                </p>
-                <p className="text-sm text-neutral-mediumgray">
-                  {member.bio}
-                </p>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -173,12 +190,15 @@ export default function AboutPage() {
       {/* Accreditations */}
       <section className="section-padding bg-neutral-offwhite">
         <div className="container-custom max-w-4xl">
-          <h2 className="text-4xl font-heading font-bold mb-12 text-center">
-            Akkreditációk és Tanúsítványok
-          </h2>
+          <ScrollReveal>
+            <h2 className="text-4xl font-heading font-bold mb-12 text-center">
+              Akkreditációk és Tanúsítványok
+            </h2>
+          </ScrollReveal>
           <div className="space-y-6">
-            <div className="card">
-              <div className="flex items-start gap-6">
+            <ScrollReveal delay={0.1}>
+              <div className="card">
+                <div className="flex items-start gap-6">
                 <div className="flex-shrink-0">
                   <div className="w-16 h-16 bg-accent-teal/10 rounded-full flex items-center justify-center">
                     <Award className="text-accent-teal" size={32} />
@@ -201,9 +221,11 @@ export default function AboutPage() {
                 </div>
               </div>
             </div>
+            </ScrollReveal>
 
-            <div className="card">
-              <div className="flex items-start gap-6">
+            <ScrollReveal delay={0.2}>
+              <div className="card">
+                <div className="flex items-start gap-6">
                 <div className="flex-shrink-0">
                   <div className="w-16 h-16 bg-accent-teal/10 rounded-full flex items-center justify-center">
                     <Award className="text-accent-teal" size={32} />
@@ -220,8 +242,9 @@ export default function AboutPage() {
                     Tanúsítvány megtekintése (PDF) →
                   </button>
                 </div>
+                </div>
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
@@ -229,26 +252,30 @@ export default function AboutPage() {
       {/* Testimonials */}
       <section className="section-padding">
         <div className="container-custom">
-          <h2 className="text-4xl font-heading font-bold mb-12 text-center">
-            Ügyfeleink Véleménye
-          </h2>
+          <ScrollReveal>
+            <h2 className="text-4xl font-heading font-bold mb-12 text-center">
+              Ügyfeleink Véleménye
+            </h2>
+          </ScrollReveal>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="card">
-                <div className="flex gap-1 mb-4">
+              <ScrollReveal key={index} delay={index * 0.1}>
+                <div className="card">
+                  <div className="flex gap-1 mb-4">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="text-accent-teal fill-current" size={20} />
                   ))}
+                  </div>
+                  <p className="text-neutral-mediumgray italic mb-6">
+                    "{testimonial.quote}"
+                  </p>
+                  <div className="pt-4 border-t">
+                    <p className="font-semibold">{testimonial.author}</p>
+                    <p className="text-sm text-neutral-mediumgray">{testimonial.position}</p>
+                    <p className="text-sm text-primary font-semibold mt-1">{testimonial.type}</p>
+                  </div>
                 </div>
-                <p className="text-neutral-mediumgray italic mb-6">
-                  "{testimonial.quote}"
-                </p>
-                <div className="pt-4 border-t">
-                  <p className="font-semibold">{testimonial.author}</p>
-                  <p className="text-sm text-neutral-mediumgray">{testimonial.position}</p>
-                  <p className="text-sm text-primary font-semibold mt-1">{testimonial.type}</p>
-                </div>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -257,15 +284,17 @@ export default function AboutPage() {
       {/* CTA Section */}
       <section className="section-padding bg-gradient-to-r from-primary to-primary-medium text-white">
         <div className="container-custom text-center">
-          <h3 className="text-3xl md:text-4xl font-heading font-bold mb-6">
-            Csatlakozzon Elégedett Ügyfeleinkhez!
-          </h3>
-          <p className="text-lg text-neutral-offwhite mb-8 max-w-2xl mx-auto">
-            Tapasztalja meg Ön is a professzionális, tudományosan megalapozott mezőgazdasági szolgáltatásokat.
-          </p>
-          <Link href="/ajanlatkeres" className="btn-accent text-lg px-10 py-4 inline-block">
-            Ajánlatot Kérek
-          </Link>
+          <ScrollReveal>
+            <h3 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+              Csatlakozzon Elégedett Ügyfeleinkhez!
+            </h3>
+            <p className="text-lg text-neutral-offwhite mb-8 max-w-2xl mx-auto">
+              Tapasztalja meg Ön is a professzionális, tudományosan megalapozott mezőgazdasági szolgáltatásokat.
+            </p>
+            <Link href="/ajanlatkeres" className="btn-accent text-lg px-10 py-4 inline-block">
+              Ajánlatot Kérek
+            </Link>
+          </ScrollReveal>
         </div>
       </section>
     </>

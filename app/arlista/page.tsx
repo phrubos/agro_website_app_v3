@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { Download, Check } from 'lucide-react'
+import ScrollReveal from '@/components/ScrollReveal'
 
 export default function PricingPage() {
   const [activeTab, setActiveTab] = useState('laboratory')
@@ -44,12 +45,14 @@ export default function PricingPage() {
       {/* Hero Section */}
       <section className="py-24 bg-gradient-to-br from-primary to-primary-medium text-white">
         <div className="container-custom text-center">
-          <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
-            Árlista
-          </h1>
-          <p className="text-xl text-neutral-offwhite max-w-2xl mx-auto">
-            Átlátható árképzés minden szolgáltatásunkra. Egyedi igényekhez egyedi ajánlatot készítünk!
-          </p>
+          <ScrollReveal>
+            <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
+              Árlista
+            </h1>
+            <p className="text-xl text-neutral-offwhite max-w-2xl mx-auto">
+              Átlátható árképzés minden szolgáltatásunkra. Egyedi igényekhez egyedi ajánlatot készítünk!
+            </p>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -57,7 +60,8 @@ export default function PricingPage() {
       <section className="section-padding">
         <div className="container-custom">
           {/* Tab Buttons */}
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
+          <ScrollReveal>
+            <div className="flex flex-wrap justify-center gap-4 mb-12">
             <button
               onClick={() => setActiveTab('laboratory')}
               className={`px-8 py-3 rounded-lg font-semibold transition-all ${
@@ -88,10 +92,12 @@ export default function PricingPage() {
             >
               Drónos Felmérés
             </button>
-          </div>
+            </div>
+          </ScrollReveal>
 
           {/* Tab Content */}
-          <div className="max-w-4xl mx-auto">
+          <ScrollReveal delay={0.1}>
+            <div className="max-w-4xl mx-auto">
             {/* Laboratory Tab */}
             {activeTab === 'laboratory' && (
               <div className="space-y-8">
@@ -179,11 +185,13 @@ export default function PricingPage() {
                 </div>
               </div>
             )}
-          </div>
+            </div>
+          </ScrollReveal>
 
           {/* Custom Quote Banner */}
-          <div className="mt-16 max-w-4xl mx-auto">
-            <div className="bg-gradient-to-r from-primary to-primary-medium rounded-2xl p-10 text-white text-center">
+          <ScrollReveal delay={0.2}>
+            <div className="mt-16 max-w-4xl mx-auto">
+              <div className="bg-gradient-to-r from-primary to-primary-medium rounded-2xl p-10 text-white text-center">
               <h3 className="text-3xl font-heading font-bold mb-4">
                 Egyedi igényei vannak? Kérjen személyre szabott ajánlatot!
               </h3>
@@ -193,20 +201,24 @@ export default function PricingPage() {
               <Link href="/ajanlatkeres" className="btn-accent inline-block">
                 Egyedi Ajánlat Kérése
               </Link>
+              </div>
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* PDF Download */}
-          <div className="mt-12 text-center">
-            <button className="inline-flex items-center gap-3 px-8 py-4 bg-white border-2 border-primary text-primary rounded-lg font-semibold hover:bg-primary hover:text-white transition-all">
-              <Download size={24} />
-              Teljes Árlista Letöltése PDF-ben
-            </button>
-          </div>
+          <ScrollReveal delay={0.1}>
+            <div className="mt-12 text-center">
+              <button className="inline-flex items-center gap-3 px-8 py-4 bg-white border-2 border-primary text-primary rounded-lg font-semibold hover:bg-primary hover:text-white transition-all">
+                <Download size={24} />
+                Teljes Árlista Letöltése PDF-ben
+              </button>
+            </div>
+          </ScrollReveal>
 
           {/* Payment Terms */}
-          <div className="mt-16 max-w-4xl mx-auto">
-            <details className="card group">
+          <ScrollReveal delay={0.2}>
+            <div className="mt-16 max-w-4xl mx-auto">
+              <details className="card group">
               <summary className="cursor-pointer font-heading font-semibold text-xl flex items-center justify-between">
                 <span>Fizetési feltételek és információk</span>
                 <span className="text-primary">+</span>
@@ -235,8 +247,9 @@ export default function PricingPage() {
                   </ul>
                 </div>
               </div>
-            </details>
-          </div>
+              </details>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
     </>

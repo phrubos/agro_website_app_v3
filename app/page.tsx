@@ -4,6 +4,10 @@ import Link from 'next/link'
 import { Beaker, TrendingUp, Plane, CheckCircle, ArrowRight, ChevronDown } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import ScrollReveal from '@/components/ScrollReveal'
+import PriceCalculator from '@/components/PriceCalculator'
+import BeforeAfterSlider from '@/components/BeforeAfterSlider'
+import TrustBadges from '@/components/TrustBadges'
+import LiveStats from '@/components/LiveStats'
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0)
@@ -130,7 +134,8 @@ export default function Home() {
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left Side - Image */}
-            <div className="order-2 lg:order-1">
+            <ScrollReveal delay={0.1}>
+              <div className="order-2 lg:order-1">
               <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl">
                 <img 
                   src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=800"
@@ -138,10 +143,12 @@ export default function Home() {
                   className="w-full h-full object-cover"
                 />
               </div>
-            </div>
+              </div>
+            </ScrollReveal>
 
             {/* Right Side - Content */}
-            <div className="order-1 lg:order-2">
+            <ScrollReveal delay={0.2}>
+              <div className="order-1 lg:order-2">
               <h2 className="text-4xl md:text-5xl font-heading font-bold mb-8">
                 Miért Válasszon Minket?
               </h2>
@@ -207,53 +214,95 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            </div>
+              </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="section-padding bg-gradient-to-r from-primary to-primary-medium text-white">
+      {/* Live Stats Section */}
+      <LiveStats />
+
+      {/* NDVI Before/After Showcase */}
+      <section className="section-padding">
         <div className="container-custom">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="text-5xl md:text-6xl font-heading font-bold mb-2">
-                5000+
-              </div>
-              <div className="text-lg text-neutral-offwhite">
-                Hektár Tapasztalat
-              </div>
+          <ScrollReveal>
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-heading font-bold mb-4">
+                Lássa A Különbséget
+              </h2>
+              <p className="text-lg text-neutral-mediumgray max-w-2xl mx-auto">
+                Drónos NDVI felmérésünk segítségével időben azonosíthatja a problémás területeket
+              </p>
             </div>
+          </ScrollReveal>
 
-            <div className="text-center">
-              <div className="text-5xl md:text-6xl font-heading font-bold mb-2">
-                15+
-              </div>
-              <div className="text-lg text-neutral-offwhite">
-                Év Szakértelem
-              </div>
+          <ScrollReveal delay={0.2}>
+            <BeforeAfterSlider
+              beforeImage="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1200"
+              afterImage="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=1200"
+              beforeLabel="Problémás Terület"
+              afterLabel="Javított Terület"
+            />
+          </ScrollReveal>
+
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center p-6">
+              <div className="text-3xl font-bold text-status-warning mb-2">Piros/Sárga</div>
+              <p className="text-neutral-mediumgray">Stressz, tápanyaghiány</p>
             </div>
-
-            <div className="text-center">
-              <div className="text-5xl md:text-6xl font-heading font-bold mb-2">
-                50+
-              </div>
-              <div className="text-lg text-neutral-offwhite">
-                Vizsgálati Paraméter
-              </div>
+            <div className="text-center p-6">
+              <div className="text-3xl font-bold text-accent-cyan mb-2">Zöld/Türkiz</div>
+              <p className="text-neutral-mediumgray">Átlagos növényállomány</p>
             </div>
-
-            <div className="text-center">
-              <div className="text-5xl md:text-6xl font-heading font-bold mb-2">
-                200+
-              </div>
-              <div className="text-lg text-neutral-offwhite">
-                Elégedett Ügyfél
-              </div>
+            <div className="text-center p-6">
+              <div className="text-3xl font-bold text-status-success mb-2">Sötétzöld</div>
+              <p className="text-neutral-mediumgray">Egészséges, optimális</p>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Price Calculator Section */}
+      <section className="section-padding bg-neutral-offwhite">
+        <div className="container-custom">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left - Content */}
+            <ScrollReveal>
+              <div>
+                <h2 className="text-4xl md:text-5xl font-heading font-bold mb-6">
+                  Kalkulálja Meg Költségét
+                </h2>
+                <p className="text-lg text-neutral-mediumgray mb-6">
+                  Használja interaktív árkalkulátorunkat, hogy azonnal láthassa becsült költségeit. Válassza ki a gazdálkodási területét és a kívánt szolgáltatásokat.
+                </p>
+                <ul className="space-y-4">
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="text-accent-teal flex-shrink-0 mt-1" size={24} />
+                    <span className="text-neutral-darkgray">Átlátható, versenyképes árak</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="text-accent-teal flex-shrink-0 mt-1" size={24} />
+                    <span className="text-neutral-darkgray">Testreszabható szolgáltatáscsomagok</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="text-accent-teal flex-shrink-0 mt-1" size={24} />
+                    <span className="text-neutral-darkgray">Mennyiségi kedvezmények nagy területekre</span>
+                  </li>
+                </ul>
+              </div>
+            </ScrollReveal>
+
+            {/* Right - Calculator */}
+            <ScrollReveal delay={0.2} direction="right">
+              <PriceCalculator />
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Badges */}
+      <TrustBadges />
 
       {/* CTA Section */}
       <section className="section-padding">
