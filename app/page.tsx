@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <main>
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden -mt-20">
+      <section className="relative flex items-center justify-center overflow-hidden -mt-20" style={{height: 'calc(100vh + 5rem)'}}>
         {/* Background Image with Parallax */}
         <div 
           className="absolute inset-0 bg-cover bg-center"

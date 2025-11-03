@@ -32,7 +32,7 @@ export default function RootLayout({
     <html lang="hu" className={`${montserrat.variable} ${openSans.variable}`}>
       <body className={openSans.className}>
         <Header />
-        <main className="min-h-screen">
+        <main>
           {children}
         </main>
         <Footer />
