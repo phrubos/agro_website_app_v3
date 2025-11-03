@@ -1,0 +1,197 @@
+'use client'
+
+import Link from 'next/link'
+import { useState, useEffect } from 'react'
+import { Menu, X, ChevronDown } from 'lucide-react'
+
+export default function Header() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  // Scroll detection
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const navigation = [
+    { name: 'Főoldal', href: '/' },
+    { 
+      name: 'Szolgáltatások', 
+      href: '/szolgaltatasok',
+      hasDropdown: true,
+      subItems: [
+        { name: 'Laboratóriumi Vizsgálatok', href: '/szolgaltatasok/laboratorium' },
+        { name: 'Szaktanácsadás', href: '/szolgaltatasok/szaktanacsadas' },
+        { name: 'Drónos Felmérés', href: '/szolgaltatasok/dron' },
+      ]
+    },
+    { name: 'Árlista', href: '/arlista' },
+    { name: 'Rólunk', href: '/rolunk' },
+    { name: 'Kapcsolat', href: '/kapcsolat' },
+  ]
+
+  return (
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      scrolled 
+        ? 'bg-white shadow-lg' 
+        : 'bg-transparent'
+    }`}>
+      <nav className="container-custom">
+        <div className="flex items-center justify-between h-20">
+          {/* Logo */}
+          <Link href="/" className="flex items-center space-x-3 group">
+            <div className="w-12 h-12 bg-accent-teal rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+              </svg>
+            </div>
+            <span className={`font-heading text-2xl font-bold transition-colors duration-500 ${
+              scrolled ? 'text-primary' : 'text-white'
+            }`}>AgroLab</span>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center space-x-1">
+            {navigation.map((item) => (
+              <div 
+                key={item.name} 
+                className="relative"
+                onMouseEnter={() => item.hasDropdown && setServicesDropdownOpen(true)}
+                onMouseLeave={() => item.hasDropdown && setServicesDropdownOpen(false)}
+              >
+                <Link
+                  href={item.href}
+                  className={`px-4 py-2 rounded-md transition-all duration-500 flex items-center gap-1 ${
+                    scrolled 
+                      ? 'text-neutral-darkgray hover:bg-neutral-offwhite' 
+                      : 'text-white hover:bg-white/10'
+                  }`}
+                >
+                  {item.name}
+                  {item.hasDropdown && (
+                    <ChevronDown 
+                      size={16} 
+                      className={`transition-transform duration-200 ${servicesDropdownOpen ? 'rotate-180' : ''}`}
+                    />
+                  )}
+                </Link>
+                
+                {/* Dropdown */}
+                {item.hasDropdown && servicesDropdownOpen && (
+                  <div className="absolute top-full left-0 pt-2 animate-fade-in-dropdown">
+                    <div className="w-64 bg-white text-neutral-darkgray rounded-lg shadow-xl py-2 border border-neutral-lightgray">
+                      {item.subItems?.map((subItem) => (
+                        <Link
+                          key={subItem.name}
+                          href={subItem.href}
+                          className="block px-4 py-3 hover:bg-neutral-offwhite transition-colors"
+                        >
+                          {subItem.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* CTA Button & Language Switcher */}
+          <div className="hidden lg:flex items-center gap-4">
+            <div className={`flex items-center gap-2 text-sm transition-colors duration-500 ${
+              scrolled ? 'text-neutral-darkgray' : 'text-white'
+            }`}>
+              <button className="font-semibold hover:text-accent-turquoise transition-colors">HU</button>
+              <span>|</span>
+              <button 
+                className="opacity-70 hover:opacity-100 transition-opacity"
+                onClick={() => alert('English version coming soon! / Az angol verzió hamarosan elérhető!')}
+              >
+                EN
+              </button>
+            </div>
+            <Link 
+              href="/ajanlatkeres" 
+              className={`font-semibold py-3 px-8 rounded-lg transition-all duration-500 ${
+                scrolled 
+                  ? 'bg-accent-teal hover:bg-accent-turquoise text-white shadow-lg' 
+                  : 'bg-white text-primary hover:bg-neutral-offwhite'
+              }`}
+            >
+              Ajánlatot Kérek
+            </Link>
+          </div>
+
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className={`lg:hidden p-2 rounded-md transition-all duration-500 ${
+              scrolled 
+                ? 'text-neutral-darkgray hover:bg-neutral-offwhite' 
+                : 'text-white hover:bg-white/10'
+            }`}
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+
+        {/* Mobile Navigation */}
+        {mobileMenuOpen && (
+          <div className={`lg:hidden py-4 border-t transition-colors duration-500 ${
+            scrolled 
+              ? 'bg-white border-neutral-lightgray' 
+              : 'bg-primary/95 backdrop-blur-md border-primary-medium'
+          }`}>
+            <div className="flex flex-col space-y-2">
+              {navigation.map((item) => (
+                <div key={item.name}>
+                  <Link
+                    href={item.href}
+                    className={`block px-4 py-2 rounded-md transition-colors ${
+                      scrolled 
+                        ? 'text-neutral-darkgray hover:bg-neutral-offwhite' 
+                        : 'text-white hover:bg-white/10'
+                    }`}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                  {item.subItems && (
+                    <div className="ml-4 mt-2 space-y-2">
+                      {item.subItems.map((subItem) => (
+                        <Link
+                          key={subItem.name}
+                          href={subItem.href}
+                          className={`block px-4 py-2 text-sm transition-colors ${
+                            scrolled 
+                              ? 'text-neutral-mediumgray hover:text-neutral-darkgray' 
+                              : 'text-neutral-offwhite hover:text-white'
+                          }`}
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          {subItem.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+              <Link
+                href="/ajanlatkeres"
+                className="btn-accent mt-4"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Ajánlatot Kérek
+              </Link>
+            </div>
+          </div>
+        )}
+      </nav>
+    </header>
+  )
+}

@@ -1,0 +1,209 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary: #2D5016;
+    --primary-medium: #3A7D44;
+    --primary-light: #4A9D5F;
+    --accent-teal: #1A936F;
+  }
+
+  * {
+    @apply border-neutral-lightgray;
+  }
+
+  body {
+    @apply font-body text-neutral-darkgray bg-neutral-white;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-semibold;
+  }
+
+  h1 {
+    @apply text-5xl md:text-6xl leading-tight;
+  }
+
+  h2 {
+    @apply text-4xl md:text-5xl leading-tight;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl leading-tight;
+  }
+
+  h4 {
+    @apply text-xl md:text-2xl;
+  }
+
+  h5 {
+    @apply text-lg md:text-xl;
+  }
+
+  p {
+    @apply leading-relaxed;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary hover:bg-primary-medium text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 btn-ripple;
+  }
+
+  .btn-secondary {
+    @apply bg-transparent border-2 border-white text-white hover:bg-white hover:text-primary font-semibold py-3 px-8 rounded-lg transition-all duration-300 hover:scale-105 active:scale-95 btn-ripple;
+  }
+
+  .btn-accent {
+    @apply bg-accent-teal hover:bg-accent-turquoise text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 btn-ripple;
+  }
+
+  .card {
+    @apply bg-white border border-neutral-lightgray rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover-glow;
+  }
+
+  .input-field {
+    @apply border-2 border-neutral-lightgray rounded-lg px-4 py-3 focus:border-primary-medium focus:outline-none focus:ring-2 focus:ring-primary-light/20 transition-all;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-dropdown {
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  /* Smooth hover scale */
+  .hover-scale {
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hover-scale:hover {
+    transform: scale(1.05);
+  }
+
+  /* Glow effect on hover */
+  .hover-glow {
+    transition: box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hover-glow:hover {
+    box-shadow: 0 10px 40px rgba(26, 147, 111, 0.3);
+  }
+
+  /* Button ripple effect */
+  @keyframes ripple {
+    0% {
+      transform: scale(0);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+
+  .btn-ripple {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-ripple::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  .btn-ripple:active::after {
+    width: 300px;
+    height: 300px;
+    animation: ripple 0.6s ease-out;
+  }
+
+  /* Smooth page transitions */
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-slide-in-up {
+    animation: slideInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .animate-slide-in-down {
+    animation: slideInDown 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Stagger children animation */
+  .stagger-children > * {
+    animation: slideInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+
+  .stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
+  .stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
+  .stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
+  .stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
+  .stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
+  .stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
