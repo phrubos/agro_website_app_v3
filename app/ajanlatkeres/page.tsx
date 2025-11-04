@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { CheckCircle2 } from 'lucide-react'
 import LoadingButton from '@/components/LoadingButton'
 import ScrollReveal from '@/components/ScrollReveal'
+import { trackError } from '@/lib/errorTracking'
 
 export default function QuoteRequestPage() {
   const [formData, setFormData] = useState({
@@ -20,29 +21,78 @@ export default function QuoteRequestPage() {
   const [submitted, setSubmitted] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [touched, setTouched] = useState<Record<string, boolean>>({})
+
+  // Inline validation for single field
+  const validateField = (name: string, value: any): string => {
+    switch (name) {
+      case 'name':
+        if (!value.trim()) return 'A név megadása kötelező'
+        if (value.length < 2) return 'A névnek legalább 2 karakter hosszúnak kell lennie'
+        return ''
+      case 'email':
+        if (!value.trim()) return 'Az email megadása kötelező'
+        if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value))
+          return 'Érvénytelen email cím'
+        return ''
+      case 'phone':
+        if (!value.trim()) return 'A telefonszám megadása kötelező'
+        if (!/^[\d\s+()-]+$/.test(value)) return 'Érvénytelen telefonszám formátum'
+        return ''
+      case 'message':
+        if (!value.trim()) return 'Az üzenet megadása kötelező'
+        if (value.length < 10) return 'Az üzenetnek legalább 10 karakter hosszúnak kell lennie'
+        return ''
+      case 'gdpr':
+        if (!value) return 'Az adatvédelmi tájékoztató elfogadása kötelező'
+        return ''
+      default:
+        return ''
+    }
+  }
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
-    
-    if (!formData.name.trim()) newErrors.name = 'A név megadása kötelező'
-    if (!formData.email.trim()) newErrors.email = 'Az email megadása kötelező'
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Érvénytelen email cím'
-    if (!formData.phone.trim()) newErrors.phone = 'A telefonszám megadása kötelező'
-    if (!formData.gdpr) newErrors.gdpr = 'Az adatvédelmi tájékoztató elfogadása kötelező'
-    
+
+    newErrors.name = validateField('name', formData.name)
+    newErrors.email = validateField('email', formData.email)
+    newErrors.phone = validateField('phone', formData.phone)
+    newErrors.message = validateField('message', formData.message)
+    newErrors.gdpr = validateField('gdpr', formData.gdpr)
+
+    // Remove empty errors
+    Object.keys(newErrors).forEach(key => {
+      if (!newErrors[key]) delete newErrors[key]
+    })
+
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
+  // Handle field blur for inline validation
+  const handleBlur = (fieldName: string) => {
+    setTouched({ ...touched, [fieldName]: true })
+    const error = validateField(fieldName, formData[fieldName as keyof typeof formData])
+    if (error) {
+      setErrors({ ...errors, [fieldName]: error })
+    } else {
+      const newErrors = { ...errors }
+      delete newErrors[fieldName]
+      setErrors(newErrors)
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!validateForm()) {
       return
     }
-    
+
     setIsLoading(true)
-    
+    setSubmitError(null)
+
     try {
       const response = await fetch('/api/send-email', {
         method: 'POST',
@@ -55,13 +105,41 @@ export default function QuoteRequestPage() {
       if (response.ok) {
         setSubmitted(true)
       } else {
-        const errorData = await response.json()
-        console.error('Error:', errorData)
-        alert('Hiba történt az üzenet küldése közben. Kérjük, próbálja újra később!')
+        const errorData = await response.json().catch(() => ({}))
+
+        // Log error to tracking service
+        trackError('Form submission failed', {
+          errorData,
+          formData: {
+            ...formData,
+            // Don't log sensitive data
+            gdpr: undefined,
+          },
+          responseStatus: response.status,
+        })
+
+        setSubmitError(
+          errorData.message ||
+          'Hiba történt az üzenet küldése közben. Kérjük, próbálja újra később, vagy vegye fel velünk a kapcsolatot telefonon.'
+        )
       }
     } catch (error) {
-      console.error('Form submission error:', error)
-      alert('Hiba történt az üzenet küldése közben. Kérjük, próbálja újra később!')
+      // Log error to tracking service
+      trackError(
+        'Form submission network error',
+        {
+          formData: {
+            ...formData,
+            // Don't log sensitive data
+            gdpr: undefined,
+          },
+        },
+        error instanceof Error ? error : new Error(String(error))
+      )
+
+      setSubmitError(
+        'Hálózati hiba történt. Kérjük, ellenőrizze az internetkapcsolatát, majd próbálja újra.'
+      )
     } finally {
       setIsLoading(false)
     }
@@ -137,16 +215,36 @@ export default function QuoteRequestPage() {
                   </label>
                   <input
                     type="text"
+                    name="name"
+                    autoComplete="name"
                     required
                     value={formData.name}
                     onChange={(e) => {
                       setFormData({...formData, name: e.target.value})
-                      if (errors.name) setErrors({...errors, name: ''})
+                      if (touched.name) handleBlur('name')
                     }}
-                    className={`input-field w-full ${errors.name ? 'border-status-error' : ''}`}
+                    onBlur={() => handleBlur('name')}
+                    className={`input-field w-full ${errors.name && touched.name ? 'border-status-error' : touched.name && !errors.name ? 'border-status-success' : ''}`}
                     placeholder="Kovács János"
+                    aria-invalid={errors.name && touched.name ? 'true' : 'false'}
+                    aria-describedby={errors.name && touched.name ? 'name-error' : undefined}
                   />
-                  {errors.name && <p className="text-status-error text-sm mt-1">{errors.name}</p>}
+                  {errors.name && touched.name && (
+                    <p id="name-error" className="text-status-error text-sm mt-1 flex items-center gap-1">
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                      </svg>
+                      {errors.name}
+                    </p>
+                  )}
+                  {!errors.name && touched.name && formData.name && (
+                    <p className="text-status-success text-sm mt-1 flex items-center gap-1">
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      Helyes
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -155,16 +253,36 @@ export default function QuoteRequestPage() {
                   </label>
                   <input
                     type="email"
+                    name="email"
+                    autoComplete="email"
                     required
                     value={formData.email}
                     onChange={(e) => {
                       setFormData({...formData, email: e.target.value})
-                      if (errors.email) setErrors({...errors, email: ''})
+                      if (touched.email) handleBlur('email')
                     }}
-                    className={`input-field w-full ${errors.email ? 'border-status-error' : ''}`}
+                    onBlur={() => handleBlur('email')}
+                    className={`input-field w-full ${errors.email && touched.email ? 'border-status-error' : touched.email && !errors.email ? 'border-status-success' : ''}`}
                     placeholder="kovacs.janos@example.com"
+                    aria-invalid={errors.email && touched.email ? 'true' : 'false'}
+                    aria-describedby={errors.email && touched.email ? 'email-error' : undefined}
                   />
-                  {errors.email && <p className="text-status-error text-sm mt-1">{errors.email}</p>}
+                  {errors.email && touched.email && (
+                    <p id="email-error" className="text-status-error text-sm mt-1 flex items-center gap-1">
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                      </svg>
+                      {errors.email}
+                    </p>
+                  )}
+                  {!errors.email && touched.email && formData.email && (
+                    <p className="text-status-success text-sm mt-1 flex items-center gap-1">
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      Helyes
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -173,16 +291,36 @@ export default function QuoteRequestPage() {
                   </label>
                   <input
                     type="tel"
+                    name="phone"
+                    autoComplete="tel"
                     required
                     value={formData.phone}
                     onChange={(e) => {
                       setFormData({...formData, phone: e.target.value})
-                      if (errors.phone) setErrors({...errors, phone: ''})
+                      if (touched.phone) handleBlur('phone')
                     }}
-                    className={`input-field w-full ${errors.phone ? 'border-status-error' : ''}`}
+                    onBlur={() => handleBlur('phone')}
+                    className={`input-field w-full ${errors.phone && touched.phone ? 'border-status-error' : touched.phone && !errors.phone ? 'border-status-success' : ''}`}
                     placeholder="+36 30 123 4567"
+                    aria-invalid={errors.phone && touched.phone ? 'true' : 'false'}
+                    aria-describedby={errors.phone && touched.phone ? 'phone-error' : undefined}
                   />
-                  {errors.phone && <p className="text-status-error text-sm mt-1">{errors.phone}</p>}
+                  {errors.phone && touched.phone && (
+                    <p id="phone-error" className="text-status-error text-sm mt-1 flex items-center gap-1">
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                      </svg>
+                      {errors.phone}
+                    </p>
+                  )}
+                  {!errors.phone && touched.phone && formData.phone && (
+                    <p className="text-status-success text-sm mt-1 flex items-center gap-1">
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      Helyes
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -191,6 +329,8 @@ export default function QuoteRequestPage() {
                   </label>
                   <input
                     type="text"
+                    name="organization"
+                    autoComplete="organization"
                     value={formData.company}
                     onChange={(e) => setFormData({...formData, company: e.target.value})}
                     className="input-field w-full"
@@ -297,10 +437,38 @@ export default function QuoteRequestPage() {
               {errors.gdpr && <p className="text-status-error text-sm mt-1">{errors.gdpr}</p>}
             </div>
 
+            {/* Error Message */}
+            {submitError && (
+              <div
+                role="alert"
+                aria-live="assertive"
+                className="mt-6 p-4 bg-status-error/10 border border-status-error rounded-lg flex items-start gap-3"
+              >
+                <svg
+                  className="w-6 h-6 text-status-error flex-shrink-0 mt-0.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <div>
+                  <p className="font-semibold text-status-error">Hiba történt</p>
+                  <p className="text-sm text-neutral-darkgray mt-1">{submitError}</p>
+                </div>
+              </div>
+            )}
+
             {/* Submit Button */}
             <div className="mt-8">
-              <LoadingButton 
-                type="submit" 
+              <LoadingButton
+                type="submit"
                 className="btn-primary w-full md:w-auto px-12 py-4 text-lg"
                 isLoading={isLoading}
                 loadingText="Küldés..."

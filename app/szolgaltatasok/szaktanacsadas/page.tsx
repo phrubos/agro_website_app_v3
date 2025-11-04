@@ -1,11 +1,12 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { TrendingUp, Grape, Apple, Leaf, Sprout, BarChart3 } from 'lucide-react'
 import ScrollReveal from '@/components/ScrollReveal'
 
 export default function ConsultingPage() {
-  const areas = [
+  const consultingAreas = [
     {
       icon: Leaf,
       title: 'Ipari Zöldség',
@@ -93,33 +94,36 @@ export default function ConsultingPage() {
           </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {areas.map((area, index) => (
-              <ScrollReveal key={index} delay={Math.min(index * 0.1, 0.3)}>
-                <div className="card hover:shadow-xl transition-all group">
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-primary group-hover:scale-110 transition-all">
-                    <area.icon className="text-primary group-hover:text-white transition-colors" size={28} />
+            {consultingAreas.map((consultingArea, index) => {
+              const IconComponent = consultingArea.icon
+              return (
+                <ScrollReveal key={index} delay={Math.min(index * 0.1, 0.3)}>
+                  <div className="card hover:shadow-xl transition-all group">
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-primary group-hover:scale-110 transition-all">
+                        <IconComponent className="text-primary group-hover:text-white transition-colors" size={28} />
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-heading font-semibold mb-1">
+                          {consultingArea.title}
+                        </h3>
+                        <p className="text-sm text-primary font-semibold">
+                          {consultingArea.subtitle}
+                        </p>
+                      </div>
+                    </div>
+                    <ul className="space-y-2 ml-18">
+                      {consultingArea.points.map((point, pidx) => (
+                        <li key={pidx} className="flex items-start gap-2 text-neutral-mediumgray">
+                          <span className="text-primary mt-1">•</span>
+                          <span>{point}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <div>
-                    <h3 className="text-2xl font-heading font-semibold mb-1">
-                      {area.title}
-                    </h3>
-                    <p className="text-sm text-primary font-semibold">
-                      {area.subtitle}
-                    </p>
-                  </div>
-                </div>
-                <ul className="space-y-2 ml-18">
-                  {area.points.map((point, pidx) => (
-                    <li key={pidx} className="flex items-start gap-2 text-neutral-mediumgray">
-                      <span className="text-primary mt-1">•</span>
-                      <span>{point}</span>
-                    </li>
-                  ))}
-                </ul>
-                </div>
-              </ScrollReveal>
-            ))}
+                </ScrollReveal>
+              )
+            })}
           </div>
         </div>
       </section>
@@ -177,10 +181,13 @@ export default function ConsultingPage() {
 
             <ScrollReveal delay={0.2} direction="right">
               <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl">
-                <img 
-                  src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800"
-                  alt="Szaktanácsadás"
-                  className="w-full h-full object-cover"
+                <Image
+                  src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800&q=80"
+                  alt="Szakértői mezőgazdasági tanácsadás és tápanyag-gazdálkodási szolgáltatás"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                  quality={85}
+                  className="object-cover"
                 />
               </div>
             </ScrollReveal>
@@ -228,11 +235,14 @@ export default function ConsultingPage() {
             ].map((study, idx) => (
               <ScrollReveal key={idx} delay={Math.min(idx * 0.1, 0.3)}>
                 <div className="card">
-                <div className="aspect-video bg-neutral-lightgray rounded-lg mb-4 overflow-hidden">
-                  <img 
-                    src={`https://images.unsplash.com/photo-${idx === 0 ? '1506377711776-dbdc2f3c20d9' : idx === 1 ? '1592841200221-a6898f307baa' : '1568702846914-96b305d2aaeb'}?w=600`}
+                <div className="aspect-video bg-neutral-lightgray rounded-lg mb-4 overflow-hidden relative">
+                  <Image
+                    src={`https://images.unsplash.com/photo-${idx === 0 ? '1506377711776-dbdc2f3c20d9' : idx === 1 ? '1592841200221-a6898f307baa' : '1568702846914-96b305d2aaeb'}?w=600&q=80`}
                     alt={study.title}
-                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
+                    quality={85}
+                    className="object-cover hover:scale-110 transition-transform duration-300"
                   />
                 </div>
                 <h3 className="text-xl font-heading font-semibold mb-3">

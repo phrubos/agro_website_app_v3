@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { Plane, Camera, Map, BarChart, Clock, Target, TrendingUp, MapPin } from 'lucide-react'
 import ScrollReveal from '@/components/ScrollReveal'
 
@@ -91,10 +92,13 @@ export default function DronePage() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="order-2 lg:order-1">
                 <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl">
-                  <img 
-                    src="https://images.unsplash.com/photo-1508614999368-9260051292e5?w=800"
-                    alt="Drón multispektrális kamera"
-                    className="w-full h-full object-cover"
+                  <Image
+                    src="https://images.unsplash.com/photo-1508614999368-9260051292e5?w=800&q=80"
+                    alt="Drón multispektrális kamera felvétel mezőgazdasági területről"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                    quality={85}
+                    className="object-cover"
                   />
                 </div>
               </div>
@@ -163,10 +167,13 @@ export default function DronePage() {
               </div>
               <div>
                 <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl">
-                  <img 
-                    src="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=800"
-                    alt="NDVI térkép"
-                    className="w-full h-full object-cover"
+                  <Image
+                    src="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=800&q=80"
+                    alt="NDVI térkép mezőgazdasági területről - növényállomány elemzés"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                    quality={85}
+                    className="object-cover"
                   />
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
                     <p className="text-white text-sm">

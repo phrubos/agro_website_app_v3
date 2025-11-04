@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { Award, Users, Target, Lightbulb, Star } from 'lucide-react'
 import ScrollReveal from '@/components/ScrollReveal'
 
@@ -164,11 +165,13 @@ export default function AboutPage() {
             {team.map((member, index) => (
               <ScrollReveal key={index} delay={index * 0.1}>
                 <div className="card text-center group hover:shadow-xl transition-all">
-                  <div className="mb-6 overflow-hidden rounded-full w-32 h-32 mx-auto">
-                  <img 
-                    src={member.image} 
+                  <div className="mb-6 overflow-hidden rounded-full w-32 h-32 mx-auto relative">
+                  <Image
+                    src={member.image}
                     alt={member.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    fill
+                    sizes="128px"
+                    className="object-cover group-hover:scale-110 transition-transform duration-300"
                   />
                   </div>
                   <h3 className="text-xl font-heading font-semibold mb-2">
@@ -267,7 +270,7 @@ export default function AboutPage() {
                   ))}
                   </div>
                   <p className="text-neutral-mediumgray italic mb-6">
-                    "{testimonial.quote}"
+                    &ldquo;{testimonial.quote}&rdquo;
                   </p>
                   <div className="pt-4 border-t">
                     <p className="font-semibold">{testimonial.author}</p>

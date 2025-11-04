@@ -81,12 +81,32 @@
     box-shadow: 0 0 0 4px rgba(26, 147, 111, 0.1);
   }
 
+  .input-field.border-status-success {
+    border-color: #27AE60;
+  }
+
+  .input-field.border-status-success:focus {
+    box-shadow: 0 0 0 4px rgba(39, 174, 96, 0.1);
+  }
+
   .section-padding {
     @apply py-16 md:py-24;
   }
 
   .container-custom {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Hero section with proper mobile viewport handling */
+  .hero-section {
+    height: calc(100vh + 5rem);
+  }
+
+  /* Modern browsers with dynamic viewport support */
+  @supports (height: 100dvh) {
+    .hero-section {
+      height: calc(100dvh + 5rem);
+    }
   }
 }
 
@@ -123,6 +143,30 @@ input[type="checkbox"]:checked {
 
   .section-padding {
     @apply py-16 md:py-24;
+  }
+
+  /* Screen reader only - visually hidden but accessible */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .focus\:not-sr-only:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: initial;
+    margin: initial;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
   }
 
   @keyframes fadeIn {
@@ -241,4 +285,51 @@ input[type="checkbox"]:checked {
 /* Smooth scroll behavior */
 html {
   scroll-behavior: smooth;
+}
+
+/* Tablet-specific styles (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Slightly reduce padding on tablet */
+  .container-custom {
+    @apply px-6;
+  }
+
+  /* Optimize text sizes for tablet */
+  h1 {
+    @apply text-4xl;
+  }
+
+  h2 {
+    @apply text-3xl;
+  }
+
+  /* Service cards - 2 columns on tablet */
+  .grid.grid-cols-1.md\:grid-cols-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Better button sizing on tablet */
+  .btn-primary,
+  .btn-secondary,
+  .btn-accent {
+    @apply px-6 py-2.5 text-base;
+  }
+
+  /* Touch target optimization - minimum 44x44px */
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Fine-tune for landscape tablets */
+@media (min-width: 768px) and (max-width: 1023px) and (orientation: landscape) {
+  .hero-section {
+    height: 100vh;
+  }
+
+  /* Reduce vertical spacing in landscape */
+  .section-padding {
+    @apply py-12;
+  }
 }

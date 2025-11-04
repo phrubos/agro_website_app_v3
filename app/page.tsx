@@ -1,35 +1,71 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
+import dynamic from 'next/dynamic'
 import { Beaker, TrendingUp, Plane, CheckCircle, ArrowRight, ChevronDown } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import ScrollReveal from '@/components/ScrollReveal'
-import PriceCalculator from '@/components/PriceCalculator'
-import BeforeAfterSlider from '@/components/BeforeAfterSlider'
-import TrustBadges from '@/components/TrustBadges'
-import LiveStats from '@/components/LiveStats'
+
+// Lazy load components that are below the fold
+const PriceCalculator = dynamic(() => import('@/components/PriceCalculator'), {
+  loading: () => <div className="h-96 bg-neutral-lightgray animate-pulse rounded-2xl" />,
+  ssr: true
+})
+
+const BeforeAfterSlider = dynamic(() => import('@/components/BeforeAfterSlider'), {
+  loading: () => <div className="h-96 bg-neutral-lightgray animate-pulse rounded-2xl" />,
+  ssr: false
+})
+
+const TrustBadges = dynamic(() => import('@/components/TrustBadges'), {
+  loading: () => <div className="h-32 bg-neutral-lightgray animate-pulse rounded-xl" />,
+  ssr: false
+})
+
+const LiveStats = dynamic(() => import('@/components/LiveStats'), {
+  loading: () => <div className="h-64 bg-neutral-lightgray animate-pulse" />,
+  ssr: false
+})
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0)
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY)
-    window.addEventListener('scroll', handleScroll)
+    let ticking = false
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrollY(window.scrollY)
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   return (
     <main>
       {/* Hero Section */}
-      <section className="relative flex items-center justify-center overflow-hidden -mt-20" style={{height: 'calc(100vh + 5rem)'}}>
+      <section className="relative flex items-center justify-center overflow-hidden -mt-20 hero-section">
         {/* Background Image with Parallax */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
+        <div
+          className="absolute inset-0 will-change-transform"
           style={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1920)',
             transform: `translateY(${scrollY * 0.5}px)`,
           }}
         >
+          <Image
+            src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1920&q=80"
+            alt="Mezőgazdasági terület madártávlatból - precíziós gazdálkodás"
+            fill
+            priority
+            quality={85}
+            sizes="100vw"
+            className="object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40"></div>
         </div>
 
@@ -137,10 +173,13 @@ export default function Home() {
             <ScrollReveal delay={0.1}>
               <div className="order-2 lg:order-1">
               <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl">
-                <img 
-                  src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=800"
-                  alt="Szakember szőlőben"
-                  className="w-full h-full object-cover"
+                <Image
+                  src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=800&q=80"
+                  alt="Szakember mezőgazdasági területen dolgozik - szőlő termesztés és talajvizsgálat"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                  quality={85}
+                  className="object-cover"
                 />
               </div>
               </div>
