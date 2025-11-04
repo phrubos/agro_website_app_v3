@@ -5,27 +5,49 @@ import { Beaker, TrendingUp, Plane, ArrowRight } from 'lucide-react'
 import ScrollReveal from '@/components/ScrollReveal'
 
 export default function ServicesPage() {
+  // Statikus color mapping a Tailwind purge miatt
+  const colorClasses = {
+    primary: {
+      bg: 'bg-primary/10',
+      bgHover: 'group-hover:bg-primary',
+      text: 'text-primary',
+      textHover: 'group-hover:text-white'
+    },
+    'accent-teal': {
+      bg: 'bg-accent-teal/10',
+      bgHover: 'group-hover:bg-accent-teal',
+      text: 'text-accent-teal',
+      textHover: 'group-hover:text-white'
+    },
+    'accent-cyan': {
+      bg: 'bg-accent-cyan/10',
+      bgHover: 'group-hover:bg-accent-cyan',
+      text: 'text-accent-cyan',
+      textHover: 'group-hover:text-white'
+    }
+  } as const
+
   const services = [
     {
       icon: Beaker,
       title: 'Laboratóriumi Vizsgálatok',
       description: 'Akkreditált vizsgálatok talaj, növény, trágya és víz mintákból. Pontos eredmények, gyors átfutás.',
       link: '/szolgaltatasok/laboratorium',
-      color: 'primary'
+      color: 'primary' as const
     },
     {
       icon: TrendingUp,
       title: 'Szaktanácsadás',
       description: 'Tápanyag-gazdálkodási tanácsadás nagyértékű kultúrákban. Szőlő, gyümölcs, ipari zöldség szakértelem.',
       link: '/szolgaltatasok/szaktanacsadas',
-      color: 'accent-teal'
+      color: 'accent-teal' as const
     },
     {
       icon: Plane,
       title: 'Drónos Felmérés',
       description: 'Szántóföldi növény állapot felmérés precíziós technológiával. Multispektrális képalkotás, NDVI elemzés.',
       link: '/szolgaltatasok/dron',
-      color: 'accent-cyan'
+      color: 'accent-cyan' as const
     }
   ]
 
@@ -49,29 +71,32 @@ export default function ServicesPage() {
       <section className="section-padding">
         <div className="container-custom">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <ScrollReveal key={index} delay={index * 0.1}>
-                <Link 
-                href={service.link}
-                className="card group hover:scale-105 transition-all duration-300 block"
-              >
-                <div className="flex justify-center mb-6">
-                  <div className={`w-20 h-20 bg-${service.color}/10 rounded-full flex items-center justify-center group-hover:bg-${service.color} group-hover:scale-110 transition-all`}>
-                    <service.icon className={`text-${service.color} group-hover:text-white transition-colors`} size={40} />
+            {services.map((service, index) => {
+              const colors = colorClasses[service.color]
+              return (
+                <ScrollReveal key={index} delay={index * 0.1}>
+                  <Link 
+                  href={service.link}
+                  className="card group hover:scale-105 transition-all duration-300 block"
+                >
+                  <div className="flex justify-center mb-6">
+                    <div className={`w-20 h-20 ${colors.bg} ${colors.bgHover} rounded-full flex items-center justify-center group-hover:scale-110 transition-all`}>
+                      <service.icon className={`${colors.text} ${colors.textHover} transition-colors`} size={40} />
+                    </div>
                   </div>
-                </div>
-                <h3 className="text-2xl font-heading font-semibold mb-4 text-center">
-                  {service.title}
-                </h3>
-                <p className="text-neutral-mediumgray mb-6 text-center">
-                  {service.description}
-                </p>
-                <div className="flex items-center justify-center gap-2 text-primary group-hover:text-primary-medium transition-colors font-semibold">
-                  Részletek <ArrowRight size={20} />
-                </div>
-                </Link>
-              </ScrollReveal>
-            ))}
+                  <h3 className="text-2xl font-heading font-semibold mb-4 text-center">
+                    {service.title}
+                  </h3>
+                  <p className="text-neutral-mediumgray mb-6 text-center">
+                    {service.description}
+                  </p>
+                  <div className="flex items-center justify-center gap-2 text-primary group-hover:text-primary-medium transition-colors font-semibold">
+                    Részletek <ArrowRight size={20} />
+                  </div>
+                  </Link>
+                </ScrollReveal>
+              )
+            })}
           </div>
         </div>
       </section>

@@ -101,9 +101,9 @@ export default function MobileMenu({ scrolled = false }: MobileMenuProps) {
       {/* Mobile Menu Overlay */}
       {isOpen && (
         <>
-          {/* Backdrop */}
+          {/* Backdrop with Blur Effect */}
           <div
-            className="fixed inset-0 bg-black/50 z-[60] lg:hidden"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] lg:hidden animate-fade-in"
             onClick={closeMenu}
             aria-hidden="true"
           />

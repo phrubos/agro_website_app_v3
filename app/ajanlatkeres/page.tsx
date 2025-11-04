@@ -1,12 +1,18 @@
 'use client'
 
-import { useState } from 'react'
-import { CheckCircle2 } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { CheckCircle2, ArrowLeft, ArrowRight } from 'lucide-react'
 import LoadingButton from '@/components/LoadingButton'
 import ScrollReveal from '@/components/ScrollReveal'
+import ProgressBar from '@/components/ProgressBar'
+import FormInput from '@/components/FormInput'
 import { trackError } from '@/lib/errorTracking'
 
+const STORAGE_KEY = 'agrolab_quote_draft'
+const STEP_LABELS = ['Alapadatok', 'Szolgáltatás', 'Üzenet']
+
 export default function QuoteRequestPage() {
+  const [currentStep, setCurrentStep] = useState(1)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -23,6 +29,37 @@ export default function QuoteRequestPage() {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [touched, setTouched] = useState<Record<string, boolean>>({})
+
+  // Load draft from localStorage on mount
+  useEffect(() => {
+    const savedDraft = localStorage.getItem(STORAGE_KEY)
+    if (savedDraft) {
+      try {
+        const parsed = JSON.parse(savedDraft)
+        setFormData(parsed)
+      } catch (e) {
+        console.error('Failed to parse saved draft:', e)
+      }
+    }
+  }, [])
+
+  // Auto-save draft to localStorage
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (!submitted) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(formData))
+      }
+    }, 1000) // Debounce 1 second
+
+    return () => clearTimeout(timeoutId)
+  }, [formData, submitted])
+
+  // Clear draft on successful submission
+  useEffect(() => {
+    if (submitted) {
+      localStorage.removeItem(STORAGE_KEY)
+    }
+  }, [submitted])
 
   // Inline validation for single field
   const validateField = (name: string, value: any): string => {
@@ -154,6 +191,73 @@ export default function QuoteRequestPage() {
     }))
   }
 
+  // Validate current step
+  const validateStep = (step: number): boolean => {
+    const newErrors: Record<string, string> = {}
+
+    if (step === 1) {
+      // Alapadatok validation
+      newErrors.name = validateField('name', formData.name)
+      newErrors.email = validateField('email', formData.email)
+      newErrors.phone = validateField('phone', formData.phone)
+    } else if (step === 2) {
+      // Szolgáltatás validation (opcionális)
+      // Nincs kötelező mező
+    } else if (step === 3) {
+      // Üzenet validation
+      newErrors.message = validateField('message', formData.message)
+      newErrors.gdpr = validateField('gdpr', formData.gdpr)
+    }
+
+    // Remove empty errors
+    Object.keys(newErrors).forEach(key => {
+      if (!newErrors[key]) delete newErrors[key]
+    })
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  const scrollToForm = () => {
+    // Scroll to the form card, not to the top of the page
+    setTimeout(() => {
+      const formElement = document.querySelector('form')
+      if (formElement) {
+        const yOffset = -100 // 100px offset from top for better visibility
+        const y = formElement.getBoundingClientRect().top + window.pageYOffset + yOffset
+        window.scrollTo({ top: y, behavior: 'smooth' })
+      }
+    }, 100)
+  }
+
+  const nextStep = () => {
+    // Mark all fields in current step as touched
+    if (currentStep === 1) {
+      setTouched({
+        ...touched,
+        name: true,
+        email: true,
+        phone: true
+      })
+    } else if (currentStep === 3) {
+      setTouched({
+        ...touched,
+        message: true,
+        gdpr: true
+      })
+    }
+
+    if (validateStep(currentStep)) {
+      setCurrentStep(prev => Math.min(prev + 1, 3))
+      scrollToForm()
+    }
+  }
+
+  const prevStep = () => {
+    setCurrentStep(prev => Math.max(prev - 1, 1))
+    scrollToForm()
+  }
+
   if (submitted) {
     return (
       <section className="min-h-screen flex items-center justify-center py-24 bg-neutral-offwhite">
@@ -202,161 +306,105 @@ export default function QuoteRequestPage() {
         <div className="container-custom max-w-4xl">
           <ScrollReveal>
             <form onSubmit={handleSubmit} className="card">
-            <h2 className="text-3xl font-heading font-bold mb-8 pb-6 border-b">
+            <h2 className="text-3xl font-heading font-bold mb-4">
               Ajánlatkérő Űrlap
             </h2>
+            <p className="text-neutral-mediumgray mb-8 pb-6 border-b">
+              {currentStep === 1 && 'Add meg az alapvető kapcsolattartási adataidat'}
+              {currentStep === 2 && 'Válaszd ki a szolgáltatásokat, amelyek érdekelnek'}
+              {currentStep === 3 && 'Írd le részletesen a kérésedet'}
+            </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Left Column */}
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-semibold mb-2">
-                    Teljes Név <span className="text-status-error">*</span>
-                  </label>
-                  <input
-                    type="text"
+            {/* Progress Bar */}
+            <ProgressBar
+              currentStep={currentStep}
+              totalSteps={3}
+              stepLabels={STEP_LABELS}
+            />
+
+            {/* Step 1: Alapadatok */}
+            {currentStep === 1 && (
+              <div className="space-y-6 animate-fade-in">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <FormInput
+                    label="Teljes Név"
                     name="name"
-                    autoComplete="name"
-                    required
+                    type="text"
                     value={formData.name}
-                    onChange={(e) => {
-                      setFormData({...formData, name: e.target.value})
+                    onChange={(value) => {
+                      setFormData({...formData, name: value})
                       if (touched.name) handleBlur('name')
                     }}
                     onBlur={() => handleBlur('name')}
-                    className={`input-field w-full ${errors.name && touched.name ? 'border-status-error' : touched.name && !errors.name ? 'border-status-success' : ''}`}
-                    placeholder="Kovács János"
-                    aria-invalid={errors.name && touched.name ? 'true' : 'false'}
-                    aria-describedby={errors.name && touched.name ? 'name-error' : undefined}
-                  />
-                  {errors.name && touched.name && (
-                    <p id="name-error" className="text-status-error text-sm mt-1 flex items-center gap-1">
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                      </svg>
-                      {errors.name}
-                    </p>
-                  )}
-                  {!errors.name && touched.name && formData.name && (
-                    <p className="text-status-success text-sm mt-1 flex items-center gap-1">
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      Helyes
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold mb-2">
-                    Email cím <span className="text-status-error">*</span>
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    autoComplete="email"
+                    error={errors.name}
+                    touched={touched.name}
                     required
+                    placeholder="Kovács János"
+                    autoComplete="name"
+                  />
+
+                  <FormInput
+                    label="Email cím"
+                    name="email"
+                    type="email"
                     value={formData.email}
-                    onChange={(e) => {
-                      setFormData({...formData, email: e.target.value})
+                    onChange={(value) => {
+                      setFormData({...formData, email: value})
                       if (touched.email) handleBlur('email')
                     }}
                     onBlur={() => handleBlur('email')}
-                    className={`input-field w-full ${errors.email && touched.email ? 'border-status-error' : touched.email && !errors.email ? 'border-status-success' : ''}`}
-                    placeholder="kovacs.janos@example.com"
-                    aria-invalid={errors.email && touched.email ? 'true' : 'false'}
-                    aria-describedby={errors.email && touched.email ? 'email-error' : undefined}
-                  />
-                  {errors.email && touched.email && (
-                    <p id="email-error" className="text-status-error text-sm mt-1 flex items-center gap-1">
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                      </svg>
-                      {errors.email}
-                    </p>
-                  )}
-                  {!errors.email && touched.email && formData.email && (
-                    <p className="text-status-success text-sm mt-1 flex items-center gap-1">
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      Helyes
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold mb-2">
-                    Telefonszám <span className="text-status-error">*</span>
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    autoComplete="tel"
+                    error={errors.email}
+                    touched={touched.email}
                     required
+                    placeholder="kovacs.janos@example.com"
+                    autoComplete="email"
+                  />
+
+                  <FormInput
+                    label="Telefonszám"
+                    name="phone"
+                    type="tel"
                     value={formData.phone}
-                    onChange={(e) => {
-                      setFormData({...formData, phone: e.target.value})
+                    onChange={(value) => {
+                      setFormData({...formData, phone: value})
                       if (touched.phone) handleBlur('phone')
                     }}
                     onBlur={() => handleBlur('phone')}
-                    className={`input-field w-full ${errors.phone && touched.phone ? 'border-status-error' : touched.phone && !errors.phone ? 'border-status-success' : ''}`}
+                    error={errors.phone}
+                    touched={touched.phone}
+                    required
                     placeholder="+36 30 123 4567"
-                    aria-invalid={errors.phone && touched.phone ? 'true' : 'false'}
-                    aria-describedby={errors.phone && touched.phone ? 'phone-error' : undefined}
+                    autoComplete="tel"
                   />
-                  {errors.phone && touched.phone && (
-                    <p id="phone-error" className="text-status-error text-sm mt-1 flex items-center gap-1">
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                      </svg>
-                      {errors.phone}
-                    </p>
-                  )}
-                  {!errors.phone && touched.phone && formData.phone && (
-                    <p className="text-status-success text-sm mt-1 flex items-center gap-1">
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      Helyes
-                    </p>
-                  )}
-                </div>
 
-                <div>
-                  <label className="block text-sm font-semibold mb-2">
-                    Cég neve (opcionális)
-                  </label>
-                  <input
+                  <FormInput
+                    label="Cég neve"
+                    name="company"
                     type="text"
-                    name="organization"
-                    autoComplete="organization"
                     value={formData.company}
-                    onChange={(e) => setFormData({...formData, company: e.target.value})}
-                    className="input-field w-full"
+                    onChange={(value) => setFormData({...formData, company: value})}
                     placeholder="Példa Kft."
+                    autoComplete="organization"
                   />
-                </div>
 
-                <div>
-                  <label className="block text-sm font-semibold mb-2">
-                    Gazdálkodási terület (hektár)
-                  </label>
-                  <input
+                  <FormInput
+                    label="Gazdálkodási terület (hektár)"
+                    name="area"
                     type="number"
                     value={formData.area}
-                    onChange={(e) => setFormData({...formData, area: e.target.value})}
-                    className="input-field w-full"
+                    onChange={(value) => setFormData({...formData, area: value})}
                     placeholder="100"
                   />
                 </div>
               </div>
+            )}
 
-              {/* Right Column */}
-              <div className="space-y-6">
+            {/* Step 2: Szolgáltatás */}
+            {currentStep === 2 && (
+              <div className="space-y-6 animate-fade-in">
                 <div>
                   <label className="block text-sm font-semibold mb-3">
-                    Milyen szolgáltatás iránt érdeklődik? <span className="text-status-error">*</span>
+                    Milyen szolgáltatás iránt érdeklődik?
                   </label>
                   <div className="space-y-3">
                     {[
@@ -364,21 +412,21 @@ export default function QuoteRequestPage() {
                       { id: 'consulting', label: 'Szaktanácsadás' },
                       { id: 'drone', label: 'Drónos felmérés' }
                     ].map(service => (
-                      <label key={service.id} className="flex items-center gap-3 cursor-pointer">
+                      <label key={service.id} className="flex items-center gap-3 cursor-pointer p-4 rounded-lg border-2 border-neutral-lightgray hover:border-primary transition-colors">
                         <input
                           type="checkbox"
                           checked={formData.services.includes(service.id)}
                           onChange={() => handleServiceChange(service.id)}
                           className="w-5 h-5 text-primary rounded focus:ring-primary"
                         />
-                        <span>{service.label}</span>
+                        <span className="font-medium">{service.label}</span>
                       </label>
                     ))}
                   </div>
                 </div>
 
                 {formData.services.includes('lab') && (
-                  <div>
+                  <div className="mt-6 p-6 bg-neutral-offwhite rounded-lg">
                     <label className="block text-sm font-semibold mb-3">
                       Mintákat szeretnék beküldeni:
                     </label>
@@ -399,43 +447,51 @@ export default function QuoteRequestPage() {
                     </div>
                   </div>
                 )}
+              </div>
+            )}
 
-                <div>
-                  <label className="block text-sm font-semibold mb-2">
-                    Részletes kérés / Üzenet <span className="text-status-error">*</span>
+            {/* Step 3: Üzenet */}
+            {currentStep === 3 && (
+              <div className="space-y-6 animate-fade-in">
+                <FormInput
+                  label="Részletes kérés / Üzenet"
+                  name="message"
+                  type="textarea"
+                  value={formData.message}
+                  onChange={(value) => {
+                    setFormData({...formData, message: value})
+                    if (touched.message) handleBlur('message')
+                  }}
+                  onBlur={() => handleBlur('message')}
+                  error={errors.message}
+                  touched={touched.message}
+                  required
+                  placeholder="Írja le részletesen, miben segíthetünk..."
+                  rows={8}
+                />
+
+                {/* GDPR Consent */}
+                <div className="pt-6 border-t">
+                  <label className="flex items-start gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      required
+                      checked={formData.gdpr}
+                      onChange={(e) => {
+                        setFormData({...formData, gdpr: e.target.checked})
+                        if (errors.gdpr) setErrors({...errors, gdpr: ''})
+                      }}
+                      className="w-5 h-5 text-primary rounded focus:ring-primary mt-0.5"
+                    />
+                    <span className="text-sm text-neutral-mediumgray">
+                      Elfogadom az <a href="/adatvedelem" className="text-primary hover:underline">Adatvédelmi Tájékoztatót</a> és 
+                      hozzájárulok adataim kezeléséhez. <span className="text-status-error">*</span>
+                    </span>
                   </label>
-                  <textarea
-                    required
-                    value={formData.message}
-                    onChange={(e) => setFormData({...formData, message: e.target.value})}
-                    className="input-field w-full"
-                    rows={6}
-                    placeholder="Írja le részletesen, miben segíthetünk..."
-                  />
+                  {errors.gdpr && <p className="text-status-error text-sm mt-1">{errors.gdpr}</p>}
                 </div>
               </div>
-            </div>
-
-            {/* GDPR Consent */}
-            <div className="mt-8 pt-8 border-t">
-              <label className="flex items-start gap-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  required
-                  checked={formData.gdpr}
-                  onChange={(e) => {
-                    setFormData({...formData, gdpr: e.target.checked})
-                    if (errors.gdpr) setErrors({...errors, gdpr: ''})
-                  }}
-                  className="w-5 h-5 text-primary rounded focus:ring-primary mt-0.5"
-                />
-                <span className="text-sm text-neutral-mediumgray">
-                  Elfogadom az <a href="/adatvedelem" className="text-primary hover:underline">Adatvédelmi Tájékoztatót</a> és 
-                  hozzájárulok adataim kezeléséhez. <span className="text-status-error">*</span>
-                </span>
-              </label>
-              {errors.gdpr && <p className="text-status-error text-sm mt-1">{errors.gdpr}</p>}
-            </div>
+            )}
 
             {/* Error Message */}
             {submitError && (
@@ -465,16 +521,40 @@ export default function QuoteRequestPage() {
               </div>
             )}
 
-            {/* Submit Button */}
-            <div className="mt-8">
-              <LoadingButton
-                type="submit"
-                className="btn-primary w-full md:w-auto px-12 py-4 text-lg"
-                isLoading={isLoading}
-                loadingText="Küldés..."
-              >
-                Ajánlat Kérése
-              </LoadingButton>
+            {/* Navigation Buttons */}
+            <div className="flex justify-between items-center mt-8 pt-6 border-t">
+              {currentStep > 1 ? (
+                <button
+                  type="button"
+                  onClick={prevStep}
+                  className="flex items-center gap-2 px-6 py-3 text-neutral-darkgray hover:text-primary transition-colors"
+                >
+                  <ArrowLeft size={20} />
+                  Vissza
+                </button>
+              ) : (
+                <div></div>
+              )}
+
+              {currentStep < 3 ? (
+                <button
+                  type="button"
+                  onClick={nextStep}
+                  className="btn-primary flex items-center gap-2 px-8 py-3"
+                >
+                  Következő
+                  <ArrowRight size={20} />
+                </button>
+              ) : (
+                <LoadingButton
+                  type="submit"
+                  className="btn-primary px-12 py-3 text-lg"
+                  isLoading={isLoading}
+                  loadingText="Küldés..."
+                >
+                  Ajánlat Kérése
+                </LoadingButton>
+              )}
             </div>
             </form>
           </ScrollReveal>

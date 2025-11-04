@@ -180,6 +180,10 @@ input[type="checkbox"]:checked {
     }
   }
 
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+
   .animate-fade-in-dropdown {
     animation: fadeIn 0.2s ease-out;
   }
