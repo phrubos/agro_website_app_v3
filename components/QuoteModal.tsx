@@ -229,10 +229,10 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
         className="relative bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] lg:max-h-[min(90vh,800px)] flex flex-col animate-fade-in"
       >
         {/* Fixed Header with Close Button */}
-        <div className="flex-shrink-0 pt-6 px-5 md:px-6 xl:px-8 2xl:px-8 pb-4 border-b border-neutral-lightgray">
+        <div className="flex-shrink-0 flex justify-end items-start pt-4 px-4 md:px-5 xl:px-6 pb-0">
           <button
             onClick={handleClose}
-            className="absolute top-4 right-4 z-10 p-2 rounded-full hover:bg-neutral-lightgray transition-colors"
+            className="p-2 rounded-full hover:bg-neutral-lightgray transition-colors"
             aria-label="Bezárás"
           >
             <X size={24} className="text-neutral-darkgray" />
