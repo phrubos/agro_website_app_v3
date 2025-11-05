@@ -34,6 +34,9 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
   const [submitted, setSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const modalRef = useRef<HTMLDivElement>(null)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const [showTopShadow, setShowTopShadow] = useState(false)
+  const [showBottomShadow, setShowBottomShadow] = useState(false)
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -82,6 +85,29 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
       return () => clearTimeout(timer)
     }
   }, [formData, isOpen, submitted])
+
+  // Scroll shadow detection
+  useEffect(() => {
+    const handleScroll = () => {
+      const container = scrollContainerRef.current
+      if (!container) return
+
+      const { scrollTop, scrollHeight, clientHeight } = container
+
+      // Show top shadow if scrolled down
+      setShowTopShadow(scrollTop > 10)
+
+      // Show bottom shadow if not at bottom
+      setShowBottomShadow(scrollTop + clientHeight < scrollHeight - 10)
+    }
+
+    const container = scrollContainerRef.current
+    if (container) {
+      handleScroll() // Initial check
+      container.addEventListener('scroll', handleScroll)
+      return () => container.removeEventListener('scroll', handleScroll)
+    }
+  }, [isOpen, currentStep])
 
   // Validation
   const validateField = (name: string, value: any): string => {
@@ -239,8 +265,31 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
           </button>
         </div>
 
+        {/* Scroll Shadow Indicators */}
+        <div
+          className={`absolute left-0 right-0 h-8 pointer-events-none transition-opacity duration-300 z-10 ${
+            showTopShadow ? 'opacity-100' : 'opacity-0'
+          }`}
+          style={{
+            top: '56px',
+            background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%)'
+          }}
+        />
+        <div
+          className={`absolute left-0 right-0 h-8 pointer-events-none transition-opacity duration-300 z-10 ${
+            showBottomShadow ? 'opacity-100' : 'opacity-0'
+          }`}
+          style={{
+            bottom: !submitted ? '73px' : '0px',
+            background: 'linear-gradient(to top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%)'
+          }}
+        />
+
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto px-5 md:px-6 xl:px-8 2xl:px-8 py-4 md:py-5 xl:py-6 2xl:py-6">
+        <div
+          ref={scrollContainerRef}
+          className="flex-1 overflow-y-auto px-5 md:px-6 xl:px-8 2xl:px-8 py-4 md:py-5 xl:py-6 2xl:py-6"
+        >
           {submitted ? (
             // Success State
             <div className="text-center py-8">
@@ -378,7 +427,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                             type="checkbox"
                             checked={formData.services.includes(service.id)}
                             onChange={() => handleServiceChange(service.id)}
-                            className="w-4 h-4 xl:w-5 xl:h-5 text-primary rounded focus:ring-primary"
+                            className="w-4 h-4 xl:w-5 xl:h-5 text-accent-teal rounded focus:ring-accent-teal border-neutral-gray"
                           />
                           <span className="text-sm xl:text-base text-neutral-darkgray">{service.label}</span>
                         </label>
@@ -404,7 +453,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                               value={option.id}
                               checked={formData.samples === option.id}
                               onChange={(e) => setFormData({...formData, samples: e.target.value})}
-                              className="w-4 h-4 xl:w-5 xl:h-5 text-primary focus:ring-primary"
+                              className="w-4 h-4 xl:w-5 xl:h-5 text-accent-teal focus:ring-accent-teal border-neutral-gray"
                             />
                             <span className="text-sm xl:text-base text-neutral-darkgray">{option.label}</span>
                           </label>
@@ -446,7 +495,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                           setFormData({...formData, gdpr: e.target.checked})
                           if (errors.gdpr) setErrors({...errors, gdpr: ''})
                         }}
-                        className="w-4 h-4 xl:w-5 xl:h-5 text-primary rounded focus:ring-primary mt-0.5"
+                        className="w-4 h-4 xl:w-5 xl:h-5 text-accent-teal rounded focus:ring-accent-teal border-neutral-gray mt-0.5"
                       />
                       <span className="text-xs md:text-sm xl:text-base text-neutral-darkgray">
                         Elfogadom az{' '}

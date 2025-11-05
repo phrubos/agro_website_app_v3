@@ -80,6 +80,10 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms')({
+      strategy: 'class', // only style forms with explicit classes
+    }),
+  ],
 }
 export default config
