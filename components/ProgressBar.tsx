@@ -8,10 +8,10 @@ export default function ProgressBar({ currentStep, totalSteps, stepLabels }: Pro
   const progress = ((currentStep) / totalSteps) * 100
 
   return (
-    <div className="mb-8">
+    <div className="mb-6">
       {/* Progress Bar */}
       <div className="relative">
-        <div className="overflow-hidden h-2 mb-6 text-xs flex rounded-full bg-neutral-lightgray">
+        <div className="overflow-hidden h-2 mb-4 text-xs flex rounded-full bg-neutral-lightgray">
           <div
             style={{ width: `${progress}%` }}
             className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-primary transition-all duration-500 ease-out"

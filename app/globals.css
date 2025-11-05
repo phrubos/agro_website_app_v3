@@ -25,56 +25,107 @@
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-semibold;
+    letter-spacing: -0.02em;
   }
 
   h1 {
-    @apply text-5xl md:text-6xl leading-tight;
+    @apply text-5xl md:text-6xl;
+    line-height: 1.1;
   }
 
   h2 {
-    @apply text-4xl md:text-5xl leading-tight;
+    @apply text-4xl md:text-5xl;
+    line-height: 1.2;
   }
 
   h3 {
-    @apply text-2xl md:text-3xl leading-tight;
+    @apply text-2xl md:text-3xl;
+    line-height: 1.3;
   }
 
   h4 {
     @apply text-xl md:text-2xl;
+    line-height: 1.4;
   }
 
   h5 {
     @apply text-lg md:text-xl;
+    line-height: 1.5;
   }
 
   p {
-    @apply leading-relaxed;
+    line-height: 1.7;
+  }
+
+  /* Focus visible states */
+  *:focus-visible {
+    outline: 3px solid #1A936F;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  button:focus-visible,
+  a:focus-visible {
+    outline: 3px solid #1A936F;
+    outline-offset: 4px;
   }
 }
 
 @layer components {
+  /* Enhanced CTA Buttons with better contrast and micro-interactions */
   .btn-primary {
-    @apply bg-primary hover:bg-primary-medium text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 btn-ripple;
+    @apply bg-primary hover:bg-primary-dark text-white font-bold py-4 px-10 rounded-lg transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 active:scale-95 relative overflow-hidden;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  .btn-primary:hover::before {
+    width: 300px;
+    height: 300px;
   }
 
   .btn-secondary {
-    @apply bg-transparent border-2 border-white text-white hover:bg-white hover:text-primary font-semibold py-3 px-8 rounded-lg transition-all duration-300 hover:scale-105 active:scale-95 btn-ripple;
+    @apply bg-transparent border-2 border-white text-white hover:bg-white hover:text-primary font-bold py-4 px-10 rounded-lg transition-all duration-300 hover:scale-105 active:scale-95 relative overflow-hidden;
+    letter-spacing: 0.02em;
   }
 
   .btn-accent {
-    @apply bg-accent-teal hover:bg-accent-turquoise text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 btn-ripple;
+    @apply bg-gradient-accent text-white font-bold py-4 px-10 rounded-lg transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 relative overflow-hidden;
+    letter-spacing: 0.02em;
   }
 
   .btn-secondary-light {
-    @apply bg-white border-2 border-primary text-primary hover:border-primary-dark hover:text-primary-dark font-semibold py-3 px-8 rounded-lg transition-all duration-300 hover:scale-105 active:scale-95;
+    @apply bg-white border-2 border-primary text-primary hover:bg-primary hover:text-white hover:border-primary-dark font-bold py-4 px-10 rounded-lg transition-all duration-300 hover:scale-105 active:scale-95;
+    letter-spacing: 0.02em;
   }
 
+  /* Enhanced Card with better hover effects */
   .card {
-    @apply bg-white border border-neutral-lightgray rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover-glow;
+    @apply bg-white border border-neutral-lightgray rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300;
+  }
+
+  .card:hover {
+    border-color: rgba(26, 147, 111, 0.3);
   }
 
   .input-field {
-    @apply border-2 border-neutral-lightgray rounded-lg px-4 py-3 focus:border-primary-medium focus:outline-none transition-all;
+    @apply border-2 border-neutral-lightgray rounded-lg px-4 py-3 focus:border-primary-medium focus:outline-none transition-all text-neutral-darkgray;
+  }
+
+  .input-field::placeholder {
+    @apply text-neutral-mediumgray;
   }
 
   .input-field:focus {
@@ -188,6 +239,77 @@ input[type="checkbox"]:checked {
     animation: fadeIn 0.2s ease-out;
   }
 
+  /* Animated Icons - Micro-interactions */
+  @keyframes iconPulse {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 0.8;
+    }
+  }
+
+  @keyframes iconBounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  @keyframes iconSpin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes iconShake {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-4px);
+    }
+    75% {
+      transform: translateX(4px);
+    }
+  }
+
+  .icon-pulse {
+    animation: iconPulse 2s ease-in-out infinite;
+  }
+
+  .icon-bounce {
+    animation: iconBounce 1s ease-in-out infinite;
+  }
+
+  .icon-spin {
+    animation: iconSpin 2s linear infinite;
+  }
+
+  .icon-shake {
+    animation: iconShake 0.5s ease-in-out;
+  }
+
+  /* Hover icon animations */
+  .icon-hover-pulse:hover {
+    animation: iconPulse 0.6s ease-in-out;
+  }
+
+  .icon-hover-bounce:hover {
+    animation: iconBounce 0.6s ease-in-out;
+  }
+
+  .icon-hover-spin:hover {
+    animation: iconSpin 0.6s ease-in-out;
+  }
+
   /* Smooth hover scale */
   .hover-scale {
     transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
@@ -200,6 +322,33 @@ input[type="checkbox"]:checked {
   /* Glow effect on hover */
   .hover-glow {
     transition: box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hover-glow:hover {
+    box-shadow: 0 0 20px rgba(26, 147, 111, 0.4);
+  }
+
+  /* Card flip animation */
+  .card-flip {
+    perspective: 1000px;
+  }
+
+  .card-flip-inner {
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+  }
+
+  .card-flip:hover .card-flip-inner {
+    transform: rotateY(180deg);
+  }
+
+  .card-flip-front,
+  .card-flip-back {
+    backface-visibility: hidden;
+  }
+
+  .card-flip-back {
+    transform: rotateY(180deg);
   }
 
   .hover-glow:hover {
@@ -284,6 +433,26 @@ input[type="checkbox"]:checked {
   .stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
   .stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
   .stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
+
+  /* Language transition animation */
+  @keyframes languageFade {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    50% {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .language-transitioning {
+    animation: languageFade 0.3s ease-in-out;
+  }
 }
 
 /* Smooth scroll behavior */

@@ -7,6 +7,7 @@ interface LanguageContextType {
   locale: Locale
   setLocale: (locale: Locale) => void
   t: TranslationKeys
+  isTransitioning: boolean
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined)
@@ -14,6 +15,7 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>('hu')
   const [t, setT] = useState<TranslationKeys>(getTranslations('hu'))
+  const [isTransitioning, setIsTransitioning] = useState(false)
 
   // Load saved locale from localStorage on mount
   useEffect(() => {
@@ -25,16 +27,29 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const setLocale = (newLocale: Locale) => {
-    setLocaleState(newLocale)
-    setT(getTranslations(newLocale))
-    localStorage.setItem('locale', newLocale)
-
-    // Update HTML lang attribute
-    document.documentElement.lang = newLocale
+    if (newLocale === locale) return // Ne csináljunk semmit ha ugyanaz
+    
+    // Start transition
+    setIsTransitioning(true)
+    
+    // Fade out effect
+    setTimeout(() => {
+      setLocaleState(newLocale)
+      setT(getTranslations(newLocale))
+      localStorage.setItem('locale', newLocale)
+      
+      // Update HTML lang attribute
+      document.documentElement.lang = newLocale
+      
+      // Fade in effect
+      setTimeout(() => {
+        setIsTransitioning(false)
+      }, 150)
+    }, 150)
   }
 
   return (
-    <LanguageContext.Provider value={{ locale, setLocale, t }}>
+    <LanguageContext.Provider value={{ locale, setLocale, t, isTransitioning }}>
       {children}
     </LanguageContext.Provider>
   )

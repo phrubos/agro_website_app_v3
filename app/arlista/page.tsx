@@ -4,8 +4,10 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { Download, Check } from 'lucide-react'
 import ScrollReveal from '@/components/ScrollReveal'
+import { useQuoteModal } from '@/hooks/useQuoteModal'
 
 export default function PricingPage() {
+  const { openQuoteModal, QuoteModalComponent } = useQuoteModal()
   const [activeTab, setActiveTab] = useState('laboratory')
 
   const laboratoryPrices = [
@@ -198,9 +200,10 @@ export default function PricingPage() {
               <p className="mb-6 text-neutral-offwhite">
                 Szakértőink készséggel állnak rendelkezésére az Ön egyedi igényeinek megfelelő ajánlat összeállításában.
               </p>
-              <Link href="/ajanlatkeres" className="btn-accent inline-block">
-                Egyedi Ajánlat Kérése
-              </Link>
+              <button onClick={openQuoteModal} className="btn-accent text-lg px-10 py-4">
+                Ajánlatot Kérek
+              </button>
+              <QuoteModalComponent />
               </div>
             </div>
           </ScrollReveal>

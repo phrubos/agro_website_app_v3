@@ -3,12 +3,15 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { Menu, X, ChevronDown } from 'lucide-react'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
 
 interface MobileMenuProps {
   scrolled?: boolean
+  onQuoteClick: () => void
 }
 
-export default function MobileMenu({ scrolled = false }: MobileMenuProps) {
+export default function MobileMenu({ scrolled = false, onQuoteClick }: MobileMenuProps) {
+  const { locale, setLocale } = useLanguage()
   const [isOpen, setIsOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -216,14 +219,43 @@ export default function MobileMenu({ scrolled = false }: MobileMenuProps) {
                 </Link>
 
                 {/* CTA Button */}
-                <Link
-                  href="/ajanlatkeres"
-                  onClick={closeMenu}
-                  className="block mt-4 px-4 py-3 bg-primary hover:bg-primary-dark text-white text-center font-semibold rounded-lg transition-colors"
+                <button
+                  onClick={() => {
+                    closeMenu()
+                    onQuoteClick()
+                  }}
+                  className="block w-full mt-4 px-4 py-3 bg-gradient-accent text-white text-center font-bold rounded-lg transition-colors hover:shadow-lg"
                 >
                   Ajánlatot Kérek
-                </Link>
+                </button>
               </nav>
+
+              {/* Language Switcher */}
+              <div className="mt-6 pt-6 border-t border-neutral-lightgray">
+                <p className="text-xs font-semibold text-neutral-mediumgray mb-3 px-4">Nyelv / Language</p>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setLocale('hu')}
+                    className={`flex-1 px-4 py-2.5 rounded-lg font-semibold text-sm transition-all ${
+                      locale === 'hu'
+                        ? 'bg-primary text-white shadow-md'
+                        : 'bg-neutral-lightgray text-neutral-darkgray hover:bg-neutral-gray/20'
+                    }`}
+                  >
+                    Magyar
+                  </button>
+                  <button
+                    onClick={() => setLocale('en')}
+                    className={`flex-1 px-4 py-2.5 rounded-lg font-semibold text-sm transition-all ${
+                      locale === 'en'
+                        ? 'bg-primary text-white shadow-md'
+                        : 'bg-neutral-lightgray text-neutral-darkgray hover:bg-neutral-gray/20'
+                    }`}
+                  >
+                    English
+                  </button>
+                </div>
+              </div>
             </div>
             {/* End Scrollable Content */}
           </div>

@@ -2,10 +2,12 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { Award, Users, Target, Lightbulb, Star } from 'lucide-react'
+import { Award, Users, Target, TrendingUp, CheckCircle, Lightbulb, Star } from 'lucide-react'
 import ScrollReveal from '@/components/ScrollReveal'
+import { useQuoteModal } from '@/hooks/useQuoteModal'
 
 export default function AboutPage() {
+  const { openQuoteModal, QuoteModalComponent } = useQuoteModal()
   const team = [
     {
       name: 'Dr. Nagy Péter',
@@ -294,9 +296,10 @@ export default function AboutPage() {
             <p className="text-lg text-neutral-offwhite mb-8 max-w-2xl mx-auto">
               Tapasztalja meg Ön is a professzionális, tudományosan megalapozott mezőgazdasági szolgáltatásokat.
             </p>
-            <Link href="/ajanlatkeres" className="btn-accent text-lg px-10 py-4 inline-block">
+            <button onClick={openQuoteModal} className="btn-accent text-lg px-10 py-4">
               Ajánlatot Kérek
-            </Link>
+            </button>
+            <QuoteModalComponent />
           </ScrollReveal>
         </div>
       </section>

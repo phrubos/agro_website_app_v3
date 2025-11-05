@@ -3,8 +3,10 @@
 import Link from 'next/link'
 import { Beaker, TrendingUp, Plane, ArrowRight } from 'lucide-react'
 import ScrollReveal from '@/components/ScrollReveal'
+import { useQuoteModal } from '@/hooks/useQuoteModal'
 
 export default function ServicesPage() {
+  const { openQuoteModal, QuoteModalComponent } = useQuoteModal()
   // Statikus color mapping a Tailwind purge miatt
   const colorClasses = {
     primary: {
@@ -33,28 +35,31 @@ export default function ServicesPage() {
       title: 'Laboratóriumi Vizsgálatok',
       description: 'Akkreditált vizsgálatok talaj, növény, trágya és víz mintákból. Pontos eredmények, gyors átfutás.',
       link: '/szolgaltatasok/laboratorium',
-      color: 'primary' as const
+      color: 'primary' as const,
+      iconAnimation: 'icon-hover-pulse'
     },
     {
       icon: TrendingUp,
       title: 'Szaktanácsadás',
       description: 'Tápanyag-gazdálkodási tanácsadás nagyértékű kultúrákban. Szőlő, gyümölcs, ipari zöldség szakértelem.',
       link: '/szolgaltatasok/szaktanacsadas',
-      color: 'accent-teal' as const
+      color: 'accent-teal' as const,
+      iconAnimation: 'icon-hover-bounce'
     },
     {
       icon: Plane,
       title: 'Drónos Felmérés',
       description: 'Szántóföldi növény állapot felmérés precíziós technológiával. Multispektrális képalkotás, NDVI elemzés.',
       link: '/szolgaltatasok/dron',
-      color: 'accent-cyan' as const
+      color: 'accent-cyan' as const,
+      iconAnimation: 'icon-hover-spin'
     }
   ]
 
   return (
     <>
       {/* Hero Section */}
-      <section className="py-24 bg-gradient-to-br from-primary to-primary-medium text-white">
+      <section className="py-24 bg-gradient-hero text-white">
         <div className="container-custom text-center">
           <ScrollReveal>
             <h1 className="text-5xl md:text-6xl font-heading font-bold mb-6">
@@ -77,11 +82,11 @@ export default function ServicesPage() {
                 <ScrollReveal key={index} delay={index * 0.1}>
                   <Link 
                   href={service.link}
-                  className="card group hover:scale-105 transition-all duration-300 block"
+                  className="card group hover-glow block"
                 >
                   <div className="flex justify-center mb-6">
                     <div className={`w-20 h-20 ${colors.bg} ${colors.bgHover} rounded-full flex items-center justify-center group-hover:scale-110 transition-all`}>
-                      <service.icon className={`${colors.text} ${colors.textHover} transition-colors`} size={40} />
+                      <service.icon className={`${colors.text} ${colors.textHover} transition-colors ${service.iconAnimation}`} size={40} />
                     </div>
                   </div>
                   <h3 className="text-2xl font-heading font-semibold mb-4 text-center">
@@ -111,12 +116,15 @@ export default function ServicesPage() {
             <p className="text-lg text-neutral-mediumgray mb-8">
               Kérjen egyédi ajánlatot, és szakértőink segítenek megtalálni a megfelelő megoldást!
             </p>
-            <Link href="/ajanlatkeres" className="btn-primary text-lg px-10 py-4 inline-block">
+            <button onClick={openQuoteModal} className="btn-primary text-lg px-10 py-4">
               Ajánlatot Kérek
-            </Link>
+            </button>
           </ScrollReveal>
         </div>
       </section>
+
+      {/* Quote Modal */}
+      <QuoteModalComponent />
     </>
   )
 }

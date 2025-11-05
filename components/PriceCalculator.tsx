@@ -2,9 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import { Calculator, ArrowRight } from 'lucide-react'
-import Link from 'next/link'
 
-export default function PriceCalculator() {
+interface PriceCalculatorProps {
+  onQuoteClick: () => void
+}
+
+export default function PriceCalculator({ onQuoteClick }: PriceCalculatorProps) {
   const [hectares, setHectares] = useState(10)
   const [services, setServices] = useState({
     labor: true,
@@ -157,13 +160,13 @@ export default function PriceCalculator() {
       </div>
 
       {/* CTA Button */}
-      <Link
-        href="/ajanlatkeres"
+      <button
+        onClick={onQuoteClick}
         className="btn-accent w-full flex items-center justify-center gap-2 text-lg"
       >
         Ajánlatot Kérek
         <ArrowRight size={20} />
-      </Link>
+      </button>
 
       <p className="text-xs text-center text-neutral-offwhite mt-4">
         * Az árak tájékoztató jellegűek. Pontos árajánlatért töltse ki az űrlapot.

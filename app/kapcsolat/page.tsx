@@ -3,8 +3,10 @@
 import Link from 'next/link'
 import { MapPin, Phone, Mail, Clock } from 'lucide-react'
 import ScrollReveal from '@/components/ScrollReveal'
+import { useQuoteModal } from '@/hooks/useQuoteModal'
 
 export default function ContactPage() {
+  const { openQuoteModal, QuoteModalComponent } = useQuoteModal()
   return (
     <>
       {/* Hero Section */}
@@ -167,9 +169,10 @@ export default function ContactPage() {
             <p className="text-lg text-neutral-mediumgray mb-8">
               Töltse ki online ajánlatkérő űrlapunkat, és munkatársaink 24 órán belül felveszik Önnel a kapcsolatot.
             </p>
-            <Link href="/ajanlatkeres" className="btn-primary text-lg px-10 py-4 inline-block">
+            <button onClick={openQuoteModal} className="btn-primary text-lg px-10 py-4">
               Ajánlatkérő Űrlap
-            </Link>
+            </button>
+            <QuoteModalComponent />
           </ScrollReveal>
         </div>
       </section>

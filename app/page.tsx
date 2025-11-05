@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic'
 import { Beaker, TrendingUp, Plane, CheckCircle, ArrowRight, ChevronDown } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import ScrollReveal from '@/components/ScrollReveal'
+import QuoteModal from '@/components/QuoteModal'
 
 // Lazy load components that are below the fold
 const PriceCalculator = dynamic(() => import('@/components/PriceCalculator'), {
@@ -30,6 +31,7 @@ const LiveStats = dynamic(() => import('@/components/LiveStats'), {
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0)
+  const [quoteModalOpen, setQuoteModalOpen] = useState(false)
 
   useEffect(() => {
     let ticking = false
@@ -78,9 +80,12 @@ export default function Home() {
             Akkreditált laboratóriumi vizsgálatok és szakértői tanácsadás 5000+ hektár tapasztalatával
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
-            <Link href="/ajanlatkeres" className="btn-accent text-lg px-10 py-4">
+            <button 
+              onClick={() => setQuoteModalOpen(true)}
+              className="btn-accent text-lg px-10 py-4"
+            >
               Ajánlatot Kérek
-            </Link>
+            </button>
             <Link href="/szolgaltatasok" className="btn-secondary text-lg px-10 py-4">
               Szolgáltatásaink
             </Link>
@@ -88,8 +93,8 @@ export default function Home() {
         </div>
         
         {/* Scroll Indicator - outside content div */}
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce z-20">
-          <ChevronDown size={32} className="text-white opacity-70" />
+        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20">
+          <ChevronDown size={32} className="text-white opacity-70 icon-bounce" />
         </div>
       </section>
 
@@ -109,10 +114,10 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 stagger-children">
             {/* Laboratory Testing Card */}
-            <div className="card group hover:scale-105 transition-all duration-300">
+            <div className="card group hover-glow">
               <div className="flex justify-center mb-6">
                 <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary group-hover:scale-110 transition-all">
-                  <Beaker size={32} className="text-primary group-hover:text-white transition-colors" />
+                  <Beaker size={32} className="text-primary group-hover:text-white transition-colors icon-hover-pulse" />
                 </div>
               </div>
               <h3 className="text-2xl font-heading font-semibold mb-4 text-center">
@@ -127,10 +132,10 @@ export default function Home() {
             </div>
 
             {/* Consulting Card */}
-            <div className="card group hover:scale-105 transition-all duration-300">
+            <div className="card group hover-glow">
               <div className="flex justify-center mb-6">
                 <div className="w-16 h-16 bg-accent-teal/10 rounded-full flex items-center justify-center group-hover:bg-accent-teal group-hover:scale-110 transition-all">
-                  <TrendingUp size={32} className="text-accent-teal group-hover:text-white transition-colors" />
+                  <TrendingUp size={32} className="text-accent-teal group-hover:text-white transition-colors icon-hover-bounce" />
                 </div>
               </div>
               <h3 className="text-2xl font-heading font-semibold mb-4 text-center">
@@ -145,10 +150,10 @@ export default function Home() {
             </div>
 
             {/* Drone Survey Card */}
-            <div className="card group hover:scale-105 transition-all duration-300">
+            <div className="card group hover-glow">
               <div className="flex justify-center mb-6">
                 <div className="w-16 h-16 bg-accent-cyan/10 rounded-full flex items-center justify-center group-hover:bg-accent-cyan group-hover:scale-110 transition-all">
-                  <Plane size={32} className="text-accent-cyan group-hover:text-white transition-colors" />
+                  <Plane size={32} className="text-accent-cyan group-hover:text-white transition-colors icon-hover-spin" />
                 </div>
               </div>
               <h3 className="text-2xl font-heading font-semibold mb-4 text-center">
@@ -334,7 +339,7 @@ export default function Home() {
 
             {/* Right - Calculator */}
             <ScrollReveal delay={0.2} direction="right">
-              <PriceCalculator />
+              <PriceCalculator onQuoteClick={() => setQuoteModalOpen(true)} />
             </ScrollReveal>
           </div>
         </div>
@@ -354,9 +359,12 @@ export default function Home() {
               Szakértőink készséggel állnak rendelkezésére, hogy megtalálják az Ön gazdaságának legmegfelelőbb megoldást.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/ajanlatkeres" className="btn-accent text-lg px-10 py-4">
+              <button 
+                onClick={() => setQuoteModalOpen(true)}
+                className="btn-accent text-lg px-10 py-4"
+              >
                 Kapcsolatfelvétel
-              </Link>
+              </button>
               <Link href="/arlista" className="bg-white text-primary hover:bg-neutral-offwhite font-semibold py-4 px-10 rounded-lg transition-all duration-300 text-lg">
                 Árlista Megtekintése
               </Link>
@@ -364,6 +372,12 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Quote Modal */}
+      <QuoteModal 
+        isOpen={quoteModalOpen} 
+        onClose={() => setQuoteModalOpen(false)} 
+      />
     </main>
   )
 }

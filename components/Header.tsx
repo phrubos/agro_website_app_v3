@@ -4,12 +4,14 @@ import Link from 'next/link'
 import { useState, useEffect, useRef } from 'react'
 import { Menu, X, ChevronDown } from 'lucide-react'
 import MobileMenu from './MobileMenu'
+import QuoteModal from './QuoteModal'
 import { useLanguage } from '@/lib/i18n/LanguageContext'
 
 export default function Header() {
-  const { locale, setLocale, t } = useLanguage()
+  const { locale, setLocale, t, isTransitioning } = useLanguage()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false)
+  const [quoteModalOpen, setQuoteModalOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [mounted, setMounted] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -21,6 +23,9 @@ export default function Header() {
 
   // Scroll detection
   useEffect(() => {
+    // Check scroll position immediately on mount
+    setScrolled(window.scrollY > 50)
+    
     const handleScroll = () => {
       setScrolled(window.scrollY > 50)
     }
@@ -94,7 +99,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-1" aria-label="Főmenü">
+          <nav className={`hidden lg:flex items-center space-x-1 ${isTransitioning ? 'language-transitioning' : ''}`} aria-label="Főmenü">
             {navigation.map((item) => (
               <div
                 key={item.name}
@@ -163,46 +168,77 @@ export default function Header() {
           </nav>
 
           {/* CTA Button & Language Switcher */}
-          <div className="hidden lg:flex items-center gap-4">
-            <div className={`flex items-center gap-2 text-sm transition-colors duration-500 ${
-              mounted && scrolled ? 'text-neutral-darkgray' : 'text-white'
+          <div className="hidden lg:flex items-center gap-6">
+            {/* Language Switcher - Pill Design */}
+            <div className={`flex items-center p-1 rounded-full transition-all duration-300 ${
+              mounted && scrolled 
+                ? 'bg-neutral-lightgray' 
+                : 'bg-white/20 backdrop-blur-sm'
             }`}>
               <button
                 onClick={() => setLocale('hu')}
-                className={`font-semibold hover:text-accent-turquoise transition-colors ${
-                  locale === 'hu' ? 'text-accent-teal' : 'opacity-70'
+                className={`px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 ${
+                  locale === 'hu' 
+                    ? mounted && scrolled
+                      ? 'bg-white text-primary shadow-md'
+                      : 'bg-white text-primary shadow-lg'
+                    : mounted && scrolled
+                      ? 'text-neutral-mediumgray hover:text-primary'
+                      : 'text-white/80 hover:text-white'
                 }`}
                 aria-label="Magyar nyelv"
               >
                 HU
               </button>
-              <span>|</span>
               <button
                 onClick={() => setLocale('en')}
-                className={`font-semibold hover:text-accent-turquoise transition-colors ${
-                  locale === 'en' ? 'text-accent-teal' : 'opacity-70'
+                className={`px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 ${
+                  locale === 'en' 
+                    ? mounted && scrolled
+                      ? 'bg-white text-primary shadow-md'
+                      : 'bg-white text-primary shadow-lg'
+                    : mounted && scrolled
+                      ? 'text-neutral-mediumgray hover:text-primary'
+                      : 'text-white/80 hover:text-white'
                 }`}
                 aria-label="English language"
               >
                 EN
               </button>
             </div>
-            <Link
-              href="/ajanlatkeres"
-              className={`font-semibold py-3 px-8 rounded-lg transition-all duration-500 ${
+
+            {/* CTA Button - Gradient Design */}
+            <button
+              onClick={() => setQuoteModalOpen(true)}
+              className={`group relative overflow-hidden font-bold py-3 px-8 rounded-full transition-all duration-300 ${
                 mounted && scrolled
-                  ? 'bg-accent-teal hover:bg-accent-turquoise text-white shadow-lg'
-                  : 'bg-white text-primary hover:bg-neutral-offwhite'
+                  ? 'bg-gradient-accent text-white shadow-lg hover:shadow-xl hover:scale-105'
+                  : 'bg-white text-primary shadow-lg hover:shadow-xl hover:scale-105'
               }`}
             >
-              {t.nav.quote}
-            </Link>
+              <span className="relative z-10">{t.nav.quote}</span>
+              {/* Ripple effect background */}
+              <span className={`absolute inset-0 transition-transform duration-500 ${
+                mounted && scrolled
+                  ? 'bg-white/20 group-hover:scale-150'
+                  : 'bg-primary/10 group-hover:scale-150'
+              } rounded-full scale-0`}></span>
+            </button>
           </div>
 
           {/* Mobile menu */}
-          <MobileMenu scrolled={mounted ? scrolled : false} />
+          <MobileMenu 
+            scrolled={mounted ? scrolled : false}
+            onQuoteClick={() => setQuoteModalOpen(true)}
+          />
         </div>
       </nav>
+
+      {/* Quote Modal */}
+      <QuoteModal 
+        isOpen={quoteModalOpen} 
+        onClose={() => setQuoteModalOpen(false)} 
+      />
     </header>
   )
 }
