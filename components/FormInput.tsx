@@ -36,7 +36,7 @@ export default function FormInput({
 
   return (
     <div>
-      <label className="block text-xs md:text-sm lg:text-base font-semibold mb-1 lg:mb-1.5 text-neutral-darkgray">
+      <label className="block text-xs md:text-sm xl:text-base font-semibold mb-1 xl:mb-1.5 text-neutral-darkgray">
         {label} {required && <span className="text-status-error">*</span>}
       </label>
 

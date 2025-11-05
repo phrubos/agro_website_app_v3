@@ -238,7 +238,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
         </button>
 
         {/* Content */}
-        <div className="pt-8 px-5 pb-4 md:pt-10 md:px-6 md:pb-5 lg:pt-12 lg:px-8 lg:pb-6 xl:pt-14 xl:px-10 xl:pb-8">
+        <div className="pt-8 px-5 pb-4 md:pt-9 md:px-6 md:pb-5 xl:pt-12 xl:px-8 xl:pb-6 2xl:pt-14 2xl:px-10 2xl:pb-8">
           {submitted ? (
             // Success State
             <div className="text-center py-8">
@@ -263,11 +263,11 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
           ) : (
             // Form State
             <form onSubmit={handleSubmit}>
-              <div className="mb-4 lg:mb-6">
-                <h2 className="text-xl md:text-2xl lg:text-3xl font-heading font-bold mb-1 lg:mb-2 text-neutral-darkgray">
+              <div className="mb-3 md:mb-4 xl:mb-6">
+                <h2 className="text-lg md:text-xl xl:text-2xl 2xl:text-3xl font-heading font-bold mb-1 xl:mb-2 text-neutral-darkgray">
                   Ajánlatkérő Űrlap
                 </h2>
-                <p className="text-xs md:text-sm lg:text-base text-neutral-mediumgray">
+                <p className="text-xs md:text-sm xl:text-base text-neutral-mediumgray">
                   {currentStep === 1 && 'Add meg az alapvető kapcsolattartási adataidat'}
                   {currentStep === 2 && 'Válaszd ki a szolgáltatásokat, amelyek érdekelnek'}
                   {currentStep === 3 && 'Írd le részletesen a kérésedet'}
@@ -283,8 +283,8 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
 
               {/* Step 1: Alapadatok */}
               {currentStep === 1 && (
-                <div className="space-y-3 lg:space-y-4 animate-fade-in">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 lg:gap-4">
+                <div className="space-y-2.5 md:space-y-3 xl:space-y-4 animate-fade-in">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 md:gap-3 xl:gap-4">
                     <FormInput
                       label="Teljes Név"
                       name="name"
@@ -360,25 +360,25 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
 
               {/* Step 2: Szolgáltatás */}
               {currentStep === 2 && (
-                <div className="space-y-3 lg:space-y-4 animate-fade-in">
+                <div className="space-y-2.5 md:space-y-3 xl:space-y-4 animate-fade-in">
                   <div>
-                    <label className="block text-xs md:text-sm lg:text-base font-semibold mb-1.5 lg:mb-2 text-neutral-darkgray">
+                    <label className="block text-xs md:text-sm xl:text-base font-semibold mb-1 md:mb-1.5 xl:mb-2 text-neutral-darkgray">
                       Milyen szolgáltatás iránt érdeklődik?
                     </label>
-                    <div className="space-y-1.5 lg:space-y-2">
+                    <div className="space-y-1.5 xl:space-y-2">
                       {[
                         { id: 'lab', label: 'Laboratóriumi vizsgálat' },
                         { id: 'consulting', label: 'Szaktanácsadás' },
                         { id: 'drone', label: 'Drónos felmérés' }
                       ].map(service => (
-                        <label key={service.id} className="flex items-center gap-2 lg:gap-3 cursor-pointer p-2 lg:p-3 rounded-lg border-2 border-neutral-lightgray hover:border-primary transition-colors">
+                        <label key={service.id} className="flex items-center gap-2 xl:gap-3 cursor-pointer p-2 xl:p-3 rounded-lg border-2 border-neutral-lightgray hover:border-primary transition-colors">
                           <input
                             type="checkbox"
                             checked={formData.services.includes(service.id)}
                             onChange={() => handleServiceChange(service.id)}
-                            className="w-4 h-4 lg:w-5 lg:h-5 text-primary rounded focus:ring-primary"
+                            className="w-4 h-4 xl:w-5 xl:h-5 text-primary rounded focus:ring-primary"
                           />
-                          <span className="text-sm lg:text-base text-neutral-darkgray">{service.label}</span>
+                          <span className="text-sm xl:text-base text-neutral-darkgray">{service.label}</span>
                         </label>
                       ))}
                     </div>
@@ -386,25 +386,25 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
 
                   {formData.services.includes('lab') && (
                     <div className="animate-fade-in">
-                      <label className="block text-xs md:text-sm lg:text-base font-semibold mb-1.5 lg:mb-2 text-neutral-darkgray">
+                      <label className="block text-xs md:text-sm xl:text-base font-semibold mb-1 md:mb-1.5 xl:mb-2 text-neutral-darkgray">
                         Minták beküldése
                       </label>
-                      <div className="space-y-1.5 lg:space-y-2">
+                      <div className="space-y-1.5 xl:space-y-2">
                         {[
                           { id: 'bring', label: 'Személyesen hozom' },
                           { id: 'post', label: 'Postán küldöm' },
                           { id: 'pickup', label: 'Kérem a mintavételt' }
                         ].map(option => (
-                          <label key={option.id} className="flex items-center gap-2 lg:gap-3 cursor-pointer p-2 lg:p-3 rounded-lg border-2 border-neutral-lightgray hover:border-primary transition-colors">
+                          <label key={option.id} className="flex items-center gap-2 xl:gap-3 cursor-pointer p-2 xl:p-3 rounded-lg border-2 border-neutral-lightgray hover:border-primary transition-colors">
                             <input
                               type="radio"
                               name="samples"
                               value={option.id}
                               checked={formData.samples === option.id}
                               onChange={(e) => setFormData({...formData, samples: e.target.value})}
-                              className="w-4 h-4 lg:w-5 lg:h-5 text-primary focus:ring-primary"
+                              className="w-4 h-4 xl:w-5 xl:h-5 text-primary focus:ring-primary"
                             />
-                            <span className="text-sm lg:text-base text-neutral-darkgray">{option.label}</span>
+                            <span className="text-sm xl:text-base text-neutral-darkgray">{option.label}</span>
                           </label>
                         ))}
                       </div>
@@ -415,7 +415,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
 
               {/* Step 3: Üzenet */}
               {currentStep === 3 && (
-                <div className="space-y-3 lg:space-y-4 animate-fade-in">
+                <div className="space-y-2.5 md:space-y-3 xl:space-y-4 animate-fade-in">
                   <FormInput
                     label="Részletes kérés / Üzenet"
                     name="message"
@@ -430,12 +430,12 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                     touched={touched.message}
                     required
                     placeholder="Írja le részletesen, miben segíthetünk..."
-                    rows={4}
+                    rows={3}
                   />
 
                   {/* GDPR Consent */}
-                  <div className="pt-2 lg:pt-4 border-t">
-                    <label className="flex items-start gap-2 lg:gap-3 cursor-pointer">
+                  <div className="pt-2 xl:pt-4 border-t">
+                    <label className="flex items-start gap-2 xl:gap-3 cursor-pointer">
                       <input
                         type="checkbox"
                         required
@@ -444,9 +444,9 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                           setFormData({...formData, gdpr: e.target.checked})
                           if (errors.gdpr) setErrors({...errors, gdpr: ''})
                         }}
-                        className="w-4 h-4 lg:w-5 lg:h-5 text-primary rounded focus:ring-primary mt-0.5"
+                        className="w-4 h-4 xl:w-5 xl:h-5 text-primary rounded focus:ring-primary mt-0.5"
                       />
-                      <span className="text-xs md:text-sm lg:text-base text-neutral-darkgray">
+                      <span className="text-xs md:text-sm xl:text-base text-neutral-darkgray">
                         Elfogadom az{' '}
                         <a href="/adatvedelem" target="_blank" className="text-primary hover:underline">
                           adatvédelmi tájékoztatót
@@ -475,7 +475,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
               )}
 
               {/* Navigation Buttons */}
-              <div className="flex justify-between items-center mt-4 lg:mt-6 pt-3 lg:pt-4 border-t">
+              <div className="flex justify-between items-center mt-3 md:mt-4 xl:mt-6 pt-2.5 md:pt-3 xl:pt-4 border-t">
                 {currentStep > 1 ? (
                   <button
                     type="button"

@@ -8,10 +8,10 @@ export default function ProgressBar({ currentStep, totalSteps, stepLabels }: Pro
   const progress = ((currentStep) / totalSteps) * 100
 
   return (
-    <div className="mb-4 lg:mb-6">
+    <div className="mb-3 md:mb-4 xl:mb-6">
       {/* Progress Bar */}
       <div className="relative">
-        <div className="overflow-hidden h-1.5 lg:h-2 mb-3 lg:mb-4 text-xs flex rounded-full bg-neutral-lightgray">
+        <div className="overflow-hidden h-1.5 xl:h-2 mb-2.5 md:mb-3 xl:mb-4 text-xs flex rounded-full bg-neutral-lightgray">
           <div
             style={{ width: `${progress}%` }}
             className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-primary transition-all duration-500 ease-out"
@@ -32,24 +32,24 @@ export default function ProgressBar({ currentStep, totalSteps, stepLabels }: Pro
               className="flex flex-col items-center flex-1"
             >
               <div
-                className={`w-8 h-8 lg:w-10 lg:h-10 rounded-full flex items-center justify-center mb-1.5 lg:mb-2 transition-all duration-300 ${
+                className={`w-7 h-7 md:w-8 md:h-8 xl:w-10 xl:h-10 rounded-full flex items-center justify-center mb-1 md:mb-1.5 xl:mb-2 transition-all duration-300 ${
                   isCompleted
                     ? 'bg-status-success text-white'
                     : isActive
-                    ? 'bg-primary text-white ring-2 lg:ring-4 ring-primary/20'
+                    ? 'bg-primary text-white ring-2 xl:ring-4 ring-primary/20'
                     : 'bg-neutral-lightgray text-neutral-mediumgray'
                 }`}
               >
                 {isCompleted ? (
-                  <svg className="w-5 h-5 lg:w-6 lg:h-6" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4 md:w-5 md:h-5 xl:w-6 xl:h-6" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                 ) : (
-                  <span className="text-sm lg:text-base font-semibold">{stepNumber}</span>
+                  <span className="text-xs md:text-sm xl:text-base font-semibold">{stepNumber}</span>
                 )}
               </div>
               <span
-                className={`text-[10px] md:text-xs lg:text-sm text-center transition-colors ${
+                className={`text-[9px] md:text-[10px] xl:text-xs text-center transition-colors ${
                   isActive ? 'text-primary font-semibold' : 'text-neutral-mediumgray'
                 }`}
               >
