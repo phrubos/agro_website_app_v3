@@ -121,7 +121,7 @@
   }
 
   .input-field {
-    @apply border-2 border-neutral-lightgray rounded-lg px-3 py-2 focus:border-primary-medium focus:outline-none transition-all text-neutral-darkgray text-sm;
+    @apply border-2 border-neutral-lightgray rounded-lg px-3 py-2 lg:px-4 lg:py-3 focus:border-primary-medium focus:outline-none transition-all text-neutral-darkgray text-sm lg:text-base;
   }
 
   .input-field::placeholder {

@@ -36,7 +36,7 @@ export default function FormInput({
 
   return (
     <div>
-      <label className="block text-xs md:text-sm font-semibold mb-1 text-neutral-darkgray">
+      <label className="block text-xs md:text-sm lg:text-base font-semibold mb-1 lg:mb-1.5 text-neutral-darkgray">
         {label} {required && <span className="text-status-error">*</span>}
       </label>
 
@@ -46,7 +46,7 @@ export default function FormInput({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onBlur={onBlur}
-          className={inputClassName}
+          className={`${inputClassName} resize-none`}
           placeholder={placeholder}
           rows={rows || 4}
           required={required}
