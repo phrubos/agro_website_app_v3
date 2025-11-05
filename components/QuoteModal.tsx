@@ -224,21 +224,23 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
       />
 
       {/* Modal */}
-      <div 
+      <div
         ref={modalRef}
-        className="relative bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[85vh] overflow-y-auto animate-fade-in"
+        className="relative bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] lg:max-h-[min(90vh,800px)] flex flex-col animate-fade-in"
       >
-        {/* Close Button */}
-        <button
-          onClick={handleClose}
-          className="absolute top-4 right-4 z-10 p-2 rounded-full hover:bg-neutral-lightgray transition-colors"
-          aria-label="Bezárás"
-        >
-          <X size={24} className="text-neutral-darkgray" />
-        </button>
+        {/* Fixed Header with Close Button */}
+        <div className="flex-shrink-0 pt-6 px-5 md:px-6 xl:px-8 2xl:px-8 pb-4 border-b border-neutral-lightgray">
+          <button
+            onClick={handleClose}
+            className="absolute top-4 right-4 z-10 p-2 rounded-full hover:bg-neutral-lightgray transition-colors"
+            aria-label="Bezárás"
+          >
+            <X size={24} className="text-neutral-darkgray" />
+          </button>
+        </div>
 
-        {/* Content */}
-        <div className="pt-8 px-5 pb-4 md:pt-9 md:px-6 md:pb-5 xl:pt-12 xl:px-8 xl:pb-6 2xl:pt-14 2xl:px-10 2xl:pb-8">
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto px-5 md:px-6 xl:px-8 2xl:px-8 py-4 md:py-5 xl:py-6 2xl:py-6">
           {submitted ? (
             // Success State
             <div className="text-center py-8">
@@ -473,44 +475,47 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                   </div>
                 </div>
               )}
-
-              {/* Navigation Buttons */}
-              <div className="flex justify-between items-center mt-3 md:mt-4 xl:mt-6 pt-2.5 md:pt-3 xl:pt-4 border-t">
-                {currentStep > 1 ? (
-                  <button
-                    type="button"
-                    onClick={prevStep}
-                    className="flex items-center gap-2 px-6 py-3 text-neutral-darkgray hover:text-primary transition-colors"
-                  >
-                    <ArrowLeft size={20} />
-                    Vissza
-                  </button>
-                ) : (
-                  <div></div>
-                )}
-
-                {currentStep < 3 ? (
-                  <button
-                    type="button"
-                    onClick={nextStep}
-                    className="btn-primary flex items-center gap-2"
-                  >
-                    Következő
-                    <ArrowRight size={20} />
-                  </button>
-                ) : (
-                  <LoadingButton
-                    type="submit"
-                    isLoading={isLoading}
-                    className="btn-primary"
-                  >
-                    Küldés
-                  </LoadingButton>
-                )}
-              </div>
             </form>
           )}
         </div>
+
+        {/* Fixed Footer with Navigation Buttons */}
+        {!submitted && (
+          <div className="flex-shrink-0 flex justify-between items-center px-5 md:px-6 xl:px-8 2xl:px-8 py-4 md:py-4 border-t border-neutral-lightgray bg-white rounded-b-2xl">
+            {currentStep > 1 ? (
+              <button
+                type="button"
+                onClick={prevStep}
+                className="flex items-center gap-2 px-6 py-3 text-neutral-darkgray hover:text-primary transition-colors font-semibold"
+              >
+                <ArrowLeft size={20} />
+                Vissza
+              </button>
+            ) : (
+              <div></div>
+            )}
+
+            {currentStep < 3 ? (
+              <button
+                type="button"
+                onClick={nextStep}
+                className="btn-primary flex items-center gap-2"
+              >
+                Következő
+                <ArrowRight size={20} />
+              </button>
+            ) : (
+              <LoadingButton
+                type="button"
+                onClick={handleSubmit}
+                isLoading={isLoading}
+                className="btn-primary"
+              >
+                Küldés
+              </LoadingButton>
+            )}
+          </div>
+        )}
       </div>
     </div>
   )
