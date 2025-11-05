@@ -36,7 +36,7 @@ export default function FormInput({
 
   return (
     <div>
-      <label className="block text-sm font-semibold mb-1.5 text-neutral-darkgray">
+      <label className="block text-xs md:text-sm font-semibold mb-1 text-neutral-darkgray">
         {label} {required && <span className="text-status-error">*</span>}
       </label>
 
@@ -48,7 +48,7 @@ export default function FormInput({
           onBlur={onBlur}
           className={inputClassName}
           placeholder={placeholder}
-          rows={rows || 6}
+          rows={rows || 4}
           required={required}
           aria-invalid={hasError ? 'true' : 'false'}
           aria-describedby={hasError ? `${name}-error` : undefined}

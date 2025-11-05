@@ -51,7 +51,7 @@ export default function Home() {
   return (
     <main>
       {/* Hero Section */}
-      <section className="relative flex items-center justify-center overflow-hidden -mt-20 hero-section">
+      <section className="relative flex items-center justify-center overflow-hidden pt-20 md:-mt-20 hero-section">
         {/* Background Image with Parallax */}
         <div
           className="absolute inset-0 will-change-transform"
