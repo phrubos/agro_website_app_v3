@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 export async function POST(request: NextRequest) {
   try {
     const { name, email, phone, company, area, services, samples, message } = await request.json()
@@ -47,6 +45,7 @@ export async function POST(request: NextRequest) {
 
     // Send email via Resend (only if API key is configured)
     if (process.env.RESEND_API_KEY) {
+      const resend = new Resend(process.env.RESEND_API_KEY)
       const data = await resend.emails.send({
         from: 'AgroLab Weboldal <onboarding@resend.dev>',
         to: ['peter.hrubos.szte@gmail.com'],
