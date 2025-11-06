@@ -447,24 +447,104 @@ input[type="checkbox"]:checked {
   .stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
   .stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
 
-  /* Language transition animation */
-  @keyframes languageFade {
+  /* Enhanced Language Transition - Slide & Morph Effect */
+  @keyframes languageSlideOut {
     0% {
       opacity: 1;
-      transform: translateY(0);
-    }
-    50% {
-      opacity: 0;
-      transform: translateY(-5px);
+      transform: translateX(0);
+      filter: blur(0);
     }
     100% {
-      opacity: 1;
-      transform: translateY(0);
+      opacity: 0;
+      transform: translateX(-20px);
+      filter: blur(4px);
     }
   }
 
-  .language-transitioning {
-    animation: languageFade 0.3s ease-in-out;
+  @keyframes languageSlideIn {
+    0% {
+      opacity: 0;
+      transform: translateX(20px);
+      filter: blur(4px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+      filter: blur(0);
+    }
+  }
+
+  /* Apply animation to all major content elements */
+  .language-transitioning > *,
+  .language-transitioning main > *,
+  .language-transitioning header,
+  .language-transitioning footer {
+    animation: languageSlideOut 200ms cubic-bezier(0.4, 0, 0.6, 1) forwards,
+               languageSlideIn 250ms cubic-bezier(0.22, 1, 0.36, 1) 200ms forwards;
+  }
+
+  /* Stagger effect for sections - creates wave motion */
+  .language-transitioning main > section:nth-child(1),
+  .language-transitioning main > section:nth-child(1) > * {
+    animation-delay: 0ms, 200ms;
+  }
+  
+  .language-transitioning main > section:nth-child(2),
+  .language-transitioning main > section:nth-child(2) > * {
+    animation-delay: 40ms, 240ms;
+  }
+  
+  .language-transitioning main > section:nth-child(3),
+  .language-transitioning main > section:nth-child(3) > * {
+    animation-delay: 80ms, 280ms;
+  }
+  
+  .language-transitioning main > section:nth-child(4),
+  .language-transitioning main > section:nth-child(4) > * {
+    animation-delay: 120ms, 320ms;
+  }
+  
+  .language-transitioning main > section:nth-child(5),
+  .language-transitioning main > section:nth-child(5) > * {
+    animation-delay: 160ms, 360ms;
+  }
+  
+  /* Header and Footer - instant, no stagger */
+  .language-transitioning header,
+  .language-transitioning header *,
+  .language-transitioning footer,
+  .language-transitioning footer * {
+    animation-delay: 0ms, 200ms;
+  }
+
+  /* Language Switcher Button Animations */
+  @keyframes languageButtonPulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.15);
+    }
+    100% {
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes slideIndicator {
+    0% {
+      transform: scale(0.95);
+    }
+    50% {
+      transform: scale(1.02);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  /* Apply to language buttons on click */
+  .language-btn-active {
+    animation: languageButtonPulse 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 }
 

@@ -1,31 +1,33 @@
 'use client'
 
 import { Award, Shield, CheckCircle, TrendingUp } from 'lucide-react'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
 
 export default function TrustBadges() {
+  const { t } = useLanguage()
   const badges = [
     {
       icon: Award,
-      title: 'NAH Akkreditált',
-      subtitle: 'Nemzeti Akkreditáló Testület',
+      title: t.trustBadges.accredited,
+      subtitle: 'National Accreditation Authority',
       color: 'text-accent-teal'
     },
     {
       icon: Shield,
       title: 'ISO 9001:2015',
-      subtitle: 'Minőségirányítási Rendszer',
+      subtitle: 'Quality Management System',
       color: 'text-primary'
     },
     {
       icon: CheckCircle,
       title: 'MSZ EN ISO/IEC',
-      subtitle: 'Laboratóriumi Szabványok',
+      subtitle: 'Laboratory Standards',
       color: 'text-accent-cyan'
     },
     {
       icon: TrendingUp,
-      title: '15+ Év Tapasztalat',
-      subtitle: 'Megbízható Partnere',
+      title: t.trustBadges.experience,
+      subtitle: 'Your Reliable Partner',
       color: 'text-status-success'
     }
   ]
@@ -35,10 +37,10 @@ export default function TrustBadges() {
       <div className="container-custom">
         <div className="text-center mb-12">
           <h3 className="text-3xl font-heading font-bold text-neutral-darkgray mb-2">
-            Akkreditált Minőség
+            Accredited Quality
           </h3>
           <p className="text-neutral-mediumgray">
-            Szigorú szabványoknak megfelelő vizsgálatok
+            Tests meeting strict standards
           </p>
         </div>
 

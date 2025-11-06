@@ -7,6 +7,7 @@ import { Beaker, TrendingUp, Plane, CheckCircle, ArrowRight, ChevronDown } from 
 import { useEffect, useState } from 'react'
 import ScrollReveal from '@/components/ScrollReveal'
 import QuoteModal from '@/components/QuoteModal'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
 
 // Lazy load components that are below the fold
 const PriceCalculator = dynamic(() => import('@/components/PriceCalculator'), {
@@ -30,6 +31,7 @@ const LiveStats = dynamic(() => import('@/components/LiveStats'), {
 })
 
 export default function Home() {
+  const { t } = useLanguage()
   const [scrollY, setScrollY] = useState(0)
   const [quoteModalOpen, setQuoteModalOpen] = useState(false)
 
@@ -74,20 +76,20 @@ export default function Home() {
         {/* Hero Content */}
         <div className="relative container-custom text-center text-white z-10 py-20">
           <h1 className="text-5xl md:text-7xl font-heading font-bold mb-6 animate-fade-in">
-            Precíziós Mezőgazdaság<br />Tudományos Alapokon
+            {t.hero.title.split(' ').slice(0, 2).join(' ')}<br />{t.hero.title.split(' ').slice(2).join(' ')}
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-neutral-offwhite max-w-3xl mx-auto">
-            Akkreditált laboratóriumi vizsgálatok és szakértői tanácsadás 5000+ hektár tapasztalatával
+            {t.hero.subtitle}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
             <button 
               onClick={() => setQuoteModalOpen(true)}
               className="btn-accent text-lg px-10 py-4"
             >
-              Ajánlatot Kérek
+              {t.hero.cta}
             </button>
             <Link href="/szolgaltatasok" className="btn-secondary text-lg px-10 py-4">
-              Szolgáltatásaink
+              {t.hero.servicesBtn}
             </Link>
           </div>
         </div>
@@ -104,10 +106,10 @@ export default function Home() {
           <ScrollReveal>
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-heading font-bold mb-4">
-                Szolgáltatásaink
+                {t.homePage.servicesSection.title}
               </h2>
               <p className="text-lg text-neutral-mediumgray max-w-2xl mx-auto">
-                Komplex megoldások a modern mezőgazdaság minden területére
+                {t.homePage.servicesSection.subtitle}
               </p>
             </div>
           </ScrollReveal>
@@ -121,13 +123,13 @@ export default function Home() {
                 </div>
               </div>
               <h3 className="text-2xl font-heading font-semibold mb-4 text-center">
-                Laboratóriumi Vizsgálatok
+                {t.homePage.servicesSection.labTitle}
               </h3>
               <p className="text-neutral-mediumgray mb-6 text-center">
-                Talaj, növény, trágya és öntözővíz minták akkreditált vizsgálata. Pontos eredmények, gyors átfutás.
+                {t.homePage.servicesSection.labDescription}
               </p>
               <Link href="/szolgaltatasok/laboratorium" className="flex items-center justify-center gap-2 text-primary hover:text-primary-medium transition-colors font-semibold">
-                Részletek <ArrowRight size={20} />
+                {t.homePage.servicesSection.details} <ArrowRight size={20} />
               </Link>
             </div>
 
@@ -139,13 +141,13 @@ export default function Home() {
                 </div>
               </div>
               <h3 className="text-2xl font-heading font-semibold mb-4 text-center">
-                Szaktanácsadás
+                {t.homePage.servicesSection.consultingTitle}
               </h3>
               <p className="text-neutral-mediumgray mb-6 text-center">
-                Tápanyag-gazdálkodási tanácsadás nagyértékű kultúrákban. Szőlő, gyümölcs, ipari zöldség szakértelem.
+                {t.homePage.servicesSection.consultingDescription}
               </p>
               <Link href="/szolgaltatasok/szaktanacsadas" className="flex items-center justify-center gap-2 text-accent-teal hover:text-accent-turquoise transition-colors font-semibold">
-                Részletek <ArrowRight size={20} />
+                {t.homePage.servicesSection.details} <ArrowRight size={20} />
               </Link>
             </div>
 
@@ -157,13 +159,13 @@ export default function Home() {
                 </div>
               </div>
               <h3 className="text-2xl font-heading font-semibold mb-4 text-center">
-                Drónos Felmérés
+                {t.homePage.servicesSection.droneTitle}
               </h3>
               <p className="text-neutral-mediumgray mb-6 text-center">
-                Szántóföldi növény állapot felmérés precíziós technológiával. Multispektrális képalkotás, NDVI elemzés.
+                {t.homePage.servicesSection.droneDescription}
               </p>
               <Link href="/szolgaltatasok/dron" className="flex items-center justify-center gap-2 text-accent-cyan hover:text-accent-turquoise transition-colors font-semibold">
-                Részletek <ArrowRight size={20} />
+                {t.homePage.servicesSection.details} <ArrowRight size={20} />
               </Link>
             </div>
           </div>
@@ -194,7 +196,7 @@ export default function Home() {
             <ScrollReveal delay={0.2}>
               <div className="order-1 lg:order-2">
               <h2 className="text-4xl md:text-5xl font-heading font-bold mb-8">
-                Miért Válasszon Minket?
+                {t.homePage.whyChoose.title}
               </h2>
               
               <div className="space-y-6">
@@ -203,9 +205,9 @@ export default function Home() {
                     <CheckCircle className="text-primary" size={28} />
                   </div>
                   <div>
-                    <h4 className="text-xl font-semibold mb-2">Akkreditált Laboratórium</h4>
+                    <h4 className="text-xl font-semibold mb-2">{t.homePage.whyChoose.accreditedTitle}</h4>
                     <p className="text-neutral-mediumgray">
-                      NAH (Nemzeti Akkreditáló Hatóság) által elismert vizsgálatok
+                      {t.homePage.whyChoose.accreditedDesc}
                     </p>
                   </div>
                 </div>
@@ -215,9 +217,9 @@ export default function Home() {
                     <CheckCircle className="text-primary" size={28} />
                   </div>
                   <div>
-                    <h4 className="text-xl font-semibold mb-2">5000+ Hektár Tapasztalat</h4>
+                    <h4 className="text-xl font-semibold mb-2">{t.homePage.whyChoose.experienceTitle}</h4>
                     <p className="text-neutral-mediumgray">
-                      Szántóföld, szőlő, gyümölcsös, hajtatás területeken
+                      {t.homePage.whyChoose.experienceDesc}
                     </p>
                   </div>
                 </div>
@@ -227,9 +229,9 @@ export default function Home() {
                     <CheckCircle className="text-primary" size={28} />
                   </div>
                   <div>
-                    <h4 className="text-xl font-semibold mb-2">Szakértői Csapat</h4>
+                    <h4 className="text-xl font-semibold mb-2">{t.homePage.whyChoose.expertTitle}</h4>
                     <p className="text-neutral-mediumgray">
-                      Agrármérnökök, növényvédő szakmérnökök
+                      {t.homePage.whyChoose.expertDesc}
                     </p>
                   </div>
                 </div>
@@ -239,9 +241,9 @@ export default function Home() {
                     <CheckCircle className="text-primary" size={28} />
                   </div>
                   <div>
-                    <h4 className="text-xl font-semibold mb-2">Gyors Eredményszolgáltatás</h4>
+                    <h4 className="text-xl font-semibold mb-2">{t.homePage.whyChoose.fastResultsTitle}</h4>
                     <p className="text-neutral-mediumgray">
-                      Laboratóriumi vizsgálatok 5-7 napon belül
+                      {t.homePage.whyChoose.fastResultsDesc}
                     </p>
                   </div>
                 </div>
@@ -251,9 +253,9 @@ export default function Home() {
                     <CheckCircle className="text-primary" size={28} />
                   </div>
                   <div>
-                    <h4 className="text-xl font-semibold mb-2">Modern Technológia</h4>
+                    <h4 className="text-xl font-semibold mb-2">{t.homePage.whyChoose.technologyTitle}</h4>
                     <p className="text-neutral-mediumgray">
-                      Drónos felmérés, precíziós eszközpark
+                      {t.homePage.whyChoose.technologyDesc}
                     </p>
                   </div>
                 </div>
@@ -273,10 +275,10 @@ export default function Home() {
           <ScrollReveal>
             <div className="text-center mb-12">
               <h2 className="text-4xl md:text-5xl font-heading font-bold mb-4">
-                Lássa A Különbséget
+                {t.homePage.ndviSection.title}
               </h2>
               <p className="text-lg text-neutral-mediumgray max-w-2xl mx-auto">
-                Drónos NDVI felmérésünk segítségével időben azonosíthatja a problémás területeket
+                {t.homePage.ndviSection.subtitle}
               </p>
             </div>
           </ScrollReveal>
@@ -285,23 +287,23 @@ export default function Home() {
             <BeforeAfterSlider
               beforeImage="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1200"
               afterImage="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=1200"
-              beforeLabel="Problémás Terület"
-              afterLabel="Javított Terület"
+              beforeLabel={t.homePage.ndviSection.beforeLabel}
+              afterLabel={t.homePage.ndviSection.afterLabel}
             />
           </ScrollReveal>
 
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center p-6">
-              <div className="text-3xl font-bold text-status-warning mb-2">Piros/Sárga</div>
-              <p className="text-neutral-mediumgray">Stressz, tápanyaghiány</p>
+              <div className="text-3xl font-bold text-status-warning mb-2">{t.homePage.ndviSection.redYellow}</div>
+              <p className="text-neutral-mediumgray">{t.homePage.ndviSection.redYellowDesc}</p>
             </div>
             <div className="text-center p-6">
-              <div className="text-3xl font-bold text-accent-cyan mb-2">Zöld/Türkiz</div>
-              <p className="text-neutral-mediumgray">Átlagos növényállomány</p>
+              <div className="text-3xl font-bold text-accent-cyan mb-2">{t.homePage.ndviSection.greenTurquoise}</div>
+              <p className="text-neutral-mediumgray">{t.homePage.ndviSection.greenTurquoiseDesc}</p>
             </div>
             <div className="text-center p-6">
-              <div className="text-3xl font-bold text-status-success mb-2">Sötétzöld</div>
-              <p className="text-neutral-mediumgray">Egészséges, optimális</p>
+              <div className="text-3xl font-bold text-status-success mb-2">{t.homePage.ndviSection.darkGreen}</div>
+              <p className="text-neutral-mediumgray">{t.homePage.ndviSection.darkGreenDesc}</p>
             </div>
           </div>
         </div>
@@ -315,23 +317,23 @@ export default function Home() {
             <ScrollReveal>
               <div>
                 <h2 className="text-4xl md:text-5xl font-heading font-bold mb-6">
-                  Kalkulálja Meg Költségét
+                  {t.homePage.priceCalculator.title}
                 </h2>
                 <p className="text-lg text-neutral-mediumgray mb-6">
-                  Használja interaktív árkalkulátorunkat, hogy azonnal láthassa becsült költségeit. Válassza ki a gazdálkodási területét és a kívánt szolgáltatásokat.
+                  {t.homePage.priceCalculator.subtitle}
                 </p>
                 <ul className="space-y-4">
                   <li className="flex items-start gap-3">
                     <CheckCircle className="text-accent-teal flex-shrink-0 mt-1" size={24} />
-                    <span className="text-neutral-darkgray">Átlátható, versenyképes árak</span>
+                    <span className="text-neutral-darkgray">{t.homePage.priceCalculator.benefit1}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle className="text-accent-teal flex-shrink-0 mt-1" size={24} />
-                    <span className="text-neutral-darkgray">Testreszabható szolgáltatáscsomagok</span>
+                    <span className="text-neutral-darkgray">{t.homePage.priceCalculator.benefit2}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle className="text-accent-teal flex-shrink-0 mt-1" size={24} />
-                    <span className="text-neutral-darkgray">Mennyiségi kedvezmények nagy területekre</span>
+                    <span className="text-neutral-darkgray">{t.homePage.priceCalculator.benefit3}</span>
                   </li>
                 </ul>
               </div>
@@ -353,20 +355,20 @@ export default function Home() {
         <div className="container-custom">
           <div className="bg-gradient-to-r from-primary to-primary-medium rounded-3xl p-12 md:p-16 text-center text-white shadow-2xl">
             <h2 className="text-3xl md:text-5xl font-heading font-bold mb-6">
-              Kérdése Van? Kérjen Személyre Szabott Ajánlatot!
+              {t.homePage.ctaSection.title}
             </h2>
             <p className="text-lg md:text-xl mb-8 text-neutral-offwhite max-w-2xl mx-auto">
-              Szakértőink készséggel állnak rendelkezésére, hogy megtalálják az Ön gazdaságának legmegfelelőbb megoldást.
+              {t.homePage.ctaSection.subtitle}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button 
                 onClick={() => setQuoteModalOpen(true)}
                 className="btn-accent text-lg px-10 py-4"
               >
-                Kapcsolatfelvétel
+                {t.homePage.ctaSection.contactBtn}
               </button>
               <Link href="/arlista" className="bg-white text-primary hover:bg-neutral-offwhite font-semibold py-4 px-10 rounded-lg transition-all duration-300 text-lg">
-                Árlista Megtekintése
+                {t.homePage.ctaSection.pricelistBtn}
               </Link>
             </div>
           </div>

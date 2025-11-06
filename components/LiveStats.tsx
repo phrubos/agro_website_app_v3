@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react'
 import { Beaker, Users, Clock, MapPin } from 'lucide-react'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
 
 interface StatProps {
   end: number
@@ -71,30 +72,32 @@ function AnimatedCounter({ end, duration = 2000, suffix = '', prefix = '' }: Sta
 }
 
 export default function LiveStats() {
+  const { t } = useLanguage()
+  
   const stats = [
     {
       icon: Beaker,
       value: 15000,
       suffix: '+',
-      label: 'Elemzés Évente',
+      label: t.liveStats.tests,
     },
     {
       icon: Users,
       value: 500,
       suffix: '+',
-      label: 'Elégedett Ügyfél',
+      label: t.liveStats.clients,
     },
     {
       icon: Clock,
       value: 24,
       suffix: 'h',
-      label: 'Gyors Átfutás',
+      label: 'Fast Turnaround',
     },
     {
       icon: MapPin,
       value: 15,
-      suffix: ' év',
-      label: 'Tapasztalat',
+      suffix: ' years',
+      label: t.liveStats.experience,
     }
   ]
 
@@ -111,10 +114,10 @@ export default function LiveStats() {
       <div className="container-custom relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-heading font-bold mb-4 text-neutral-darkgray">
-            Számokban Kifejezve
+            {t.liveStats.title}
           </h2>
           <p className="text-lg text-neutral-mediumgray max-w-2xl mx-auto">
-            A tapasztalat és megbízhatóság, amire számíthat
+            Experience and reliability you can count on
           </p>
         </div>
 

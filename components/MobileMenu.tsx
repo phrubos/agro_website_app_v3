@@ -11,7 +11,7 @@ interface MobileMenuProps {
 }
 
 export default function MobileMenu({ scrolled = false, onQuoteClick }: MobileMenuProps) {
-  const { locale, setLocale } = useLanguage()
+  const { locale, setLocale, t } = useLanguage()
   const [isOpen, setIsOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -94,7 +94,7 @@ export default function MobileMenu({ scrolled = false, onQuoteClick }: MobileMen
             ? 'text-neutral-darkgray hover:bg-neutral-lightgray/50'
             : 'text-white hover:bg-white/10'
         }`}
-        aria-label={isOpen ? 'Menü bezárása' : 'Menü megnyitása'}
+        aria-label={isOpen ? t.common.close : t.common.menu}
         aria-expanded={isOpen}
         aria-controls="mobile-menu"
       >
@@ -118,7 +118,7 @@ export default function MobileMenu({ scrolled = false, onQuoteClick }: MobileMen
             className="fixed top-0 right-0 bottom-0 w-80 bg-white z-[70] lg:hidden shadow-2xl flex flex-col"
             role="dialog"
             aria-modal="true"
-            aria-label="Mobil navigációs menü"
+            aria-label={t.common.menu}
           >
             {/* Header with Close Button - Fixed */}
             <div className="flex items-center justify-between p-6 border-b border-neutral-lightgray flex-shrink-0">
@@ -132,7 +132,7 @@ export default function MobileMenu({ scrolled = false, onQuoteClick }: MobileMen
                 ref={closeButtonRef}
                 onClick={closeMenu}
                 className="p-2 hover:bg-neutral-offwhite rounded-lg transition-colors text-neutral-darkgray"
-                aria-label="Menü bezárása"
+                aria-label={t.common.close}
               >
                 <X size={24} />
               </button>
@@ -142,13 +142,13 @@ export default function MobileMenu({ scrolled = false, onQuoteClick }: MobileMen
             <div className="flex-1 overflow-y-auto p-6">
 
               {/* Navigation Links */}
-              <nav className="space-y-2" aria-label="Mobil főmenü">
+              <nav className="space-y-2" aria-label={t.common.menu}>
                 <Link
                   href="/"
                   onClick={closeMenu}
                   className="block px-4 py-3 text-neutral-darkgray hover:bg-neutral-offwhite rounded-lg transition-colors font-semibold"
                 >
-                  Főoldal
+                  {t.nav.home}
                 </Link>
 
                 {/* Services Dropdown */}
@@ -159,7 +159,7 @@ export default function MobileMenu({ scrolled = false, onQuoteClick }: MobileMen
                     aria-expanded={servicesOpen}
                     aria-controls="mobile-services-menu"
                   >
-                    Szolgáltatások
+                    {t.nav.services}
                     <ChevronDown
                       size={20}
                       className={`transition-transform ${servicesOpen ? 'rotate-180' : ''}`}
@@ -174,21 +174,21 @@ export default function MobileMenu({ scrolled = false, onQuoteClick }: MobileMen
                         onClick={closeMenu}
                         className="block px-4 py-2 text-neutral-mediumgray hover:bg-neutral-offwhite rounded-lg transition-colors"
                       >
-                        Laboratóriumi Vizsgálatok
+                        {t.services.laboratory}
                       </Link>
                       <Link
                         href="/szolgaltatasok/szaktanacsadas"
                         onClick={closeMenu}
                         className="block px-4 py-2 text-neutral-mediumgray hover:bg-neutral-offwhite rounded-lg transition-colors"
                       >
-                        Szaktanácsadás
+                        {t.services.consulting}
                       </Link>
                       <Link
                         href="/szolgaltatasok/dron"
                         onClick={closeMenu}
                         className="block px-4 py-2 text-neutral-mediumgray hover:bg-neutral-offwhite rounded-lg transition-colors"
                       >
-                        Drónos Felmérés
+                        {t.services.drone}
                       </Link>
                     </div>
                   )}
@@ -199,7 +199,7 @@ export default function MobileMenu({ scrolled = false, onQuoteClick }: MobileMen
                   onClick={closeMenu}
                   className="block px-4 py-3 text-neutral-darkgray hover:bg-neutral-offwhite rounded-lg transition-colors font-semibold"
                 >
-                  Árlista
+                  {t.nav.pricelist}
                 </Link>
 
                 <Link
@@ -207,7 +207,7 @@ export default function MobileMenu({ scrolled = false, onQuoteClick }: MobileMen
                   onClick={closeMenu}
                   className="block px-4 py-3 text-neutral-darkgray hover:bg-neutral-offwhite rounded-lg transition-colors font-semibold"
                 >
-                  Rólunk
+                  {t.nav.about}
                 </Link>
 
                 <Link
@@ -215,7 +215,7 @@ export default function MobileMenu({ scrolled = false, onQuoteClick }: MobileMen
                   onClick={closeMenu}
                   className="block px-4 py-3 text-neutral-darkgray hover:bg-neutral-offwhite rounded-lg transition-colors font-semibold"
                 >
-                  Kapcsolat
+                  {t.nav.contact}
                 </Link>
 
                 {/* CTA Button */}
@@ -226,30 +226,30 @@ export default function MobileMenu({ scrolled = false, onQuoteClick }: MobileMen
                   }}
                   className="block w-full mt-4 px-4 py-3 bg-gradient-accent text-white text-center font-bold rounded-lg transition-colors hover:shadow-lg"
                 >
-                  Ajánlatot Kérek
+                  {t.nav.quote}
                 </button>
               </nav>
 
-              {/* Language Switcher */}
+              {/* Language Switcher - Enhanced with animation */}
               <div className="mt-6 pt-6 border-t border-neutral-lightgray">
-                <p className="text-xs font-semibold text-neutral-mediumgray mb-3 px-4">Nyelv / Language</p>
+                <p className="text-xs font-semibold text-neutral-mediumgray mb-3 px-4">{t.common.language}</p>
                 <div className="flex gap-2">
                   <button
                     onClick={() => setLocale('hu')}
-                    className={`flex-1 px-4 py-2.5 rounded-lg font-semibold text-sm transition-all ${
+                    className={`flex-1 px-4 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300 ${
                       locale === 'hu'
-                        ? 'bg-primary text-white shadow-md'
-                        : 'bg-neutral-lightgray text-neutral-darkgray hover:bg-neutral-gray/20'
+                        ? 'bg-primary text-white shadow-md scale-105'
+                        : 'bg-neutral-lightgray text-neutral-darkgray hover:bg-neutral-gray/20 hover:scale-105'
                     }`}
                   >
                     Magyar
                   </button>
                   <button
                     onClick={() => setLocale('en')}
-                    className={`flex-1 px-4 py-2.5 rounded-lg font-semibold text-sm transition-all ${
+                    className={`flex-1 px-4 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300 ${
                       locale === 'en'
-                        ? 'bg-primary text-white shadow-md'
-                        : 'bg-neutral-lightgray text-neutral-darkgray hover:bg-neutral-gray/20'
+                        ? 'bg-primary text-white shadow-md scale-105'
+                        : 'bg-neutral-lightgray text-neutral-darkgray hover:bg-neutral-gray/20 hover:scale-105'
                     }`}
                   >
                     English

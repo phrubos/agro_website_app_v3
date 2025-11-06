@@ -29,23 +29,12 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const setLocale = (newLocale: Locale) => {
     if (newLocale === locale) return // Ne csináljunk semmit ha ugyanaz
     
-    // Start transition
-    setIsTransitioning(true)
-    
-    // Fade out effect
-    setTimeout(() => {
-      setLocaleState(newLocale)
-      setT(getTranslations(newLocale))
-      localStorage.setItem('locale', newLocale)
-      
-      // Update HTML lang attribute
-      document.documentElement.lang = newLocale
-      
-      // Fade in effect
-      setTimeout(() => {
-        setIsTransitioning(false)
-      }, 150)
-    }, 150)
+    // Instant language switch - no animation, no white screen
+    // Just update immediately for best UX
+    setLocaleState(newLocale)
+    setT(getTranslations(newLocale))
+    localStorage.setItem('locale', newLocale)
+    document.documentElement.lang = newLocale
   }
 
   return (

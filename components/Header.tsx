@@ -62,20 +62,20 @@ export default function Header() {
   }, [servicesDropdownOpen])
 
   const navigation = [
-    { name: 'Főoldal', href: '/' },
+    { name: t.nav.home, href: '/' },
     { 
-      name: 'Szolgáltatások', 
+      name: t.nav.services, 
       href: '/szolgaltatasok',
       hasDropdown: true,
       subItems: [
-        { name: 'Laboratóriumi Vizsgálatok', href: '/szolgaltatasok/laboratorium' },
-        { name: 'Szaktanácsadás', href: '/szolgaltatasok/szaktanacsadas' },
-        { name: 'Drónos Felmérés', href: '/szolgaltatasok/dron' },
+        { name: t.services.laboratory, href: '/szolgaltatasok/laboratorium' },
+        { name: t.services.consulting, href: '/szolgaltatasok/szaktanacsadas' },
+        { name: t.services.drone, href: '/szolgaltatasok/dron' },
       ]
     },
-    { name: 'Árlista', href: '/arlista' },
-    { name: 'Rólunk', href: '/rolunk' },
-    { name: 'Kapcsolat', href: '/kapcsolat' },
+    { name: t.nav.pricelist, href: '/arlista' },
+    { name: t.nav.about, href: '/rolunk' },
+    { name: t.nav.contact, href: '/kapcsolat' },
   ]
 
   return (
@@ -169,22 +169,34 @@ export default function Header() {
 
           {/* CTA Button & Language Switcher */}
           <div className="hidden lg:flex items-center gap-6">
-            {/* Language Switcher - Pill Design */}
-            <div className={`flex items-center p-1 rounded-full transition-all duration-300 ${
+            {/* Language Switcher - Enhanced with Sliding Indicator */}
+            <div className={`relative flex items-center p-1 rounded-full transition-all duration-300 ${
               mounted && scrolled 
                 ? 'bg-neutral-lightgray' 
                 : 'bg-white/20 backdrop-blur-sm'
             }`}>
+              {/* Sliding Active Indicator */}
+              <div 
+                className={`absolute top-1 bottom-1 rounded-full transition-all duration-500 ease-out ${
+                  mounted && scrolled
+                    ? 'bg-white shadow-md'
+                    : 'bg-white shadow-lg'
+                } ${
+                  locale === 'hu' ? 'left-1 right-[50%]' : 'left-[50%] right-1'
+                }`}
+                style={{
+                  transform: locale === 'hu' ? 'translateX(0)' : 'translateX(0)',
+                }}
+              />
+              
               <button
                 onClick={() => setLocale('hu')}
-                className={`px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 ${
+                className={`relative z-10 px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 ${
                   locale === 'hu' 
-                    ? mounted && scrolled
-                      ? 'bg-white text-primary shadow-md'
-                      : 'bg-white text-primary shadow-lg'
+                    ? 'text-primary scale-105'
                     : mounted && scrolled
-                      ? 'text-neutral-mediumgray hover:text-primary'
-                      : 'text-white/80 hover:text-white'
+                      ? 'text-neutral-mediumgray hover:text-primary hover:scale-105'
+                      : 'text-white/80 hover:text-white hover:scale-105'
                 }`}
                 aria-label="Magyar nyelv"
               >
@@ -192,14 +204,12 @@ export default function Header() {
               </button>
               <button
                 onClick={() => setLocale('en')}
-                className={`px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 ${
+                className={`relative z-10 px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 ${
                   locale === 'en' 
-                    ? mounted && scrolled
-                      ? 'bg-white text-primary shadow-md'
-                      : 'bg-white text-primary shadow-lg'
+                    ? 'text-primary scale-105'
                     : mounted && scrolled
-                      ? 'text-neutral-mediumgray hover:text-primary'
-                      : 'text-white/80 hover:text-white'
+                      ? 'text-neutral-mediumgray hover:text-primary hover:scale-105'
+                      : 'text-white/80 hover:text-white hover:scale-105'
                 }`}
                 aria-label="English language"
               >

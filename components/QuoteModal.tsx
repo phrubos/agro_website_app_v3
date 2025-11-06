@@ -6,9 +6,9 @@ import LoadingButton from '@/components/LoadingButton'
 import ProgressBar from '@/components/ProgressBar'
 import FormInput from '@/components/FormInput'
 import { trackError } from '@/lib/errorTracking'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
 
 const STORAGE_KEY = 'agrolab_quote_draft'
-const STEP_LABELS = ['Alapadatok', 'Szolgáltatás', 'Üzenet']
 
 interface QuoteModalProps {
   isOpen: boolean
@@ -16,6 +16,7 @@ interface QuoteModalProps {
 }
 
 export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
+  const { t } = useLanguage()
   const [currentStep, setCurrentStep] = useState(1)
   const [formData, setFormData] = useState({
     name: '',
@@ -109,28 +110,35 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
     }
   }, [isOpen, currentStep])
 
+  // Step labels - dynamic based on language
+  const STEP_LABELS = [
+    t.quoteModal.nameLabel.split(' ')[0], // "Név" or "Name"
+    t.quoteModal.serviceLabel,
+    t.quoteModal.messageLabel
+  ]
+
   // Validation
   const validateField = (name: string, value: any): string => {
     switch (name) {
       case 'name':
-        if (!value.trim()) return 'A név megadása kötelező'
-        if (value.length < 2) return 'A névnek legalább 2 karakter hosszúnak kell lennie'
+        if (!value.trim()) return t.quoteModal.nameLabel + ' is required'
+        if (value.length < 2) return 'Name must be at least 2 characters'
         return ''
       case 'email':
-        if (!value.trim()) return 'Az email megadása kötelező'
+        if (!value.trim()) return t.quoteModal.emailLabel + ' is required'
         if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value))
-          return 'Érvénytelen email cím'
+          return 'Invalid email address'
         return ''
       case 'phone':
-        if (!value.trim()) return 'A telefonszám megadása kötelező'
-        if (!/^[\d\s+()-]+$/.test(value)) return 'Érvénytelen telefonszám formátum'
+        if (!value.trim()) return t.quoteModal.phoneLabel + ' is required'
+        if (!/^[\d\s+()-]+$/.test(value)) return 'Invalid phone format'
         return ''
       case 'message':
-        if (!value.trim()) return 'Az üzenet megadása kötelező'
-        if (value.length < 10) return 'Az üzenetnek legalább 10 karakter hosszúnak kell lennie'
+        if (!value.trim()) return t.quoteModal.messageLabel + ' is required'
+        if (value.length < 10) return 'Message must be at least 10 characters'
         return ''
       case 'gdpr':
-        if (!value) return 'Az adatvédelmi tájékoztató elfogadása kötelező'
+        if (!value) return 'Privacy policy acceptance is required'
         return ''
       default:
         return ''
@@ -196,7 +204,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
     })
 
     if (!validateStep(1) || !validateStep(3)) {
-      setSubmitError('Kérjük, töltse ki az összes kötelező mezőt helyesen.')
+      setSubmitError(t.quoteModal.errorMessage)
       return
     }
 
@@ -210,13 +218,13 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
         body: JSON.stringify(formData)
       })
 
-      if (!response.ok) throw new Error('Email küldése sikertelen')
+      if (!response.ok) throw new Error('Email sending failed')
 
       setSubmitted(true)
       localStorage.removeItem(STORAGE_KEY)
     } catch (error) {
       console.error('Submit error:', error)
-      setSubmitError('Hiba történt az üzenet küldése során. Kérjük, próbálja újra később.')
+      setSubmitError(t.quoteModal.errorMessage)
       trackError(error instanceof Error ? error.message : 'Unknown error', { context: 'quote_form_submit' })
     } finally {
       setIsLoading(false)
@@ -259,7 +267,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
           <button
             onClick={handleClose}
             className="p-2 rounded-full hover:bg-neutral-lightgray transition-colors"
-            aria-label="Bezárás"
+            aria-label={t.common.close}
           >
             <X size={24} className="text-neutral-darkgray" />
           </button>
@@ -299,16 +307,16 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                 </div>
               </div>
               <h2 className="text-3xl font-heading font-bold mb-4 text-neutral-darkgray">
-                Köszönjük! Üzenetét megkaptuk.
+                {t.quoteModal.successTitle}
               </h2>
               <p className="text-lg text-neutral-mediumgray mb-8">
-                Kollégáink 24 órán belül felvesszik Önnel a kapcsolatot.
+                {t.quoteModal.successMessage}
               </p>
               <button
                 onClick={handleClose}
                 className="btn-primary"
               >
-                Bezárás
+                {t.common.close}
               </button>
             </div>
           ) : (
@@ -316,12 +324,10 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
             <form onSubmit={handleSubmit}>
               <div className="mb-3 md:mb-4 xl:mb-6">
                 <h2 className="text-lg md:text-xl xl:text-2xl 2xl:text-3xl font-heading font-bold mb-1 xl:mb-2 text-neutral-darkgray">
-                  Ajánlatkérő Űrlap
+                  {t.quoteModal.title}
                 </h2>
                 <p className="text-xs md:text-sm xl:text-base text-neutral-mediumgray">
-                  {currentStep === 1 && 'Add meg az alapvető kapcsolattartási adataidat'}
-                  {currentStep === 2 && 'Válaszd ki a szolgáltatásokat, amelyek érdekelnek'}
-                  {currentStep === 3 && 'Írd le részletesen a kérésedet'}
+                  {t.quoteModal.subtitle}
                 </p>
               </div>
 
@@ -337,7 +343,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                 <div className="space-y-2.5 md:space-y-3 xl:space-y-4 animate-fade-in">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 md:gap-3 xl:gap-4">
                     <FormInput
-                      label="Teljes Név"
+                      label={t.quoteModal.nameLabel}
                       name="name"
                       type="text"
                       value={formData.name}
@@ -349,12 +355,12 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                       error={errors.name}
                       touched={touched.name}
                       required
-                      placeholder="Kovács János"
+                      placeholder={t.quoteModal.namePlaceholder}
                       autoComplete="name"
                     />
 
                     <FormInput
-                      label="Email cím"
+                      label={t.quoteModal.emailLabel}
                       name="email"
                       type="email"
                       value={formData.email}
@@ -366,12 +372,12 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                       error={errors.email}
                       touched={touched.email}
                       required
-                      placeholder="kovacs.janos@example.com"
+                      placeholder={t.quoteModal.emailPlaceholder}
                       autoComplete="email"
                     />
 
                     <FormInput
-                      label="Telefonszám"
+                      label={t.quoteModal.phoneLabel}
                       name="phone"
                       type="tel"
                       value={formData.phone}
@@ -383,27 +389,27 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                       error={errors.phone}
                       touched={touched.phone}
                       required
-                      placeholder="+36 30 123 4567"
+                      placeholder={t.quoteModal.phonePlaceholder}
                       autoComplete="tel"
                     />
 
                     <FormInput
-                      label="Cég neve"
+                      label={t.quoteModal.companyLabel}
                       name="company"
                       type="text"
                       value={formData.company}
                       onChange={(value) => setFormData({...formData, company: value})}
-                      placeholder="Példa Kft."
+                      placeholder={t.quoteModal.companyPlaceholder}
                       autoComplete="organization"
                     />
 
                     <FormInput
-                      label="Gazdálkodási terület (hektár)"
+                      label={t.quoteModal.areaLabel}
                       name="area"
                       type="number"
                       value={formData.area}
                       onChange={(value) => setFormData({...formData, area: value})}
-                      placeholder="100"
+                      placeholder={t.quoteModal.areaPlaceholder}
                     />
                   </div>
                 </div>
@@ -414,13 +420,13 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                 <div className="space-y-2.5 md:space-y-3 xl:space-y-4 animate-fade-in">
                   <div>
                     <label className="block text-xs md:text-sm xl:text-base font-semibold mb-1 md:mb-1.5 xl:mb-2 text-neutral-darkgray">
-                      Milyen szolgáltatás iránt érdeklődik?
+                      {t.quoteModal.serviceLabel}
                     </label>
                     <div className="space-y-1.5 xl:space-y-2">
                       {[
-                        { id: 'lab', label: 'Laboratóriumi vizsgálat' },
-                        { id: 'consulting', label: 'Szaktanácsadás' },
-                        { id: 'drone', label: 'Drónos felmérés' }
+                        { id: 'lab', label: t.services.laboratory },
+                        { id: 'consulting', label: t.services.consulting },
+                        { id: 'drone', label: t.services.drone }
                       ].map(service => (
                         <label key={service.id} className="flex items-center gap-2 xl:gap-3 cursor-pointer p-2 xl:p-3 rounded-lg border-2 border-neutral-lightgray hover:border-primary transition-colors">
                           <input
@@ -468,7 +474,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
               {currentStep === 3 && (
                 <div className="space-y-2.5 md:space-y-3 xl:space-y-4 animate-fade-in">
                   <FormInput
-                    label="Részletes kérés / Üzenet"
+                    label={t.quoteModal.messageLabel}
                     name="message"
                     type="textarea"
                     value={formData.message}
@@ -480,7 +486,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                     error={errors.message}
                     touched={touched.message}
                     required
-                    placeholder="Írja le részletesen, miben segíthetünk..."
+                    placeholder={t.quoteModal.messagePlaceholder}
                     rows={3}
                   />
 
@@ -498,11 +504,10 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                         className="w-4 h-4 xl:w-5 xl:h-5 text-accent-teal rounded focus:ring-accent-teal border-neutral-gray mt-0.5"
                       />
                       <span className="text-xs md:text-sm xl:text-base text-neutral-darkgray">
-                        Elfogadom az{' '}
+                        {t.quoteModal.privacyText}{' '}
                         <a href="/adatvedelem" target="_blank" className="text-primary hover:underline">
-                          adatvédelmi tájékoztatót
-                        </a>{' '}
-                        és hozzájárulok adataim kezeléséhez. <span className="text-status-error">*</span>
+                          {t.quoteModal.privacyLink}
+                        </a>. <span className="text-status-error">*</span>
                       </span>
                     </label>
                     {errors.gdpr && touched.gdpr && (
@@ -519,7 +524,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                   </svg>
                   <div>
-                    <p className="font-semibold text-status-error">Hiba történt</p>
+                    <p className="font-semibold text-status-error">{t.quoteModal.errorTitle}</p>
                     <p className="text-sm text-neutral-darkgray mt-1">{submitError}</p>
                   </div>
                 </div>
@@ -538,7 +543,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                 className="flex items-center gap-2 px-6 py-3 text-neutral-darkgray hover:text-primary transition-colors font-semibold"
               >
                 <ArrowLeft size={20} />
-                Vissza
+                Back
               </button>
             ) : (
               <div></div>
@@ -550,7 +555,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                 onClick={nextStep}
                 className="btn-primary flex items-center gap-2"
               >
-                Következő
+                Next
                 <ArrowRight size={20} />
               </button>
             ) : (
@@ -560,7 +565,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                 isLoading={isLoading}
                 className="btn-primary"
               >
-                Küldés
+                {t.quoteModal.submitBtn}
               </LoadingButton>
             )}
           </div>

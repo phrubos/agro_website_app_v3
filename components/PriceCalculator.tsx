@@ -2,12 +2,14 @@
 
 import { useState, useEffect } from 'react'
 import { Calculator, ArrowRight } from 'lucide-react'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
 
 interface PriceCalculatorProps {
   onQuoteClick: () => void
 }
 
 export default function PriceCalculator({ onQuoteClick }: PriceCalculatorProps) {
+  const { t } = useLanguage()
   const [hectares, setHectares] = useState(10)
   const [services, setServices] = useState({
     labor: true,
@@ -57,15 +59,15 @@ export default function PriceCalculator({ onQuoteClick }: PriceCalculatorProps) 
           <Calculator className="text-accent-cyan" size={24} />
         </div>
         <div>
-          <h3 className="text-2xl font-heading font-bold">Árkalkulátor</h3>
-          <p className="text-neutral-offwhite text-sm">Becsült költség azonnal</p>
+          <h3 className="text-2xl font-heading font-bold">{t.priceCalculator.title}</h3>
+          <p className="text-neutral-offwhite text-sm">{t.priceCalculator.estimatedCost}</p>
         </div>
       </div>
 
       {/* Hectares Input */}
       <div className="mb-6">
         <label className="block text-sm font-semibold mb-3">
-          Gazdálkodási terület (hektár)
+          {t.priceCalculator.areaLabel}
         </label>
         <div className="flex items-center gap-4">
           <input
@@ -92,7 +94,7 @@ export default function PriceCalculator({ onQuoteClick }: PriceCalculatorProps) 
       {/* Services Checkboxes */}
       <div className="mb-6 space-y-3">
         <label className="block text-sm font-semibold mb-3">
-          Válasszon szolgáltatást
+          {t.priceCalculator.servicesLabel}
         </label>
 
         <label className="flex items-center gap-3 p-4 bg-white/10 rounded-lg cursor-pointer hover:bg-white/15 transition-all">
@@ -103,7 +105,7 @@ export default function PriceCalculator({ onQuoteClick }: PriceCalculatorProps) 
             className="w-5 h-5 rounded accent-accent-cyan cursor-pointer"
           />
           <div className="flex-1">
-            <div className="font-semibold">Laboratóriumi Vizsgálat</div>
+            <div className="font-semibold">{t.priceCalculator.serviceSoil}</div>
             <div className="text-xs text-neutral-offwhite">
               {mounted ? `${prices.labor.min.toLocaleString()} - ${prices.labor.max.toLocaleString()}` : `${prices.labor.min} - ${prices.labor.max}`} {prices.labor.unit}
             </div>
@@ -118,7 +120,7 @@ export default function PriceCalculator({ onQuoteClick }: PriceCalculatorProps) 
             className="w-5 h-5 rounded accent-accent-cyan cursor-pointer"
           />
           <div className="flex-1">
-            <div className="font-semibold">Drónos NDVI Felmérés</div>
+            <div className="font-semibold">{t.priceCalculator.serviceDrone}</div>
             <div className="text-xs text-neutral-offwhite">
               {mounted ? `${prices.drone.min.toLocaleString()} - ${prices.drone.max.toLocaleString()}` : `${prices.drone.min} - ${prices.drone.max}`} {prices.drone.unit}
             </div>
@@ -133,7 +135,7 @@ export default function PriceCalculator({ onQuoteClick }: PriceCalculatorProps) 
             className="w-5 h-5 rounded accent-accent-cyan cursor-pointer"
           />
           <div className="flex-1">
-            <div className="font-semibold">Szaktanácsadás</div>
+            <div className="font-semibold">{t.priceCalculator.serviceConsulting}</div>
             <div className="text-xs text-neutral-offwhite">
               {mounted ? `${prices.consulting.min.toLocaleString()} - ${prices.consulting.max.toLocaleString()}` : `${prices.consulting.min} - ${prices.consulting.max}`} {prices.consulting.unit}
             </div>
@@ -143,14 +145,14 @@ export default function PriceCalculator({ onQuoteClick }: PriceCalculatorProps) 
 
       {/* Price Display */}
       <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 mb-6 border border-white/20">
-        <div className="text-sm text-neutral-offwhite mb-2">Becsült költség</div>
+        <div className="text-sm text-neutral-offwhite mb-2">{t.priceCalculator.estimatedCost}</div>
         {hasAnyService ? (
           <div className="text-4xl font-bold font-heading">
             {mounted ? `${min.toLocaleString()} - ${max.toLocaleString()} Ft` : `${min} - ${max} Ft`}
           </div>
         ) : (
           <div className="text-2xl text-neutral-offwhite/60 italic">
-            Válasszon szolgáltatást
+            {t.priceCalculator.selectCrop}
           </div>
         )}
         <div className="text-xs text-neutral-offwhite mt-2">
@@ -164,12 +166,12 @@ export default function PriceCalculator({ onQuoteClick }: PriceCalculatorProps) 
         onClick={onQuoteClick}
         className="btn-accent w-full flex items-center justify-center gap-2 text-lg"
       >
-        Ajánlatot Kérek
+        {t.priceCalculator.getQuoteBtn}
         <ArrowRight size={20} />
       </button>
 
       <p className="text-xs text-center text-neutral-offwhite mt-4">
-        * Az árak tájékoztató jellegűek. Pontos árajánlatért töltse ki az űrlapot.
+        * {t.priceCalculator.note}
       </p>
     </div>
   )

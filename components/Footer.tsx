@@ -1,7 +1,11 @@
+'use client'
+
 import Link from 'next/link'
 import { Facebook, Linkedin, Mail, MapPin, Phone } from 'lucide-react'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
 
 export default function Footer() {
+  const { t } = useLanguage()
   const currentYear = new Date().getFullYear()
 
   return (
@@ -19,7 +23,7 @@ export default function Footer() {
               <span className="font-heading text-xl font-bold">AgroLab</span>
             </div>
             <p className="text-sm text-neutral-offwhite mb-4">
-              Akkreditált mezőgazdasági laboratórium. Precíziós mezőgazdaság tudományos alapokon.
+              {t.footer.description}
             </p>
             <div className="flex gap-4">
               <a href="#" className="hover:text-accent-turquoise transition-colors">
@@ -36,26 +40,26 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-heading text-lg font-semibold mb-4">Szolgáltatások</h4>
+            <h4 className="font-heading text-lg font-semibold mb-4">{t.footer.servicesTitle}</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/szolgaltatasok/laboratorium" className="text-neutral-offwhite hover:text-white transition-colors">
-                  Laboratóriumi Vizsgálatok
+                  {t.services.laboratory}
                 </Link>
               </li>
               <li>
                 <Link href="/szolgaltatasok/szaktanacsadas" className="text-neutral-offwhite hover:text-white transition-colors">
-                  Szaktanácsadás
+                  {t.services.consulting}
                 </Link>
               </li>
               <li>
                 <Link href="/szolgaltatasok/dron" className="text-neutral-offwhite hover:text-white transition-colors">
-                  Drónos Felmérés
+                  {t.services.drone}
                 </Link>
               </li>
               <li>
                 <Link href="/arlista" className="text-neutral-offwhite hover:text-white transition-colors">
-                  Árlista
+                  {t.nav.pricelist}
                 </Link>
               </li>
             </ul>
@@ -63,26 +67,26 @@ export default function Footer() {
 
           {/* Legal Links */}
           <div>
-            <h4 className="font-heading text-lg font-semibold mb-4">Jogi Információk</h4>
+            <h4 className="font-heading text-lg font-semibold mb-4">{t.footer.legalTitle}</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/adatvedelem" className="text-neutral-offwhite hover:text-white transition-colors">
-                  Adatvédelmi Tájékoztató
+                  {t.footer.privacy}
                 </Link>
               </li>
               <li>
                 <Link href="/aszf" className="text-neutral-offwhite hover:text-white transition-colors">
-                  Általános Szerződési Feltételek
+                  {t.footer.terms}
                 </Link>
               </li>
               <li>
                 <Link href="/cookie" className="text-neutral-offwhite hover:text-white transition-colors">
-                  Cookie Szabályzat
+                  {t.footer.cookies}
                 </Link>
               </li>
               <li>
                 <Link href="/impresszum" className="text-neutral-offwhite hover:text-white transition-colors">
-                  Impresszum
+                  {t.footer.imprint}
                 </Link>
               </li>
             </ul>
@@ -90,13 +94,12 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="font-heading text-lg font-semibold mb-4">Kapcsolat</h4>
+            <h4 className="font-heading text-lg font-semibold mb-4">{t.footer.contactTitle}</h4>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2">
                 <MapPin size={18} className="mt-0.5 flex-shrink-0" />
-                <span className="text-neutral-offwhite">
-                  1234 Budapest<br />
-                  Példa utca 123.
+                <span className="text-neutral-offwhite" style={{whiteSpace: 'pre-line'}}>
+                  {t.footer.address}
                 </span>
               </li>
               <li className="flex items-center gap-2">
@@ -113,8 +116,8 @@ export default function Footer() {
               </li>
             </ul>
             <div className="mt-4 text-xs text-neutral-offwhite">
-              <p className="font-semibold mb-1">Munkaidő:</p>
-              <p>H-P: 08:00 - 16:00</p>
+              <p className="font-semibold mb-1">{t.footer.workingHours}</p>
+              <p>{t.footer.workingHoursValue}</p>
             </div>
           </div>
         </div>
@@ -123,11 +126,11 @@ export default function Footer() {
         <div className="border-t border-primary-medium pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-neutral-offwhite">
             <p>
-              © {currentYear} AgroLab. Minden jog fenntartva.
+              © {currentYear} AgroLab. {t.footer.allRightsReserved}.
             </p>
             <p className="flex items-center gap-2">
               <span className="inline-block w-2 h-2 bg-accent-turquoise rounded-full"></span>
-              NAH Akkreditált Laboratórium
+              {t.footer.accredited}
             </p>
           </div>
         </div>
