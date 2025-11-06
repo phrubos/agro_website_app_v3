@@ -1,207 +1,314 @@
-# AgroLab - Akkreditált Mezőgazdasági Laboratórium Weboldal
+# 🌾 AgroLab Website
 
-Modern, reszponzív weboldal egy akkreditált mezőgazdasági laboratórium számára, amely laboratóriumi vizsgálatokat, szaktanácsadást és drónos felméréseket kínál.
+Modern, professzionális weboldal mezőgazdasági labor és tanácsadó szolgáltatásokhoz.
 
-## 🌟 Jellemzők
+**Verzió:** v0.7
+**Tech Stack:** Next.js 14, TypeScript, Tailwind CSS, Framer Motion
 
-- **Modern Design**: Természet + technológia hibrid dizájn
-- **Teljes funkcionalitás**: Minden tervezett funkció implementálva (kivéve blog)
-- **Reszponzív**: Tökéletes megjelenés mobil, tablet és desktop eszközökön
-- **Kiváló UX**: Intuitív navigáció,清晰 információarchitektúra
-- **Professzionális**: Mock tartalom és Unsplash képek
+---
 
-## 📋 Implementált Oldalak
+## 🚀 Gyors Kezdés
 
-### ✅ Főoldal (`/`)
-- Hero section parallax effekttel
-- Szolgáltatások előnézet (3 kártya)
-- "Miért Minket?" szekció
-- Statisztikák banner
-- CTA szekció
+### Előfeltételek
+- Node.js 18+
+- npm vagy yarn
 
-### ✅ Szolgáltatások
-- **Laboratórium** (`/szolgaltatasok/laboratorium`)
-  - 4 vizsgálati kategória
-  - Akkreditációs banner
-  - Folyamat timeline
-  - Minta beküldési útmutató
-  
-- **Szaktanácsadás** (`/szolgaltatasok/szaktanacsadas`) - Tervezve
-- **Drónos Felmérés** (`/szolgaltatasok/dron`) - Tervezve
-
-### ✅ Árlista (`/arlista`)
-- Interaktív tab navigáció
-- 3 szolgáltatási kategória
-- Részletes árlisták
-- PDF letöltés opció
-- Fizetési feltételek
-
-### ✅ Ajánlatkérés (`/ajanlatkeres`)
-- Validált űrlap
-- Dinamikus mezők (labor szolgáltatás esetén)
-- GDPR checkbox
-- Siker üzenet
-- Kapcsolati információk
-- Munkaidő
-
-### ✅ Rólunk (`/rolunk`)
-- Cégtörténet
-- Csapat bemutató (4 tag)
-- Értékek
-- Akkreditációk
-- Ügyfél vélemények (3 db)
-
-### ✅ Kapcsolat (`/kapcsolat`)
-- Elérhetőségi kártyák
-- Térkép placeholder
-- Részletes kapcsolati info
-- Mintaátvételi információk
-
-## 🎨 Design Rendszer
-
-### Színpaletta
-- **Primary**: `#2D5016` (Mély zöld)
-- **Accent**: `#1A936F` (Türkiz zöld)
-- **Secondary**: Föld tónusok
-- **Status**: Státusz színek (siker, hiba, figyelmeztetés)
-
-### Tipográfia
-- **Heading**: Montserrat (600-800)
-- **Body**: Open Sans (400-600)
-
-### Komponensek
-- Gombok (Primary, Secondary, Accent)
-- Kártyák hover effektekkel
-- Input mezők validációval
-- Timeline komponensek
-
-## 🛠️ Technológiai Stack
-
-- **Framework**: Next.js 14 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Icons**: Lucide React
-- **Forms**: React Hook Form (tervezve)
-- **Validation**: Zod (tervezve)
-- **Animations**: Framer Motion (tervezve)
-
-## 🚀 Telepítés és Futtatás
+### Telepítés
 
 ```bash
 # Függőségek telepítése
 npm install
 
+# Environment változók beállítása
+cp .env.example .env.local
+# Szerkeszd a .env.local fájlt és add hozzá a RESEND_API_KEY-t
+
 # Development szerver indítása
 npm run dev
 
-# Build production
-npm run build
-
-# Production szerver indítása
-npm start
+# Megnyitás böngészőben
+# http://localhost:3000
 ```
-
-A weboldal elérhető lesz: `http://localhost:3000`
-
-## 📁 Projekt Struktúra
-
-```
-website_app_v3/
-├── app/
-│   ├── page.tsx                    # Főoldal
-│   ├── layout.tsx                  # Root layout
-│   ├── globals.css                 # Globális stílusok
-│   ├── szolgaltatasok/
-│   │   └── laboratorium/page.tsx   # Labor oldal
-│   ├── arlista/page.tsx           # Árlista
-│   ├── ajanlatkeres/page.tsx      # Ajánlatkérés
-│   ├── rolunk/page.tsx            # Rólunk
-│   └── kapcsolat/page.tsx         # Kapcsolat
-├── components/
-│   ├── Header.tsx                  # Fejléc
-│   └── Footer.tsx                  # Lábléc
-├── lib/
-│   └── utils.ts                    # Utility funkciók
-├── public/                         # Statikus fájlok
-└── tailwind.config.ts             # Tailwind konfig
-```
-
-## ✨ Főbb Funkciók
-
-### Navigáció
-- Sticky header
-- Dropdown menü (Szolgáltatások)
-- Mobile hamburger menü
-- Nyelv váltó (HU/EN placeholder)
-
-### Űrlapok
-- Email validáció
-- Kötelező mezők jelzése
-- Dinamikus mezők
-- Siker/hiba kezelés
-
-### UX Elemek
-- Smooth scroll
-- Hover animációk
-- Card hover effektek
-- Parallax hero
-- Loading states (tervezve)
-
-## 🎯 Következő Lépések (V2)
-
-- [ ] További szolgáltatás oldalak (Szaktanácsadás, Drón)
-- [ ] Backend integráció (űrlap küldés)
-- [ ] Email service (Resend/SendGrid)
-- [ ] Multi-language támogatás (next-intl)
-- [ ] Blog funkció (opcionális)
-- [ ] Admin dashboard (CMS)
-- [ ] SEO optimalizálás
-- [ ] Analytics integráció
-- [ ] Animációk (Framer Motion)
-
-## 📝 Mock Tartalom
-
-Az oldal jelenleg mock tartalommal működik:
-- **Szövegek**: Lorem ipsum helyett releváns agro-labor szövegek
-- **Képek**: Unsplash API-ból betöltött mezőgazdasági képek
-- **Adatok**: Mintaárak, mintastatisztikák
-- **Csapat**: Fiktív csapattagok
-
-## 🎨 Képek Forrása
-
-Minden kép az Unsplash API-ból van betöltve:
-- Mezőgazdasági tájképek
-- Labor képek
-- Csapat portré képek
-- Technológiai képek
-
-## 📱 Reszponzivitás
-
-- Mobile first approach
-- Breakpointok: 320px, 768px, 1024px, 1440px+
-- Touch-friendly (44x44px minimum)
-- Stack layout mobilon
-
-## ⚡ Teljesítmény
-
-- Next.js Image optimization
-- Lazy loading
-- Code splitting
-- Tailwind CSS purge
-
-## 🔒 Biztonság
-
-- GDPR compliance
-- Form validation
-- XSS védelem
-- CSRF védelem (tervezve)
-
-## 📄 Licensz
-
-Ez a projekt demo célból készült.
 
 ---
 
-**Készítette**: Claude  
-**Dátum**: 2024. November 3.  
-**Verzió**: 1.0
+## 📚 DOKUMENTÁCIÓ
+
+Az összes dokumentáció a projekt gyökerében található:
+
+### 🎯 Főbb Dokumentumok
+
+| Dokumentum | Leírás |
+|------------|--------|
+| **[COMPREHENSIVE_AUDIT_2025.md](./COMPREHENSIVE_AUDIT_2025.md)** | 🔍 Teljes weboldal audit, UX elemzés, fejlesztési javaslatok |
+| **[IMPLEMENTATION_NOTES.md](./IMPLEMENTATION_NOTES.md)** | 🔧 Technikai implementációs útmutató, design system |
+| **[TODO.md](./TODO.md)** | 📋 Aktuális feladatlista, roadmap |
+| **[RESEND_SETUP.md](./RESEND_SETUP.md)** | 📧 Email küldés beállítása (Resend API) |
+| **[QUICK_ANIMATION_GUIDE.md](./QUICK_ANIMATION_GUIDE.md)** | 🎬 Animációk használati útmutató |
+| **[website-design-plan.md](./website-design-plan.md)** | 🎨 Eredeti design terv |
+
+### 📖 Ajánlott Olvasási Sorrend
+
+**Új fejlesztőknek:**
+1. Ez a README
+2. `IMPLEMENTATION_NOTES.md` - Technikai áttekintés
+3. `COMPREHENSIVE_AUDIT_2025.md` - Megérteni a jelenlegi állapotot
+4. `TODO.md` - Mit kell még fejleszteni
+
+**UX/Design szakembereknek:**
+1. `COMPREHENSIVE_AUDIT_2025.md` - Teljes UX audit
+2. `website-design-plan.md` - Eredeti tervezés
+3. `TODO.md` - Tervezett fejlesztések
+
+---
+
+## ✨ Funkciók
+
+### ✅ Implementált
+
+- 🎨 **Modern, responsive design** - Mobile-first approach
+- 🌍 **Többnyelvű** - Magyar/English támogatás
+- 📝 **Multi-step ajánlatkérő form** - 3 lépéses wizard
+- 💾 **Auto-save draft** - LocalStorage alapú piszkozat mentés
+- ✅ **Real-time validáció** - Azonnali visszajelzés
+- 📧 **Email integráció** - Resend API
+- 🎭 **Smooth animációk** - Framer Motion
+- ♿ **Accessibility** - WCAG 2.1 AA alapok
+- 📱 **PWA ready** - Progressive Web App alap
+
+### 🔨 Fejlesztés alatt
+
+Lásd: `TODO.md` és `COMPREHENSIVE_AUDIT_2025.md`
+
+---
+
+## 🏗️ Projekt Struktúra
+
+```
+website_app_v3/
+├── app/                    # Next.js App Router
+│   ├── page.tsx           # Főoldal
+│   ├── layout.tsx         # Root layout
+│   ├── globals.css        # Global styles
+│   ├── api/               # API endpoints
+│   ├── arlista/           # Árlista
+│   ├── kapcsolat/         # Kapcsolat
+│   ├── rolunk/            # Rólunk
+│   └── szolgaltatasok/    # Szolgáltatások
+│
+├── components/             # React komponensek
+│   ├── Header.tsx         # Navigáció
+│   ├── Footer.tsx         # Lábléc
+│   ├── QuoteModal.tsx     # Ajánlatkérő (multi-step)
+│   └── ...
+│
+├── lib/                    # Utility funkciók
+│   └── i18n/              # Többnyelvűség
+│
+├── hooks/                  # Custom React hooks
+└── public/                 # Statikus fájlok
+```
+
+Részletes struktúra: `IMPLEMENTATION_NOTES.md`
+
+---
+
+## 🎨 Design System
+
+### Színpaletta
+
+```typescript
+primary: '#2D5016'      // Főszín - zöld
+accent-teal: '#1A936F'  // Másodlagos - türkiz
+accent-cyan: '#4ECDC4'  // Kiemelés - cyan
+```
+
+### Tipográfia
+- **Heading Font:** Default system font
+- **Body Font:** Default system font
+- Responsive font sizing (mobile-first)
+
+### Komponensek
+- `btn-primary`, `btn-secondary`, `btn-accent` - Gombok
+- `card`, `hover-glow` - Kártyák
+- `section-padding`, `container-custom` - Layout
+
+Teljes design system: `IMPLEMENTATION_NOTES.md` > Design System
+
+---
+
+## 📧 Email Konfiguráció
+
+Az email küldéshez **Resend API** szükséges.
+
+**Gyors setup (5 perc):**
+
+1. Regisztráció: https://resend.com
+2. API kulcs generálása
+3. `.env.local` fájl létrehozása:
+   ```env
+   RESEND_API_KEY=re_your_api_key_here
+   ```
+4. Szerver újraindítása
+
+Részletes útmutató: `RESEND_SETUP.md`
+
+---
+
+## 🌍 Többnyelvűség
+
+A weboldal támogatja a magyar és angol nyelvet.
+
+**Nyelvváltás:**
+- Client-side váltás (azonnali, nincs page reload)
+- LocalStorage perzisztencia
+- Header-ben található nyelválasztó
+
+**Fordítások hozzáadása:**
+```typescript
+// lib/i18n/translations.ts
+export const translations = {
+  hu: { hero: { title: 'Üdvözöljük' } },
+  en: { hero: { title: 'Welcome' } }
+}
+```
+
+---
+
+## 🚢 Deployment
+
+### Netlify
+
+A projekt Netlify-ra van optimalizálva.
+
+**Automatikus deploy:**
+```bash
+git push origin main
+# Netlify automatikusan build-eli és deploy-olja
+```
+
+**Environment változók (Netlify Dashboard):**
+```
+RESEND_API_KEY=re_xxx...
+```
+
+### Manuális Build
+
+```bash
+npm run build    # Production build
+npm run start    # Production szerver
+```
+
+---
+
+## 🧪 Scripts
+
+```bash
+npm run dev      # Development szerver
+npm run build    # Production build
+npm run start    # Production szerver indítás
+npm run lint     # Linting
+```
+
+---
+
+## 📊 Státusz
+
+### UX Score: **7.5/10** ⭐
+
+**Erősségek:**
+- Modern design
+- Kiváló form UX
+- Responsive
+- Többnyelvű
+
+**Fejlesztendő területek:**
+- Jogi oldalak hiányoznak (GDPR!)
+- Placeholder tartalmak
+- Analytics nincs beállítva
+- Cookie consent hiányzik
+
+Részletes elemzés: `COMPREHENSIVE_AUDIT_2025.md`
+
+---
+
+## 🐛 Hibajavítás
+
+### Email nem érkezik meg
+1. Ellenőrizd a `.env.local` fájlt
+2. Resend Dashboard - ellenőrizd az API kulcsot
+3. Nézd meg a spam mappát
+4. Részletek: `RESEND_SETUP.md`
+
+### Build error
+```bash
+# Cache törlése
+rm -rf .next
+npm install
+npm run build
+```
+
+### Hydration error
+- Ellenőrizd, hogy minden client komponens `'use client'` direktívával kezdődik
+- Részletek: `IMPLEMENTATION_NOTES.md` > Ismert Problémák
+
+---
+
+## 📝 Hozzájárulás
+
+1. Fork the project
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'feat: Add AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+**Commit konvenció:**
+- `feat:` új funkció
+- `fix:` hibajavítás
+- `docs:` dokumentáció
+- `style:` formázás
+- `refactor:` kód átszervezés
+
+---
+
+## 📞 Kapcsolat & Support
+
+### Dokumentáció Frissítés
+- **Utolsó audit:** 2025. November 6.
+- **Következő review:** 2025. December 1.
+
+### Kérdések
+Ha kérdésed van:
+1. Nézd meg `IMPLEMENTATION_NOTES.md`-t
+2. Olvasd el `COMPREHENSIVE_AUDIT_2025.md`-t
+3. Ellenőrizd `TODO.md`-t
+
+---
+
+## 📄 Licensz
+
+Privát projekt - Minden jog fenntartva
+
+---
+
+## 🎯 Következő Lépések
+
+**Azonnal (1 hét):**
+- ✅ Jogi oldalak létrehozása (GDPR compliance)
+- ✅ Cookie consent banner
+- ✅ Valódi céginformációk
+- ✅ Analytics setup
+
+**1 hónapon belül:**
+- 📸 Valódi képek feltöltése
+- 📝 Blog indítása
+- 💬 Live chat
+- 🧮 ROI kalkulátor
+
+Részletes roadmap: `TODO.md` és `COMPREHENSIVE_AUDIT_2025.md`
+
+---
+
+**Készítette:** Development Team
+**Verzió:** v0.7
+**Dátum:** 2025. November 6.
