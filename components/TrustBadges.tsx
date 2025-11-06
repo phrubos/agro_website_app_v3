@@ -9,25 +9,25 @@ export default function TrustBadges() {
     {
       icon: Award,
       title: t.trustBadges.accredited,
-      subtitle: 'National Accreditation Authority',
+      subtitle: t.trustBadges.accreditedSubtitle,
       color: 'text-accent-teal'
     },
     {
       icon: Shield,
-      title: 'ISO 9001:2015',
-      subtitle: 'Quality Management System',
+      title: t.trustBadges.iso,
+      subtitle: t.trustBadges.isoSubtitle,
       color: 'text-primary'
     },
     {
       icon: CheckCircle,
-      title: 'MSZ EN ISO/IEC',
-      subtitle: 'Laboratory Standards',
+      title: t.trustBadges.standards,
+      subtitle: t.trustBadges.standardsSubtitle,
       color: 'text-accent-cyan'
     },
     {
       icon: TrendingUp,
       title: t.trustBadges.experience,
-      subtitle: 'Your Reliable Partner',
+      subtitle: t.trustBadges.experienceSubtitle,
       color: 'text-status-success'
     }
   ]
@@ -37,10 +37,10 @@ export default function TrustBadges() {
       <div className="container-custom">
         <div className="text-center mb-12">
           <h3 className="text-3xl font-heading font-bold text-neutral-darkgray mb-2">
-            Accredited Quality
+            {t.trustBadges.title}
           </h3>
           <p className="text-neutral-mediumgray">
-            Tests meeting strict standards
+            {t.trustBadges.subtitle}
           </p>
         </div>
 

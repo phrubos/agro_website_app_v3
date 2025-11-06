@@ -113,6 +113,19 @@ interface Translation {
     errorTitle: string
     errorMessage: string
     close: string
+    backBtn: string
+    nextBtn: string
+    validation: {
+      nameRequired: string
+      nameMinLength: string
+      emailRequired: string
+      emailInvalid: string
+      phoneRequired: string
+      phoneInvalid: string
+      messageRequired: string
+      messageMinLength: string
+      gdprRequired: string
+    }
   }
   priceCalculator: {
     title: string
@@ -143,8 +156,16 @@ interface Translation {
     experience: string
   }
   trustBadges: {
+    title: string
+    subtitle: string
     accredited: string
+    accreditedSubtitle: string
+    iso: string
+    isoSubtitle: string
+    standards: string
+    standardsSubtitle: string
     experience: string
+    experienceSubtitle: string
     fastResults: string
     support: string
   }
@@ -157,6 +178,7 @@ interface Translation {
     menu: string
     loading: string
     language: string
+    scrollToTop: string
   }
 }
 
@@ -273,7 +295,20 @@ export const translations: Record<Locale, Translation> = {
       successMessage: 'Köszönjük üzenetét! Hamarosan felvesszük Önnel a kapcsolatot.',
       errorTitle: 'Hiba történt',
       errorMessage: 'Sajnos nem sikerült elküldeni az üzenetet. Kérjük, próbálja újra később vagy írjon nekünk közvetlenül az info@agrolab.hu címre.',
-      close: 'Bezárás'
+      close: 'Bezárás',
+      backBtn: 'Vissza',
+      nextBtn: 'Következő',
+      validation: {
+        nameRequired: 'A név megadása kötelező',
+        nameMinLength: 'A névnek legalább 2 karakter hosszúnak kell lennie',
+        emailRequired: 'Az e-mail cím megadása kötelező',
+        emailInvalid: 'Érvénytelen e-mail cím',
+        phoneRequired: 'A telefonszám megadása kötelező',
+        phoneInvalid: 'Érvénytelen telefonszám formátum',
+        messageRequired: 'Az üzenet megadása kötelező',
+        messageMinLength: 'Az üzenetnek legalább 10 karakter hosszúnak kell lennie',
+        gdprRequired: 'Az adatvédelmi tájékoztató elfogadása kötelező'
+      }
     },
     priceCalculator: {
       title: 'Árkalkulátor',
@@ -304,8 +339,16 @@ export const translations: Record<Locale, Translation> = {
       experience: 'Év Tapasztalat'
     },
     trustBadges: {
+      title: 'Akkreditált Minőség',
+      subtitle: 'Szigorú szabványoknak megfelelő vizsgálatok',
       accredited: 'NAH Akkreditált',
+      accreditedSubtitle: 'Nemzeti Akkreditáló Hatóság',
+      iso: 'ISO 9001:2015',
+      isoSubtitle: 'Minőségirányítási Rendszer',
+      standards: 'MSZ EN ISO/IEC',
+      standardsSubtitle: 'Laboratóriumi Szabványok',
       experience: '15+ Év Tapasztalat',
+      experienceSubtitle: 'Az Ön Megbízható Partnere',
       fastResults: 'Gyors Eredmények',
       support: '24/7 Támogatás'
     },
@@ -317,7 +360,8 @@ export const translations: Record<Locale, Translation> = {
       close: 'Bezárás',
       menu: 'Menü',
       loading: 'Betöltés...',
-      language: 'Nyelv'
+      language: 'Nyelv',
+      scrollToTop: 'Vissza a tetejére'
     }
   },
   en: {
@@ -432,7 +476,20 @@ export const translations: Record<Locale, Translation> = {
       successMessage: 'Thank you for your message! We will contact you soon.',
       errorTitle: 'An error occurred',
       errorMessage: 'Unfortunately, we could not send your message. Please try again later or write to us directly at info@agrolab.hu.',
-      close: 'Close'
+      close: 'Close',
+      backBtn: 'Back',
+      nextBtn: 'Next',
+      validation: {
+        nameRequired: 'Name is required',
+        nameMinLength: 'Name must be at least 2 characters',
+        emailRequired: 'Email address is required',
+        emailInvalid: 'Invalid email address',
+        phoneRequired: 'Phone number is required',
+        phoneInvalid: 'Invalid phone format',
+        messageRequired: 'Message is required',
+        messageMinLength: 'Message must be at least 10 characters',
+        gdprRequired: 'Privacy policy acceptance is required'
+      }
     },
     priceCalculator: {
       title: 'Price Calculator',
@@ -463,8 +520,16 @@ export const translations: Record<Locale, Translation> = {
       experience: 'Years Experience'
     },
     trustBadges: {
+      title: 'Accredited Quality',
+      subtitle: 'Tests meeting strict standards',
       accredited: 'NAH Accredited',
+      accreditedSubtitle: 'National Accreditation Authority',
+      iso: 'ISO 9001:2015',
+      isoSubtitle: 'Quality Management System',
+      standards: 'MSZ EN ISO/IEC',
+      standardsSubtitle: 'Laboratory Standards',
       experience: '15+ Years Experience',
+      experienceSubtitle: 'Your Reliable Partner',
       fastResults: 'Fast Results',
       support: '24/7 Support'
     },
@@ -476,7 +541,8 @@ export const translations: Record<Locale, Translation> = {
       close: 'Close',
       menu: 'Menu',
       loading: 'Loading...',
-      language: 'Language'
+      language: 'Language',
+      scrollToTop: 'Scroll to top'
     }
   }
 }

@@ -121,24 +121,24 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
   const validateField = (name: string, value: any): string => {
     switch (name) {
       case 'name':
-        if (!value.trim()) return t.quoteModal.nameLabel + ' is required'
-        if (value.length < 2) return 'Name must be at least 2 characters'
+        if (!value.trim()) return t.quoteModal.validation.nameRequired
+        if (value.length < 2) return t.quoteModal.validation.nameMinLength
         return ''
       case 'email':
-        if (!value.trim()) return t.quoteModal.emailLabel + ' is required'
+        if (!value.trim()) return t.quoteModal.validation.emailRequired
         if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value))
-          return 'Invalid email address'
+          return t.quoteModal.validation.emailInvalid
         return ''
       case 'phone':
-        if (!value.trim()) return t.quoteModal.phoneLabel + ' is required'
-        if (!/^[\d\s+()-]+$/.test(value)) return 'Invalid phone format'
+        if (!value.trim()) return t.quoteModal.validation.phoneRequired
+        if (!/^[\d\s+()-]+$/.test(value)) return t.quoteModal.validation.phoneInvalid
         return ''
       case 'message':
-        if (!value.trim()) return t.quoteModal.messageLabel + ' is required'
-        if (value.length < 10) return 'Message must be at least 10 characters'
+        if (!value.trim()) return t.quoteModal.validation.messageRequired
+        if (value.length < 10) return t.quoteModal.validation.messageMinLength
         return ''
       case 'gdpr':
-        if (!value) return 'Privacy policy acceptance is required'
+        if (!value) return t.quoteModal.validation.gdprRequired
         return ''
       default:
         return ''
@@ -543,7 +543,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                 className="flex items-center gap-2 px-6 py-3 text-neutral-darkgray hover:text-primary transition-colors font-semibold"
               >
                 <ArrowLeft size={20} />
-                Back
+                {t.quoteModal.backBtn}
               </button>
             ) : (
               <div></div>
@@ -555,7 +555,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                 onClick={nextStep}
                 className="btn-primary flex items-center gap-2"
               >
-                Next
+                {t.quoteModal.nextBtn}
                 <ArrowRight size={20} />
               </button>
             ) : (

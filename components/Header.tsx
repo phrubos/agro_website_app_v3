@@ -99,7 +99,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className={`hidden lg:flex items-center space-x-1 ${isTransitioning ? 'language-transitioning' : ''}`} aria-label="Főmenü">
+          <nav className={`hidden lg:flex items-center space-x-1 ${isTransitioning ? 'language-transitioning' : ''}`} aria-label={t.common.menu}>
             {navigation.map((item) => (
               <div
                 key={item.name}
@@ -146,7 +146,7 @@ export default function Header() {
                     id="services-dropdown"
                     className="absolute top-full left-0 pt-2 animate-fade-in-dropdown"
                     role="menu"
-                    aria-label="Szolgáltatások almenü"
+                    aria-label={t.nav.services}
                   >
                     <div className="w-64 bg-white text-neutral-darkgray rounded-lg shadow-xl py-2 border border-neutral-lightgray">
                       {item.subItems?.map((subItem) => (
@@ -198,7 +198,7 @@ export default function Header() {
                       ? 'text-neutral-mediumgray hover:text-primary hover:scale-105'
                       : 'text-white/80 hover:text-white hover:scale-105'
                 }`}
-                aria-label="Magyar nyelv"
+                aria-label="Magyar"
               >
                 HU
               </button>
@@ -211,7 +211,7 @@ export default function Header() {
                       ? 'text-neutral-mediumgray hover:text-primary hover:scale-105'
                       : 'text-white/80 hover:text-white hover:scale-105'
                 }`}
-                aria-label="English language"
+                aria-label="English"
               >
                 EN
               </button>
